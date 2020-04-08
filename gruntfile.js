@@ -47,6 +47,25 @@ module.exports = function(grunt) {
             expand: true,
             flatten: true,
             src: [
+              'node_modules/bootstrap/dist/css/bootstrap.min.css',
+              'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
+            ],
+            dest: 'assets/bootstrap/',
+            mode: '0755'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: [
+              'node_modules/jquery/dist/jquery.min.js'
+            ],
+            dest: 'assets/jquery/',
+            mode: '0755'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: [
               'node_modules/lodash/lodash.min.js'
             ],
             dest: 'assets/lodash/',
