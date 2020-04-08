@@ -57,6 +57,33 @@ module.exports = function(grunt) {
             expand: true,
             flatten: true,
             src: [
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.eot',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.svg',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.eot',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.svg',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff',
+              'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2'
+            ],
+            dest: 'assets/fontawesome/webfonts/',
+            mode: '0755'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: [
+              'node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+            ],
+            dest: 'assets/fontawesome/css/',
+            mode: '0755'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: [
               'node_modules/jquery/dist/jquery.min.js'
             ],
             dest: 'assets/jquery/',
