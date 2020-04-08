@@ -1,14 +1,29 @@
-<form ng-submit="login()">
-  <fieldset>
-    <legend>Log In</legend>
-    <label>
-      <span>Username:</span>
-      <input ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
+<div class="jumbotron col-6">
+  <p class="lead">Log In</p>
+  <form ng-submit="login()">
+    <label class="form-group row">
+        <span class="col-12 input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-user"></i></span>
+          </div>
+          <input class="form-control col" name="user" ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
+      </span>
     </label>
-    <label>
-      <span>Password:</span>
-      <input ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
+    <label class="form-group row">
+      <span class="col-12 input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-key"></i></span>
+        </div>
+        <input class="form-control" name="pass" ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
+      </span>
     </label>
-    <button type="submit" ng-disabled="flags.busy">Log In</button>
-  </fieldset>
-</form>
+    <div class="row">
+      <span class="col-5">
+        <button class="btn btn-secondary w-100" ng-disabled="flags.busy" ng-click="transitionTo('users.register');" type="reset">Register</button>
+      </span>
+      <span class="col-5 offset-2">
+        <button class="btn btn-primary w-100" ng-disabled="flags.busy" type="submit">Log In</button>
+      </span>
+    </div>
+  </form>
+</div>

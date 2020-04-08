@@ -18,7 +18,6 @@ angular
     SessionProvider,
     UsersResource
   ) {
-    $scope.model = { user: 'anubis', pass: 'munky1483' };
     $scope.flags = { busy: false };
 
     $scope.login = function() {
