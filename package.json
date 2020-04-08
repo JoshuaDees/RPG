@@ -1,0 +1,26 @@
+{
+  "name": "rpg",
+  "version": "1.0.0",
+  "description": "My First RPG",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua Dees <dees.joshua@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.7.9",
+    "angular-resource": "^1.7.9",
+    "angular-ui-router": "^1.0.25",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-angular-builder": "^2.0.0",
+    "grunt-angular-templates": "^1.2.0",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-contrib-watch": "^1.1.0"
+  }
+}

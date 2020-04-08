@@ -1,0 +1,14 @@
+<form ng-submit="login()">
+  <fieldset>
+    <legend>Log In</legend>
+    <label>
+      <span>Username:</span>
+      <input ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
+    </label>
+    <label>
+      <span>Password:</span>
+      <input ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
+    </label>
+    <button type="submit" ng-disabled="flags.busy">Log In</button>
+  </fieldset>
+</form>

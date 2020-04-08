@@ -1,0 +1,24 @@
+## OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+$RECYCLE.BIN/
+Desktop.ini
+ehthumbs.db
+Icon?
+Thumbs.db
+
+## Git
+.git/
+
+## NODE
+node_modules/
+
+## YARN
+yarn-debug.log
+yarn-error.log
+
+## SASS
+.sass-cache/
