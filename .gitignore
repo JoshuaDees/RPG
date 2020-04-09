@@ -22,3 +22,6 @@ yarn-error.log
 
 ## SASS
 .sass-cache/
+
+## Project Specific
+config/
