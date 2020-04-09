@@ -9,11 +9,23 @@ angular
   .controller('LogoutController', [
     '$state',
     'SessionProvider',
+    'UsersResource',
   function(
     $state,
-    SessionProvider
+    SessionProvider,
+    UsersResource
   ) {
-    SessionProvider.remove('userId');
+    UsersResource.abort().logout()
+      .then(function(response) {
+        if (response.success) {
+          SessionProvider.remove('userId');
 
-    $state.transitionTo('users.login');
+          $state.transitionTo('users.login');
+        } else {
+          alert(response.message);
+        }
+      })
+      .catch(function(error) {
+        alert(error);
+      })
   }]);

@@ -75,24 +75,107 @@
     }])
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/resources/games.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .factory('GamesResource', ['RestfulService', function(RestfulService) {
+      return RestfulService('rest/games.php', null, {
+        load: {
+          params: { action: 'load' }
+        }
+      });
+    }])
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/resources/users.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
     .factory('UsersResource', ['RestfulService', function(RestfulService) {
-      var url = 'rest/users.php';
-
-      var resource = RestfulService(url, null, {
+      return RestfulService('rest/users.php', null, {
         login: {
           method: 'POST',
           params: { action: 'login' }
         },
-        logout: {},
-        register: {}
+        logout: {
+          method: 'POST',
+          params: { action: 'logout' }
+        },
+        register: {
+          method: 'POST',
+          params: { action: 'register' }
+        }
       });
-
-      return resource;
     }])
+
+//--------------------------------------------------------------------------------------------------------------------
+// File: app/states/games/games.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config(['$stateProvider', function($stateProvider) {
+      $stateProvider
+        .state('games', {
+          abstract: true,
+          template: '<ui-view />'
+        });
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
+// File: app/states/games/load.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config(['$stateProvider', function($stateProvider) {
+      $stateProvider
+        .state('games.load', {
+          controller: 'LoadController',
+          templateUrl: 'templates/games/load.html'
+        });
+    }])
+    .controller('LoadController', [
+      '$scope',
+      '$state',
+      'GamesResource',
+      'SessionProvider',
+    function(
+      $scope,
+      $state,
+      GamesResource,
+      SessionProvider
+    ) {
+      $scope.model = {
+        userId: SessionProvider.get('userId')
+      };
+
+      $scope.flags = {
+        busy: true
+      };
+
+      $scope.load = function() {
+        // TODO:
+      };
+
+      GamesResource.abort().load()
+        .then(function(response) {
+          if (response.success) {
+            $scope.games = response.games;
+
+            if ($scope.games) {
+              $scope.model.gameId = $scope.games[0].id;
+            }
+          } else {
+            alert(response.message);
+          }
+        })
+        .catch(function(error) {
+          alert(error);
+        })
+        .finally(function() {
+          $scope.flags.busy = false;
+        });
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/rpg.js
@@ -109,46 +192,13 @@
       SessionProvider
     ) {
       if (SessionProvider.get('userId')) {
-        $state.transitionTo('users.load');
+        $state.transitionTo('games.load');
       } else {
         $state.transitionTo('users.login');
       }
 
       $scope.transitionTo = function(state) {
         $state.transitionTo(state);
-      };
-    }]);
-
-//--------------------------------------------------------------------------------------------------------------------
-// File: app/states/users/load.js
-//--------------------------------------------------------------------------------------------------------------------
-
-  module
-    .config(['$stateProvider', function($stateProvider) {
-      $stateProvider
-        .state('users.load', {
-          controller: 'LoadController',
-          templateUrl: 'templates/users/load.html'
-        });
-    }])
-    .controller('LoadController', [
-      '$scope',
-      '$state',
-      'SessionProvider',
-      'UsersResource',
-    function(
-      $scope,
-      $state,
-      SessionProvider,
-      UsersResource
-    ) {
-      $scope.model = {
-        gameId: 1,
-        userId: SessionProvider.get('userId')
-      };
-
-      $scope.load = function() {
-        // TODO:
       };
     }]);
 
@@ -175,7 +225,9 @@
       SessionProvider,
       UsersResource
     ) {
-      $scope.flags = { busy: false };
+      $scope.flags = {
+        busy: false
+      };
 
       $scope.login = function() {
         $scope.flags.busy = true;
@@ -185,7 +237,7 @@
             if (response.success) {
               SessionProvider.set('userId', response.id);
 
-              $state.transitionTo('users.load');
+              $state.transitionTo('games.load');
             } else {
               alert(response.message);
             }
@@ -213,13 +265,25 @@
     .controller('LogoutController', [
       '$state',
       'SessionProvider',
+      'UsersResource',
     function(
       $state,
-      SessionProvider
+      SessionProvider,
+      UsersResource
     ) {
-      SessionProvider.remove('userId');
+      UsersResource.abort().logout()
+        .then(function(response) {
+          if (response.success) {
+            SessionProvider.remove('userId');
 
-      $state.transitionTo('users.login');
+            $state.transitionTo('users.login');
+          } else {
+            alert(response.message);
+          }
+        })
+        .catch(function(error) {
+          alert(error);
+        })
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -230,6 +294,7 @@
     .config(['$stateProvider', function($stateProvider) {
       $stateProvider
         .state('users.register', {
+          controller: 'RegisterController',
           templateUrl: 'templates/users/register.html'
         });
     }])
@@ -244,9 +309,36 @@
       SessionProvider,
       UsersResource
     ) {
-        $scope.register = function() {
-          // TODO:
-        };
+      $scope.flags = {
+        busy: false
+      };
+
+      $scope.register = function() {
+        console.log($scope.model);
+
+        if($scope.model.pass === $scope.model.pass2) {
+          $scope.flags.busy = true;
+
+          UsersResource.abort().register($scope.model)
+            .then(function(response) {
+              if (response.success) {
+                SessionProvider.set('userId', response.id);
+
+                $state.transitionTo('games.load');
+              } else {
+                alert(response.message);
+              }
+            })
+            .catch(function(error) {
+              alert(error);
+            })
+            .finally(function() {
+              $scope.flags.busy = false;
+            });
+        } else {
+          alert('The passwords do not match.');
+        }
+      };
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -267,8 +359,8 @@
 angular.module('rpg').run(['$templateCache', function($templateCache) {
   'use strict';
 
-  $templateCache.put('templates/users/load.html',
-    '<div class="jumbotron col-6"><p class=lead>Load Game</p><form ng-submit=load()><div class="form-group row"><div class=col-12><ul class="list-group list-group-flush"><li class="list-group-item list-group-item-action" ng-class="{ active: model.gameId == 1 }" ng-click="model.gameId = 1;">First Game</li><li class="list-group-item list-group-item-action" ng-class="{ active: model.gameId == 2 }" ng-click="model.gameId = 2;">Second Game</li><li class="list-group-item list-group-item-action" ng-class="{ active: model.gameId == 3 }" ng-click="model.gameId = 3;">Third Game</li></ul></div></div><div class=row><span class=col-5><button class="btn btn-secondary w-100" ng-disabled=flags.busy ng-click="transitionTo(\'users.logout\');" type=reset>Log Out</button> </span><span class="col-5 offset-2"><button class="btn btn-primary w-100" ng-disabled=flags.busy type=submit>Load Game</button></span></div></form></div>'
+  $templateCache.put('templates/games/load.html',
+    '<div class="d-flex justify-content-center align-items-center" style="height: 100%;"><div class="jumbotron col-6"><p class=lead>Load Game</p><form ng-submit=load()><div class="form-group row"><div class=col-12><ul class="list-group list-group-flush"><li class="list-group-item list-group-item-action" ng-class="{ active: model.gameId == game.id }" ng-click="model.gameId = 1;" ng-repeat="game in games">{{ game.title }}</li></ul></div></div><div class=row><span class=col-5><button class="btn btn-secondary w-100" ng-disabled=flags.busy ng-click="transitionTo(\'users.logout\');" type=reset>Log Out</button> </span><span class="col-5 offset-2"><button class="btn btn-primary w-100" ng-disabled=flags.busy type=submit>Load Game</button></span></div></form></div></div>'
   );
 
 

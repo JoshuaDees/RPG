@@ -18,7 +18,9 @@ angular
     SessionProvider,
     UsersResource
   ) {
-    $scope.flags = { busy: false };
+    $scope.flags = {
+      busy: false
+    };
 
     $scope.login = function() {
       $scope.flags.busy = true;
@@ -28,7 +30,7 @@ angular
           if (response.success) {
             SessionProvider.set('userId', response.id);
 
-            $state.transitionTo('users.load');
+            $state.transitionTo('games.load');
           } else {
             alert(response.message);
           }

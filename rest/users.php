@@ -8,6 +8,7 @@
       $user = post('user');
       $pass = post('pass');
 
+      // TODO:
       if ($user == 'anubis' && $pass == 'munky1483') {
         $this->json['success'] = true;
         $this->json['userId'] = 1;
@@ -19,11 +20,22 @@
     }
 
     public function logout() {
-      // TODO: Users.logout
+      // TODO:
+      $this->json['success'] = true;
+
+      return $this->json;
     }
 
     public function register() {
-      // TODO: Users.register
+      $user = post('user');
+      $pass = post('pass');
+      $email = post('email');
+
+      // TODO:
+      $this->json['success'] = true;
+      $this->json['userId'] = 1;
+
+      return $this->json;
     }
   }
 
