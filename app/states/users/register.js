@@ -4,7 +4,7 @@ angular
     $stateProvider
       .state('users.register', {
         controller: 'RegisterController',
-        templateUrl: 'templates/users/register.html'
+        templateUrl: 'app/templates/users/register.html'
       });
   }])
   .controller('RegisterController', [

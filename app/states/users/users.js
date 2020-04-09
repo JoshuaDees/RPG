@@ -4,6 +4,6 @@ angular
     $stateProvider
       .state('users', {
         abstract: true,
-        templateUrl: 'templates/users/users.html'
+        templateUrl: 'app/templates/users/users.html'
       });
   }]);

@@ -4,7 +4,7 @@ angular
     $stateProvider
       .state('games.load', {
         controller: 'LoadController',
-        templateUrl: 'templates/games/load.html'
+        templateUrl: 'app/templates/games/load.html'
       });
   }])
   .controller('LoadController', [

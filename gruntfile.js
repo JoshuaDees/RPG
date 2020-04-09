@@ -121,7 +121,7 @@ module.exports = function(grunt) {
           module: '<%= pkg.name %>',
           quotes: 'single'
         },
-        src: ['templates/**/*.html'],
+        src: ['app/templates/**/*.html'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
