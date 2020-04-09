@@ -2,21 +2,23 @@
   include '~php.php';
 
   class Games {
-    private $json = array('success' => false);
+    private $json;
+
+    public function __construct() {
+      $this->json = new JSON();
+    }
 
     public function load() {
       // TODO:
-      $this->json['success'] = true;
-
-      $this->json['games'] = array(
+      $this->json->success(array(
         array("id" => 1, "title" => "Saved Game 1"),
         array("id" => 2, "title" => "Saved Game 2"),
         array("id" => 3, "title" => "Saved Game 3")
-      );
+      ));
 
-      return $this->json;
+      $this->json->print();
     }
   }
 
-  json((new Games())->{ get('action') }());
+  (new Games())->{ get('action') }();
 ?>

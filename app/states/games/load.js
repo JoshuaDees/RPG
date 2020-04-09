@@ -30,10 +30,10 @@ angular
       // TODO:
     };
 
-    GamesResource.abort().load()
+    GamesResource.abort().load($scope.model)
       .then(function(response) {
         if (response.success) {
-          $scope.games = response.games;
+          $scope.games = response.model;
 
           if ($scope.games) {
             $scope.model.gameId = $scope.games[0].id;

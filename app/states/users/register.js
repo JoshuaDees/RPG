@@ -31,11 +31,11 @@ angular
         UsersResource.abort().register($scope.model)
           .then(function(response) {
             if (response.success) {
-              SessionProvider.set('userId', response.id);
+              SessionProvider.set('userId', response.model.id);
 
               $state.transitionTo('games.load');
             } else {
-              alert(response.message);
+              alert(response.error);
             }
           })
           .catch(function(error) {

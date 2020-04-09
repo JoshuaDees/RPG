@@ -1,43 +1,58 @@
 <?php
-  include '~php.php';
+  include "~php.php";
 
   class Users {
-    private $json = array('success' => false);
+    private $json;
+
+    public function __construct() {
+      $this->json = new JSON();
+    }
 
     public function login() {
-      $user = post('user');
-      $pass = post('pass');
+      global $conn;
 
-      // TODO:
-      if ($user == 'anubis' && $pass == 'munky1483') {
-        $this->json['success'] = true;
-        $this->json['userId'] = 1;
+      $user = post("user");
+      $pass = base64_encode(post("pass"));
+
+      $sql = "SELECT * FROM Users WHERE UserName = '$user' AND UserPassword = '$pass'";
+      $tbl = mysqli_query($conn, $sql);
+
+      if($row = mysqli_fetch_array($tbl)) {
+        $this->json->success(array(
+          "id" => $row["UserId"],
+          "name" => $row["UserName"]
+        ));
       } else {
-        $this->json['message'] = 'Username and/or password did not match.';
+        $this->json->error("Username and/or password did not match. ($sql)");
       }
 
-      return $this->json;
+      $this->json->print();
     }
 
     public function logout() {
-      // TODO:
-      $this->json['success'] = true;
-
-      return $this->json;
+      $this->json->print();
     }
 
     public function register() {
-      $user = post('user');
-      $pass = post('pass');
-      $email = post('email');
+      global $conn;
 
-      // TODO:
-      $this->json['success'] = true;
-      $this->json['userId'] = 1;
+      $email = post("email");
+      $user = post("user");
+      $pass = base64_encode(post("pass"));
 
-      return $this->json;
+      $sql = "INSERT INTO Users (UserEmail, UserName, UserPassword) VALUES ('$email', '$user', '$pass')";
+
+      if(mysqli_query($conn, $sql)) {
+        $this->json->success(array(
+          "userId" => mysqli_insert_id($conn)
+        ));
+      } else {
+        $this->json->error(mysqli_error($conn));
+      }
+
+      $this->json->print();
     }
   }
 
-  json((new Users())->{ get('action') }());
+  (new Users())->{ get("action") }();
 ?>
