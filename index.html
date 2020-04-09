@@ -1,7 +1,6 @@
 <html ng-app="rpg">
   <head>
     <title>My First RPG</title>
-    <link href="./assets/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="./dist/rpg.css" rel="stylesheet" />
     <script src="./assets/lodash/lodash.min.js"></script>
@@ -9,8 +8,12 @@
     <script src="./assets/angular/angular.min.js"></script>
     <script src="./assets/angular/angular-resource.min.js"></script>
     <script src="./assets/angular/angular-ui-router.min.js"></script>
-    <script src="./assets/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="./dist/rpg.js"></script>
+    <style>
+      .container {
+        background-color: #222;
+      }
+    </style>
   </head>
   <body ng-controller="RPGController">
     <div class="container" ui-view></div>

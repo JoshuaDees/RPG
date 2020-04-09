@@ -1,23 +1,10 @@
-* {
-  cursor: default;
+*, ::after, ::before {
+  box-sizing: border-box;
 }
 
 :not(input):not(textarea) {
+  cursor: default !important;
   user-select: none;
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-}
-
-body {
-  align-items: center;
-  background-color: #e9ecef;
-  display: flex;
-  justify-content: center;
 }
 
 form:last-child {

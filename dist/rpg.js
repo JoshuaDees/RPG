@@ -8,6 +8,61 @@
 
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/directives/dialog.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .factory('KeyService', function() {
+      return new function() {
+        this.getString = function($event) {
+          return _.compact([
+            $event.ctrlKey ? 'Ctrl' : '',
+            $event.altKey ? 'Alt' : '',
+            $event.shiftKey ? 'Shift' : '',
+            (
+              ($event.key === 'Control' && $event.ctrlKey) ||
+              ($event.key === 'Alt' && $event.altKey) ||
+              ($event.key === 'Shift' && $event.shiftKey) ||
+              ($event.key === 'Meta' && $event.metaKey)
+            ) ? '' : $event.key
+          ]).join('+') || '';
+        };
+      }();
+    })
+    .factory('DialogService', [
+      'KeyService',
+    function(
+      KeyService
+    ) {
+      $(window).on('resize', function() {
+        $('dialog').each(function(index, dialog) {
+          dialog.close();
+          dialog.showModal();
+        })
+      });
+
+      $(document).on('keydown keyup keypress', function($event) {
+        if(KeyService.getString($event).match(/(Shift\+)?Escape/)) {
+          $event.preventDefault();
+        }
+      });
+
+      return {};
+    }])
+    .directive('dialog', [
+      'DialogService',
+    function(
+      DialogService
+    ) {
+      return {
+        restrict: 'E',
+        link: function($scope, $element) {
+          $element[0].showModal();
+        }
+      }
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/providers/restful.js
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -162,7 +217,7 @@
           if (response.success) {
             $scope.games = response.model;
 
-            if ($scope.games) {
+            if (_.get($scope, 'games[0]')) {
               $scope.model.gameId = $scope.games[0].id;
             }
           } else {
@@ -350,7 +405,7 @@
       $stateProvider
         .state('users', {
           abstract: true,
-          templateUrl: 'app/templates/users/users.html'
+          template: '<ui-view />'
         });
     }]);
 
@@ -360,22 +415,17 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/templates/games/load.html',
-    '<div class="d-flex justify-content-center align-items-center" style="height: 100%;"><div class="jumbotron col-6"><p class=lead>Load Game</p><form ng-submit=load()><div class="form-group row"><div class=col-12><ul class="list-group list-group-flush"><li class="list-group-item list-group-item-action" ng-class="{ active: model.gameId == game.id }" ng-click="model.gameId = 1;" ng-repeat="game in games">{{ game.title }}</li></ul></div></div><div class=row><span class=col-5><button class="btn btn-secondary w-100" ng-disabled=flags.busy ng-click="transitionTo(\'users.logout\');" type=reset>Log Out</button> </span><span class="col-5 offset-2"><button class="btn btn-primary w-100" ng-disabled=flags.busy type=submit>Load Game</button></span></div></form></div></div>'
+    '<dialog><form ng-submit=load()><header>Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: model.gameId == game.id }" ng-click="model.gameId = game.id;" ng-repeat="game in games">{{ game.title }}</li></ul></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.logout\');" type=reset>Log Out</button> <button ng-disabled="flags.busy || !model.gameId" type=submit>Load Game</button> <button ng-disabled="flags.busy || true" type=reset>New Game</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/login.html',
-    '<div class="jumbotron col-6"><p class=lead>Log In</p><form ng-submit=login()><label class="form-group row"><span class="col-12 input-group"><div class=input-group-prepend><span class=input-group-text><i class="fa fa-user"></i></span></div><input class="form-control col" name=user ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></span></label> <label class="form-group row"><span class="col-12 input-group"><div class=input-group-prepend><span class=input-group-text><i class="fa fa-key"></i></span></div><input class=form-control name=pass ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></span></label><div class=row><span class=col-5><button class="btn btn-secondary w-100" ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> </span><span class="col-5 offset-2"><button class="btn btn-primary w-100" ng-disabled=flags.busy type=submit>Log In</button></span></div></form></div>'
+    '<dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=x-input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=x-input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/register.html',
-    '<div class="jumbotron col-6"><p class=lead>Register</p><form ng-submit=register()><label class="form-group row"><span class="col-12 input-group"><div class=input-group-prepend><span class=input-group-text><i class="fa fa-user"></i></span></div><input class="form-control col" name=user ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></span></label> <label class="form-group row"><span class="col-12 input-group"><div class=input-group-prepend><span class=input-group-text><i class="fa fa-envelope"></i></span></div><input class="form-control col" name=email ng-disabled=flags.busy ng-model=model.email placeholder=Email required/></span></label> <label class="form-group row"><span class="col-12 input-group"><div class=input-group-prepend><span class=input-group-text><i class="fa fa-key"></i></span></div><input autocomplete=new-password name=pass class="form-control col" ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></span></label> <label class="form-group row"><span class="col-12 input-group"><div class=input-group-prepend><span class=input-group-text><i class="fa fa-key"></i></span></div><input autocomplete=new-password name=pass2 class="form-control col" ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></span></label><div class=row><span class=col-5><button class="btn btn-secondary w-100" ng-disabled=flags.busy ng-click="transitionTo(\'users.login\');" type=reset>Log In</button> </span><span class="col-5 offset-2"><button class="btn btn-primary w-100" ng-disabled=flags.busy type=submit>Register</button></span></div></form></div>'
-  );
-
-
-  $templateCache.put('app/templates/users/users.html',
-    '<div class="d-flex justify-content-center align-items-center" style="height: 100%;" ui-view></div>'
+    '<dialog><form name=registerForm ng-submit=register()><header>Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=x-input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=x-input-group><i class="fa fa-envelope"></i> <input ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=x-input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=x-input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.login\');" type=reset>Log In</button> <button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
   );
 
 }]);

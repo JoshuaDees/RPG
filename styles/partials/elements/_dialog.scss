@@ -1,0 +1,31 @@
+dialog {
+  background: $black;
+  border: 1px solid $input-border;
+  color: inherit;
+  min-width: 24rem;
+  padding: 1rem;
+
+  header,
+  footer {
+    color: $input-color;
+    font-weight: $font-weight-bold;
+    text-align: center;
+  }
+
+  main {
+
+  }
+
+  header {
+    border-bottom: 1px solid $input-border;
+    margin: -1rem -1rem 1rem;
+    padding: .5rem 1rem;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem -1rem -1rem;
+    padding: 0 1rem 1rem;
+  }
+}

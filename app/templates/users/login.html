@@ -1,29 +1,21 @@
-<div class="jumbotron col-6">
-  <p class="lead">Log In</p>
-  <form ng-submit="login()">
-    <label class="form-group row">
-        <span class="col-12 input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-user"></i></span>
-          </div>
-          <input class="form-control col" name="user" ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
-      </span>
-    </label>
-    <label class="form-group row">
-      <span class="col-12 input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fa fa-key"></i></span>
-        </div>
-        <input class="form-control" name="pass" ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
-      </span>
-    </label>
-    <div class="row">
-      <span class="col-5">
-        <button class="btn btn-secondary w-100" ng-disabled="flags.busy" ng-click="transitionTo('users.register');" type="reset">Register</button>
-      </span>
-      <span class="col-5 offset-2">
-        <button class="btn btn-primary w-100" ng-disabled="flags.busy" type="submit">Log In</button>
-      </span>
-    </div>
+<dialog>
+  <form name="loginForm" ng-submit="login()">
+    <header>Log In</header>
+    <main>
+      <input style="display: none;" />
+      <input style="display: none;" type="password" />
+      <label class="x-input-group">
+        <i class="fa fa-user"></i>
+        <input ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
+      </label>
+      <label class="x-input-group">
+        <i class="fa fa-key"></i>
+        <input ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
+      </label>
+    </main>
+    <footer>
+      <button ng-disabled="flags.busy" ng-click="transitionTo('users.register');" type="reset">Register</button>
+      <button ng-disabled="flags.busy || loginForm.$invalid" type="submit">Log In</button>
+    </footer>
   </form>
-</div>
+</dialog>

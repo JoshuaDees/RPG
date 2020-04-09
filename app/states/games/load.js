@@ -35,7 +35,7 @@ angular
         if (response.success) {
           $scope.games = response.model;
 
-          if ($scope.games) {
+          if (_.get($scope, 'games[0]')) {
             $scope.model.gameId = $scope.games[0].id;
           }
         } else {

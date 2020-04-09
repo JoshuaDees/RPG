@@ -8,12 +8,15 @@
   },
   "author": "Joshua Dees <dees.joshua@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/JoshuaDees/rpg.git"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "angular": "^1.7.9",
     "angular-resource": "^1.7.9",
     "angular-ui-router": "^1.0.25",
-    "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15"
   },

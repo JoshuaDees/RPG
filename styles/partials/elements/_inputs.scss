@@ -1,0 +1,36 @@
+label {
+  margin-bottom: 1rem;
+
+  #{$input-selectors} {
+    margin-bottom: 0;
+  }
+}
+
+#{$input-selectors} {
+  background: $input-background;
+  border: 1px solid $input-border;
+  border-radius: $border-radius;
+  box-shadow: inset 0 0 1px 1px $black;
+  color: $input-color;
+  margin-bottom: 1rem;
+  padding: .375rem .75rem;
+
+  &:focus {
+    box-shadow: inset 0 0 1px 1px $black, $shadow;
+    outline: none;
+  }
+
+  &:read-only {
+    -color: darken($input-color, 35);
+  }
+
+  &:disabled {
+    background: darken($input-background, 15);
+    border-color: darken($input-border, 20);
+    color: darken($input-color, 35);
+  }
+
+  &::placeholder {
+    color: darken($input-color, 35);
+  }
+}

@@ -1,45 +1,29 @@
-<div class="jumbotron col-6">
-  <p class="lead">Register</p>
-  <form ng-submit="register()">
-    <label class="form-group row">
-        <span class="col-12 input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-user"></i></span>
-          </div>
-          <input class="form-control col" name="user" ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
-      </span>
-    </label>
-    <label class="form-group row">
-        <span class="col-12 input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-          </div>
-          <input class="form-control col" name="email" ng-disabled="flags.busy" ng-model="model.email" placeholder="Email" required />
-      </span>
-    </label>
-    <label class="form-group row">
-        <span class="col-12 input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-key"></i></span>
-          </div>
-          <input autocomplete="new-password" name="pass" class="form-control col" ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
-      </span>
-    </label>
-    <label class="form-group row">
-        <span class="col-12 input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-key"></i></span>
-          </div>
-          <input autocomplete="new-password" name="pass2" class="form-control col" ng-disabled="flags.busy" ng-model="model.pass2" placeholder="Password (again)" required type="password" />
-      </span>
-    </label>
-    <div class="row">
-      <span class="col-5">
-        <button class="btn btn-secondary w-100" ng-disabled="flags.busy" ng-click="transitionTo('users.login');" type="reset">Log In</button>
-      </span>
-      <span class="col-5 offset-2">
-        <button class="btn btn-primary w-100" ng-disabled="flags.busy" type="submit">Register</button>
-      </span>
-    </div>
+<dialog>
+  <form name="registerForm" ng-submit="register()">
+    <header>Register</header>
+    <main>
+      <input style="display: none;" />
+      <input style="display: none;" type="password" />
+      <label class="x-input-group">
+        <i class="fa fa-user"></i>
+        <input ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
+      </label>
+      <label class="x-input-group">
+        <i class="fa fa-envelope"></i>
+        <input ng-disabled="flags.busy" ng-model="model.email" placeholder="Email" required type="email" />
+      </label>
+      <label class="x-input-group">
+        <i class="fa fa-key"></i>
+        <input ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
+      </label>
+      <label class="x-input-group">
+        <i class="fa fa-key"></i>
+        <input ng-disabled="flags.busy" ng-model="model.pass2" placeholder="Password (again)" required type="password" />
+      </label>
+    </main>
+    <footer>
+      <button ng-disabled="flags.busy" ng-click="transitionTo('users.login');" type="reset">Log In</button>
+      <button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type="submit">Register</button>
+    </footer>
   </form>
-</div>
+</dialog>

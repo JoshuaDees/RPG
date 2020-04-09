@@ -1,0 +1,16 @@
+$black: rgb(0, 0, 0);
+$white: rgb(255, 255, 255);
+
+$shadow: 0 0 1px 1px $black, 0 0 8px 2px lighten(rgb(128, 32, 0), 15);
+
+$input-background: $black;
+$input-border: rgb(128, 128, 128);
+$input-color: rgb(160, 160, 160);
+
+$button-background: rgb(64, 64, 64);
+$button-border: rgb(128, 128, 128);
+$button-color: rgb(160, 160, 160);
+
+$button-submit-background: rgb(128, 32, 0);
+$button-submit-border: rgb(192, 128, 32);
+$button-submit-color: rgb(224, 160, 64);

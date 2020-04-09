@@ -150,7 +150,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'dist/<%= pkg.name %>.css': 'styles/styles.scss'
+          'dist/<%= pkg.name %>.css': 'styles/theme.scss'
         },
         options: {
           sourcemap: 'none',
@@ -163,7 +163,7 @@ module.exports = function(grunt) {
     // Watch for changes to source files
     watch: {
       src: {
-        files: ['app/**/*',],
+        files: ['app/**/*', 'styles/**/*'],
         tasks: ['build']
       }
     }
