@@ -102,6 +102,14 @@ module.exports = function(grunt) {
       }
     },
 
+    cssmin: {
+      dist: {
+        files: {
+          'dist/<%= pkg.name %>.min.css': ['dist/<%= pkg.name %>.css']
+        }
+      }
+    },
+
     // Transform templateUrl to template in Angular
     ngtemplates: {
       dist: {
@@ -138,10 +146,24 @@ module.exports = function(grunt) {
       }
     },
 
+    // Compile SCSS to CSS
+    sass: {
+      dist: {
+        files: {
+          'dist/<%= pkg.name %>.css': 'styles/styles.scss'
+        },
+        options: {
+          sourcemap: 'none',
+          style: 'expanded',
+          unixNewlines: true
+        }
+      }
+    },
+
     // Watch for changes to source files
     watch: {
       src: {
-        files: ['app/**/*', 'templates/**/*'],
+        files: ['app/**/*',],
         tasks: ['build']
       }
     }
@@ -152,10 +174,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Define tasks
   grunt.registerTask('default', ['copy']);
-  grunt.registerTask('build', ['clean', 'angular-builder', 'ngtemplates', 'uglify']);
+  grunt.registerTask('build', ['clean', 'angular-builder', 'ngtemplates', 'uglify', 'sass', 'cssmin']);
 };
