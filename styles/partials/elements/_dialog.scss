@@ -1,31 +1,56 @@
 dialog {
-  background: $black;
+  background-color: rgba($black, .75);
   border: 1px solid $input-border;
   color: inherit;
-  min-width: 24rem;
-  padding: 1rem;
+  min-width: 384px;
+  padding: $padding;
 
   header,
   footer {
-    color: $input-color;
+    color: $input-text-color;
     font-weight: $font-weight-bold;
     text-align: center;
   }
 
-  main {
-
-  }
-
   header {
+    background-color: rgba($black, .5);
     border-bottom: 1px solid $input-border;
-    margin: -1rem -1rem 1rem;
-    padding: .5rem 1rem;
+    font-size: 15px;
+    margin: (-$margin) (-$margin) $margin;
+    padding: $padding/2 $padding;
+    position: relative;
+
+    a[ui-sref] {
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      .fa {
+        padding: 13px 15px;
+      }
+    }
   }
 
   footer {
     display: flex;
     justify-content: space-between;
-    margin: 1rem -1rem -1rem;
-    padding: 0 1rem 1rem;
+    margin: $margin (-$margin) (-$margin);
+    padding: 0 $padding $padding;
+
+    button:only-child {
+      margin: 0 auto;
+    }
+  }
+
+  &.transparent {
+    background-color: transparent;
+    border-width: 0;
+    min-width: 0;
+    padding: 0;
+
+    header {
+      background: transparent;
+      border-bottom-width: 0;
+    }
   }
 }

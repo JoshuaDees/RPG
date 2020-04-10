@@ -10,11 +10,13 @@ angular
   .controller('RegisterController', [
     '$scope',
     '$state',
+    'KeyEventProvider',
     'SessionProvider',
     'UsersResource',
   function(
     $scope,
     $state,
+    KeyEventProvider,
     SessionProvider,
     UsersResource
   ) {
@@ -34,7 +36,7 @@ angular
               SessionProvider.set('userId', response.model.id);
               SessionProvider.set('userName', response.model.name);
 
-              $state.transitionTo('games.load');
+              $state.transitionTo('games.menu');
             } else {
               alert(response.error);
             }
@@ -49,4 +51,11 @@ angular
         alert('The passwords do not match.');
       }
     };
+
+    KeyEventProvider.actions = [
+      {
+        matches: /(Shift\+)?Escape/,
+        callback: function() { $state.transitionTo('users.login'); }
+      }
+    ];
   }]);

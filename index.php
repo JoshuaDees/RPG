@@ -3,6 +3,7 @@
   <head>
     <title>My First RPG</title>
     <link href="./assets/fontawesome/css/all.min.css?bust=<?php echo $bust; ?>" rel="stylesheet" />
+    <link href="./fonts/Dalelands/Dalelands.css?bust=<?php echo $bust; ?>" rel="stylesheet" />
     <link href="./dist/rpg.css?bust=<?php echo $bust; ?>" rel="stylesheet" />
     <script src="./assets/lodash/lodash.min.js?bust=<?php echo $bust; ?>"></script>
     <script src="./assets/jquery/jquery.min.js?bust=<?php echo $bust; ?>"></script>
@@ -12,7 +13,8 @@
     <script src="./dist/rpg.js?bust=<?php echo $bust; ?>"></script>
     <style>
       .container {
-        background-color: #222;
+        --background-blend-mode: luminosity;
+        background-image: url('./media/images/theme/wallpaper.jpg');
       }
     </style>
   </head>

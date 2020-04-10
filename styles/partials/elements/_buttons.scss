@@ -1,57 +1,47 @@
 #{$button-selectors} {
-  background: $button-background;
-  border: 1px solid $button-border;
+  background-color: rgba($button-background-color, .75);
+  background-image: $button-gradient;
+  border: 1px solid $button-border-color;
   border-radius: $border-radius;
-  box-shadow: inset 0 0 1px 1px $black;
-  color: $button-color;
-  min-width: 6rem;
-  padding: .375rem .75rem;
+  box-shadow: inset 0 0 0 2px $black;
+  color: $button-text-color;
+  line-height: 22px;
+  min-width: 128px;
+  padding: $padding-field;
+  text-transform: uppercase;
 
   &:focus {
-    box-shadow: inset 0 0 1px 1px $black, $shadow;
+    box-shadow: inset 0 0 0 2px $black, $shadow-focus;
     outline: none;
   }
 
   &:focus, &:hover {
-    background: lighten($button-background, 15);
-    border: 1px solid lighten($button-border, 15);
-    color: lighten($button-color, 15);
+    border-color: lighten($button-border-color-focus, 15);
   }
 
   &:active {
-    background: $button-background;
+    background-image: $button-gradient-active;
   }
 
   &:disabled {
-    background: darken($button-background, 15);
-    border: 1px solid darken($button-border, 20);
-    color: darken($button-color, 20);
+    background-color: rgba($button-background-color, .25);
+    border-color: rgba($button-border-color-disabled, .5);
+    box-shadow: inset 0 0 0 2px rgba($black, .5);
+    color: rgba($button-text-color, .5);
   }
 }
 
 button, input {
   &[type=submit] {
-    background: $button-submit-background;
-    border: 1px solid $button-submit-border;
-    color: $button-submit-color;
-
-    &:focus,
-    &:hover {
-      background: lighten($button-submit-background, 15);
-      border: 1px solid lighten($button-submit-border, 15);
-      color: lighten($button-submit-color, 15);
-    }
-
-    &:active {
-      background: $button-submit-background;
-    }
+    background-color: rgba($button-submit-background-color, .75);
 
     &:disabled {
-      background: darken($button-submit-background, 15);
-      border: 1px solid darken($button-submit-border, 20);
-      color: darken($button-submit-color, 20);
+      background-color: rgba($button-submit-background-color, .25);
     }
   }
+}
+
+#{$button-selectors} {
 }
 
 .jumbotron {

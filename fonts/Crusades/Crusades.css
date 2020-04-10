@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Crusades';
+    src:url('Crusades.ttf.woff') format('woff'),
+        url('Crusades.ttf.svg#Crusades') format('svg'),
+        url('Crusades.ttf.eot'),
+        url('Crusades.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

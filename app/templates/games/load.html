@@ -1,18 +1,21 @@
 <dialog>
   <form ng-submit="load()">
-    <header>Load Game</header>
+    <header>
+      <a ui-sref="games.menu"><i class="fa fa-times"></i></a>
+      Load Game
+    </header>
     <main>
       <ul style="height: 160px;">
-        <li
-          ng-class="{ active: model.gameId == game.id }"
-          ng-click="model.gameId = game.id;"
-          ng-repeat="game in games">{{ game.title }}</li>
+        <li ng-class="{ active: model.gameId == game.id }" ng-repeat="game in games">
+          <label class="input-checkbox">
+            <input ng-model="model.gameId" ng-value="game.id" type="radio" />
+            {{ game.title }}
+          </label>
+        </li>
       </ul>
     </main>
     <footer>
-      <button ng-disabled="flags.busy" ng-click="transitionTo('users.logout');" type="reset">Log Out</button>
       <button ng-disabled="flags.busy || !model.gameId" type="submit">Load Game</button>
-      <button ng-disabled="flags.busy || true" type="reset">New Game</button>
     </footer>
   </form>
 </dialog>

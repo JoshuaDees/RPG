@@ -45,7 +45,7 @@
     }
 
     public static function getLastIndex() {
-      return mysqli_insert_id($this->conn);
+      return mysqli_insert_id(MySQL::$conn);
     }
   }
 ?>

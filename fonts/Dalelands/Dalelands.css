@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Dalelands';
+    src:url('Dalelands.ttf.woff') format('woff'),
+        url('Dalelands.ttf.svg#Dalelands') format('svg'),
+        url('Dalelands.ttf.eot'),
+        url('Dalelands.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

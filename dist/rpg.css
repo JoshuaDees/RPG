@@ -31,7 +31,7 @@ html[ng-app] {
 body {
   background: black;
   color: white;
-  font: 400 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font: 400 11px Dalelands;
   line-height: 1.5;
 }
 body[ng-controller] {
@@ -45,81 +45,77 @@ body[ng-controller] {
 }
 
 label {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 label input:not([type]), label input[type=email], label input[type=password], label input[type=text] {
   margin-bottom: 0;
 }
 
 input:not([type]), input[type=email], input[type=password], input[type=text] {
-  background: black;
-  border: 1px solid gray;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #756759;
   border-radius: 4px;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.125));
   box-shadow: inset 0 0 1px 1px black;
-  color: #a0a0a0;
-  margin-bottom: 1rem;
-  padding: .375rem .75rem;
+  color: #fffbf7;
+  line-height: 22px;
+  padding: 4px 8px;
 }
 input:not([type]):focus, input[type=email]:focus, input[type=password]:focus, input[type=text]:focus {
-  box-shadow: inset 0 0 1px 1px black, 0 0 1px 1px black, 0 0 8px 2px #cd3300;
+  border-color: #9b967f;
+  box-shadow: inset 0 0 1px 1px black, 0 0 1px 1px black, 0 0 6px 2px #ff5d2e;
   outline: none;
 }
-input:not([type]):read-only, input[type=email]:read-only, input[type=password]:read-only, input[type=text]:read-only {
-  -color: #474747;
-}
 input:not([type]):disabled, input[type=email]:disabled, input[type=password]:disabled, input[type=text]:disabled {
-  background: black;
-  border-color: #4d4d4d;
-  color: #474747;
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(117, 103, 89, 0.5);
+  color: rgba(255, 251, 247, 0.5);
 }
 input:not([type])::placeholder, input[type=email]::placeholder, input[type=password]::placeholder, input[type=text]::placeholder {
-  color: #474747;
+  color: #57534f;
+}
+
+input[type=radio] {
+  opacity: 0;
+  margin: 0;
+  position: absolute;
+  width: 0;
 }
 
 button, input[type=button], input[type=reset], input[type=submit] {
-  background: #404040;
-  border: 1px solid gray;
+  background-color: rgba(10, 11, 10, 0.75);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0.125) 50%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.125) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
+  border: 1px solid #756759;
   border-radius: 4px;
-  box-shadow: inset 0 0 1px 1px black;
-  color: #a0a0a0;
-  min-width: 6rem;
-  padding: .375rem .75rem;
+  box-shadow: inset 0 0 0 2px black;
+  color: #fffbf7;
+  line-height: 22px;
+  min-width: 128px;
+  padding: 4px 8px;
+  text-transform: uppercase;
 }
 button:focus, input[type=button]:focus, input[type=reset]:focus, input[type=submit]:focus {
-  box-shadow: inset 0 0 1px 1px black, 0 0 1px 1px black, 0 0 8px 2px #cd3300;
+  box-shadow: inset 0 0 0 2px black, 0 0 1px 1px black, 0 0 6px 2px #ff5d2e;
   outline: none;
 }
 button:focus, button:hover, input[type=button]:focus, input[type=button]:hover, input[type=reset]:focus, input[type=reset]:hover, input[type=submit]:focus, input[type=submit]:hover {
-  background: #666666;
-  border: 1px solid #a6a6a6;
-  color: #c6c6c6;
+  border-color: #bdb9aa;
 }
 button:active, input[type=button]:active, input[type=reset]:active, input[type=submit]:active {
-  background: #404040;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(0, 0, 0, 0.125) 10%, rgba(0, 0, 0, 0.0625) 50%, rgba(255, 255, 255, 0.0625) 50%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
 }
 button:disabled, input[type=button]:disabled, input[type=reset]:disabled, input[type=submit]:disabled {
-  background: #1a1a1a;
-  border: 1px solid #4d4d4d;
-  color: #6d6d6d;
+  background-color: rgba(10, 11, 10, 0.25);
+  border-color: rgba(155, 155, 155, 0.5);
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
+  color: rgba(255, 251, 247, 0.5);
 }
 
 button[type=submit], input[type=submit] {
-  background: #802000;
-  border: 1px solid #c08020;
-  color: #e0a040;
-}
-button[type=submit]:focus, button[type=submit]:hover, input[type=submit]:focus, input[type=submit]:hover {
-  background: #cd3300;
-  border: 1px solid #e1a54b;
-  color: #ebc182;
-}
-button[type=submit]:active, input[type=submit]:active {
-  background: #802000;
+  background-color: rgba(128, 32, 0, 0.75);
 }
 button[type=submit]:disabled, input[type=submit]:disabled {
-  background: #340d00;
-  border: 1px solid #694611;
-  color: #a06a1a;
+  background-color: rgba(128, 32, 0, 0.25);
 }
 
 .jumbotron {
@@ -127,7 +123,7 @@ button[type=submit]:disabled, input[type=submit]:disabled {
 }
 
 ul {
-  border: 1px solid gray;
+  border: 1px solid #756759;
   list-style: none;
   margin: 0;
   overflow-x: hidden;
@@ -136,62 +132,98 @@ ul {
 }
 
 li {
-  padding: .375rem .75rem;
+  line-height: 24px;
+  padding: 4px 8px;
   overflow: hidden;
   white-space: nowrap;
 }
 li:hover {
-  background: #1a1a1a;
+  background-color: rgba(217, 217, 217, 0.125);
 }
 li.active {
-  background: #404040;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+li label {
+  display: block;
+  margin-bottom: 0;
 }
 
 dialog {
-  background: black;
-  border: 1px solid gray;
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 1px solid #756759;
   color: inherit;
-  min-width: 24rem;
-  padding: 1rem;
+  min-width: 384px;
+  padding: 16px;
 }
 dialog header,
 dialog footer {
-  color: #a0a0a0;
+  color: #fffbf7;
   font-weight: 700;
   text-align: center;
 }
 dialog header {
-  border-bottom: 1px solid gray;
-  margin: -1rem -1rem 1rem;
-  padding: .5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #756759;
+  font-size: 15px;
+  margin: -16px -16px 16px;
+  padding: 8px 16px;
+  position: relative;
+}
+dialog header a[ui-sref] {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+dialog header a[ui-sref] .fa {
+  padding: 13px 15px;
 }
 dialog footer {
   display: flex;
   justify-content: space-between;
-  margin: 1rem -1rem -1rem;
-  padding: 0 1rem 1rem;
+  margin: 16px -16px -16px;
+  padding: 0 16px 16px;
+}
+dialog footer button:only-child {
+  margin: 0 auto;
+}
+dialog.transparent {
+  background-color: transparent;
+  border-width: 0;
+  min-width: 0;
+  padding: 0;
+}
+dialog.transparent header {
+  background: transparent;
+  border-bottom-width: 0;
 }
 
-.x-input-group {
+nav {
+  display: flex;
+  flex-direction: column;
+}
+nav button {
+  min-width: 192px;
+  margin: 0 auto;
+}
+nav button:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.input-group {
   align-items: stretch;
   display: flex;
   position: relative;
 }
-.x-input-group .x-input-group-icon,
-.x-input-group .fa {
-  color: #a0a0a0;
+.input-group .fa {
+  color: #fffbf7;
   line-height: 1.5;
-  padding: calc(.375rem + 1px) calc(.75rem + 1px);
+  padding: 8px 12px;
   position: absolute;
   z-index: 1;
 }
-.x-input-group .x-input-group-icon .fa,
-.x-input-group .fa .fa {
-  line-height: inherit;
-}
-.x-input-group input:not([type]), .x-input-group input[type=email], .x-input-group input[type=password], .x-input-group input[type=text] {
+.input-group input:not([type]), .input-group input[type=email], .input-group input[type=password], .input-group input[type=text] {
   flex: 1 0 auto;
-  padding-left: 2.5rem;
+  padding-left: 36px;
 }
 
 .container {

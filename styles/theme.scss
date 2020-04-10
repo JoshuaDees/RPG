@@ -1,7 +1,10 @@
 @import 'partials/variables/colors';
 @import 'partials/variables/borders';
 @import 'partials/variables/fonts';
+@import 'partials/variables/gradients';
 @import 'partials/variables/selectors';
+@import 'partials/variables/shadows';
+@import 'partials/variables/spacing';
 @import 'partials/elements';
 @import 'partials/elements/html';
 @import 'partials/elements/body';
@@ -9,5 +12,6 @@
 @import 'partials/elements/buttons';
 @import 'partials/elements/lists';
 @import 'partials/elements/dialog';
+@import 'partials/elements/nav';
 @import 'partials/classes/input-group';
 @import 'partials/layout/containers';

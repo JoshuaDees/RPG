@@ -1,23 +1,18 @@
-.x-input-group {
+.input-group {
   align-items: stretch;
   display: flex;
   position: relative;
 
-  .x-input-group-icon,
   .fa {
-    color: $input-color;
+    color: $input-text-color;
     line-height: 1.5;
-    padding: calc(.375rem + 1px) calc(.75rem + 1px);
+    padding: $spacing ($spacing * 1.5);
     position: absolute;
     z-index: 1;
-
-    .fa {
-      line-height: inherit;
-    }
   }
 
   #{$input-selectors} {
     flex: 1 0 auto;
-    padding-left: 2.5rem;
+    padding-left: 36px;
   }
 }

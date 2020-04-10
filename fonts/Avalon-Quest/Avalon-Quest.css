@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Avalon-Quest';
+    src:url('Avalon-Quest.ttf.woff') format('woff'),
+        url('Avalon-Quest.ttf.svg#Avalon-Quest') format('svg'),
+        url('Avalon-Quest.ttf.eot'),
+        url('Avalon-Quest.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}

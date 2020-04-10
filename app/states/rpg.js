@@ -3,14 +3,16 @@ angular
   .controller('RPGController', [
     '$scope',
     '$state',
+    'KeyEventProvider',
     'SessionProvider',
   function(
     $scope,
     $state,
+    KeyEventProvider,
     SessionProvider
   ) {
     if (SessionProvider.get('userId')) {
-      $state.transitionTo('games.load');
+      $state.transitionTo('games.menu');
     } else {
       $state.transitionTo('users.login');
     }

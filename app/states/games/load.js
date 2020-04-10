@@ -11,11 +11,13 @@ angular
     '$scope',
     '$state',
     'GamesResource',
+    'KeyEventProvider',
     'SessionProvider',
   function(
     $scope,
     $state,
     GamesResource,
+    KeyEventProvider,
     SessionProvider
   ) {
     $scope.model = {
@@ -48,4 +50,11 @@ angular
       .finally(function() {
         $scope.flags.busy = false;
       });
+
+    KeyEventProvider.actions = [
+      {
+        matches: /(Shift\+)?Escape/,
+        callback: function() { $state.transitionTo('games.menu'); }
+      }
+    ];
   }]);

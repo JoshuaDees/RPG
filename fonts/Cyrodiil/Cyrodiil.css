@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Cyrodiil';
+    src:url('Cyrodiil.ttf.woff') format('woff'),
+        url('Cyrodiil.ttf.svg#Cyrodiil') format('svg'),
+        url('Cyrodiil.ttf.eot'),
+        url('Cyrodiil.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

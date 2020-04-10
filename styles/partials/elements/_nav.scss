@@ -1,0 +1,13 @@
+nav {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    min-width: 192px;
+    margin: 0 auto;
+
+    &:not(:last-child) {
+      margin-bottom: $margin;
+    }
+  }
+}

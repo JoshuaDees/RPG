@@ -1,28 +1,30 @@
 <dialog>
   <form name="registerForm" ng-submit="register()">
-    <header>Register</header>
+    <header>
+      <a ui-sref="users.login"><i class="fa fa-times"></i></a>
+      Register
+    </header>
     <main>
       <input style="display: none;" />
       <input style="display: none;" type="password" />
-      <label class="x-input-group">
+      <label class="input-group">
         <i class="fa fa-user"></i>
         <input ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
       </label>
-      <label class="x-input-group">
+      <label class="input-group">
         <i class="fa fa-envelope"></i>
         <input ng-disabled="flags.busy" ng-model="model.email" placeholder="Email" required type="email" />
       </label>
-      <label class="x-input-group">
+      <label class="input-group">
         <i class="fa fa-key"></i>
         <input ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
       </label>
-      <label class="x-input-group">
+      <label class="input-group">
         <i class="fa fa-key"></i>
         <input ng-disabled="flags.busy" ng-model="model.pass2" placeholder="Password (again)" required type="password" />
       </label>
     </main>
     <footer>
-      <button ng-disabled="flags.busy" ng-click="transitionTo('users.login');" type="reset">Log In</button>
       <button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type="submit">Register</button>
     </footer>
   </form>

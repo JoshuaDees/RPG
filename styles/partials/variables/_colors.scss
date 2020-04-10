@@ -1,16 +1,22 @@
 $black: rgb(0, 0, 0);
 $white: rgb(255, 255, 255);
 
-$shadow: 0 0 1px 1px $black, 0 0 8px 2px lighten(rgb(128, 32, 0), 15);
+$shadow-color: rgb(255, 93, 46);
 
 $input-background: $black;
-$input-border: rgb(128, 128, 128);
-$input-color: rgb(160, 160, 160);
+$input-border: rgb(117, 103, 89);
+$input-border-focus: rgb(155, 150, 127);
+$input-text-color: rgb(255, 251, 247);
 
-$button-background: rgb(64, 64, 64);
-$button-border: rgb(128, 128, 128);
-$button-color: rgb(160, 160, 160);
+$input-placeholder-text-color: rgb(87, 83, 79);
 
-$button-submit-background: rgb(128, 32, 0);
-$button-submit-border: rgb(192, 128, 32);
-$button-submit-color: rgb(224, 160, 64);
+$button-background-color: rgb(10, 11, 10);
+$button-border-color: rgb(117, 103, 89);
+$button-border-color-focus: rgb(155, 150, 127);
+$button-border-color-disabled: rgb(155, 155, 155);
+$button-text-color: rgb(255, 251, 247);
+
+$button-submit-background-color: rgb(128, 32, 0);
+
+$listitem-background-color-hover: rgba(255, 255, 255, .125);
+$listitem-background-color-active: rgba(255, 255, 255, .25);

@@ -8,15 +8,21 @@ ul {
 }
 
 li {
-  padding: .375rem .75rem;
+  line-height: 24px;
+  padding: $padding-field;
   overflow: hidden;
   white-space: nowrap;
 
   &:hover {
-    background: darken($button-background, 15);
+    background-color: darken($listitem-background-color-hover, 15);
   }
 
   &.active {
-    background: $button-background;
+    background-color: $listitem-background-color-active;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0;
   }
 }

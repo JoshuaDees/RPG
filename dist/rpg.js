@@ -12,28 +12,7 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .factory('KeyService', function() {
-      return new function() {
-        this.getString = function($event) {
-          return _.compact([
-            $event.ctrlKey ? 'Ctrl' : '',
-            $event.altKey ? 'Alt' : '',
-            $event.shiftKey ? 'Shift' : '',
-            (
-              ($event.key === 'Control' && $event.ctrlKey) ||
-              ($event.key === 'Alt' && $event.altKey) ||
-              ($event.key === 'Shift' && $event.shiftKey) ||
-              ($event.key === 'Meta' && $event.metaKey)
-            ) ? '' : $event.key
-          ]).join('+') || '';
-        };
-      }();
-    })
-    .factory('DialogService', [
-      'KeyService',
-    function(
-      KeyService
-    ) {
+    .factory('DialogService', function() {
       $(window).on('resize', function() {
         $('dialog').each(function(index, dialog) {
           dialog.close();
@@ -41,14 +20,8 @@
         })
       });
 
-      $(document).on('keydown keyup keypress', function($event) {
-        if(KeyService.getString($event).match(/(Shift\+)?Escape/)) {
-          $event.preventDefault();
-        }
-      });
-
       return {};
-    }])
+    })
     .directive('dialog', [
       'DialogService',
     function(
@@ -63,50 +36,48 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
-// File: app/providers/restful.js
+// File: app/providers/keyEvent.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$qProvider', '$resourceProvider', function($qProvider, $resourceProvider) {
-      $qProvider.errorOnUnhandledRejections(false);
+    .factory('KeyEventProvider', function() {
 
-      $resourceProvider.defaults.cancellable = true;
-    }])
-    .service('RestfulService', ['$resource', function($resource) {
-      return function(url, paramDefaults, actions) {
-        var resource = $resource.apply($resource, arguments);
+      return new function() {
+        this.actions = [];
 
-        resource.requests = resource.requests || {};
+        this.$handleEvent = function($event) {
+          _.forEach(this.actions, function(action) {
+            if (stringify($event).match(action.matches)) {
+              action.callback($event);
+            }
+          });
 
-        resource.abort = function(method) {
-          if (method && resource.requests[method]) {
-            resoure.requests[method].$cancelRequest();
-
-            delete resource.requests[method];
-          } else {
-            _.invokeMap(resource.requests, '$cancelRequest');
-
-            resource.requests = {};
+          if (stringify($event).match(/(Shift\+)?Escape/)) {
+            $event.preventDefault();
           }
-
-          return resource;
         };
 
-        _.forEach(_.keys(actions), function(method) {
-          var original = resource[method];
+        function stringify($event) {
+          return _.compact([
+            $event.ctrlKey ? 'Ctrl' : '',
+            $event.altKey ? 'Alt' : '',
+            $event.shiftKey ? 'Shift' : '',
+            (
+              ($event.key === 'Control' && $event.ctrlKey) ||
+              ($event.key === 'Alt' && $event.altKey) ||
+              ($event.key === 'Shift' && $event.shiftKey) ||
+              ($event.key === 'Meta' && $event.metaKey)
+            ) ? '' : $event.key
+          ]).join('+') || '';
+        }
 
-          if (_.isFunction(original)) {
-            resource[method] = function() {
-              resource.requests[method] = original.apply(resource, arguments);
+        var KeyEventProvider = this;
 
-              return resource.requests[method].$promise;
-            };
-          }
+        $(document).on('keydown keyup keypress', function($event) {
+          KeyEventProvider.$handleEvent($event);
         });
-
-        return resource;
-      }
-    }]);
+      }();
+    });
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/providers/session.js
@@ -166,6 +137,52 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/services/restful.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config(['$qProvider', '$resourceProvider', function($qProvider, $resourceProvider) {
+      $qProvider.errorOnUnhandledRejections(false);
+
+      $resourceProvider.defaults.cancellable = true;
+    }])
+    .service('RestfulService', ['$resource', function($resource) {
+      return function(url, paramDefaults, actions) {
+        var resource = $resource.apply($resource, arguments);
+
+        resource.requests = resource.requests || {};
+
+        resource.abort = function(method) {
+          if (method && resource.requests[method]) {
+            resoure.requests[method].$cancelRequest();
+
+            delete resource.requests[method];
+          } else {
+            _.invokeMap(resource.requests, '$cancelRequest');
+
+            resource.requests = {};
+          }
+
+          return resource;
+        };
+
+        _.forEach(_.keys(actions), function(method) {
+          var original = resource[method];
+
+          if (_.isFunction(original)) {
+            resource[method] = function() {
+              resource.requests[method] = original.apply(resource, arguments);
+
+              return resource.requests[method].$promise;
+            };
+          }
+        });
+
+        return resource;
+      }
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/games.js
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -194,11 +211,13 @@
       '$scope',
       '$state',
       'GamesResource',
+      'KeyEventProvider',
       'SessionProvider',
     function(
       $scope,
       $state,
       GamesResource,
+      KeyEventProvider,
       SessionProvider
     ) {
       $scope.model = {
@@ -231,6 +250,70 @@
         .finally(function() {
           $scope.flags.busy = false;
         });
+
+      KeyEventProvider.actions = [
+        {
+          matches: /(Shift\+)?Escape/,
+          callback: function() { $state.transitionTo('games.menu'); }
+        }
+      ];
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
+// File: app/states/games/menu.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config(['$stateProvider', function($stateProvider) {
+      $stateProvider
+        .state('games.menu', {
+          controller: 'GamesMenuController',
+          templateUrl: 'app/templates/games/menu.html'
+        });
+    }])
+    .controller('GamesMenuController', [
+      '$scope',
+      'KeyEventProvider',
+    function(
+      $scope,
+      KeyEventProvider
+    ) {
+      KeyEventProvider.actions = [];
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
+// File: app/states/games/new.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config(['$stateProvider', function($stateProvider) {
+      $stateProvider
+        .state('games.new', {
+          controller: 'NewGameController',
+          templateUrl: 'app/templates/games/new.html'
+        });
+    }])
+    .controller('NewGameController', [
+      '$scope',
+      '$state',
+      'KeyEventProvider',
+      'SessionProvider',
+    function(
+      $scope,
+      $state,
+      KeyEventProvider,
+      SessionProvider
+    ) {
+      $scope.model = {
+        userId: SessionProvider.get('userId')
+      };
+
+      KeyEventProvider.actions = [
+        {
+          matches: /(Shift\+)?Escape/,
+          callback: function() { $state.transitionTo('games.menu'); }
+        }
+      ];
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -241,14 +324,16 @@
     .controller('RPGController', [
       '$scope',
       '$state',
+      'KeyEventProvider',
       'SessionProvider',
     function(
       $scope,
       $state,
+      KeyEventProvider,
       SessionProvider
     ) {
       if (SessionProvider.get('userId')) {
-        $state.transitionTo('games.load');
+        $state.transitionTo('games.menu');
       } else {
         $state.transitionTo('users.login');
       }
@@ -292,8 +377,9 @@
           .then(function(response) {
             if (response.success) {
               SessionProvider.set('userId', response.model.id);
+              SessionProvider.set('userName', response.model.name);
 
-              $state.transitionTo('games.load');
+              $state.transitionTo('games.menu');
             } else {
               alert(response.error);
             }
@@ -357,11 +443,13 @@
     .controller('RegisterController', [
       '$scope',
       '$state',
+      'KeyEventProvider',
       'SessionProvider',
       'UsersResource',
     function(
       $scope,
       $state,
+      KeyEventProvider,
       SessionProvider,
       UsersResource
     ) {
@@ -379,8 +467,9 @@
             .then(function(response) {
               if (response.success) {
                 SessionProvider.set('userId', response.model.id);
+                SessionProvider.set('userName', response.model.name);
 
-                $state.transitionTo('games.load');
+                $state.transitionTo('games.menu');
               } else {
                 alert(response.error);
               }
@@ -395,6 +484,13 @@
           alert('The passwords do not match.');
         }
       };
+
+      KeyEventProvider.actions = [
+        {
+          matches: /(Shift\+)?Escape/,
+          callback: function() { $state.transitionTo('users.login'); }
+        }
+      ];
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -416,17 +512,27 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/templates/games/load.html',
-    '<dialog><form ng-submit=load()><header>Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: model.gameId == game.id }" ng-click="model.gameId = game.id;" ng-repeat="game in games">{{ game.title }}</li></ul></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.logout\');" type=reset>Log Out</button> <button ng-disabled="flags.busy || !model.gameId" type=submit>Load Game</button> <button ng-disabled="flags.busy || true" type=reset>New Game</button></footer></form></dialog>'
+    '<dialog><form ng-submit=load()><header><a ui-sref=games.menu><i class="fa fa-times"></i></a> Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: model.gameId == game.id }" ng-repeat="game in games"><label class=input-checkbox><input ng-model=model.gameId ng-value=game.id type=radio /> {{ game.title }}</label></li></ul></main><footer><button ng-disabled="flags.busy || !model.gameId" type=submit>Load Game</button></footer></form></dialog>'
+  );
+
+
+  $templateCache.put('app/templates/games/menu.html',
+    '<dialog class=transparent><main><nav><button ng-click="transitionTo(\'games.load\');" type=submit>Load Game</button> <button ng-click="transitionTo(\'games.new\')" type=submit>New Game</button> <button disabled type=submit>Help</button> <button ng-click="transitionTo(\'users.logout\');" type=submit>Log Out</button></nav></main></dialog>'
+  );
+
+
+  $templateCache.put('app/templates/games/new.html',
+    '<dialog><form ng-submit=new()><header><a ui-sref=games.menu><i class="fa fa-times"></i></a> New Game</header><main></main><footer><button ng-disabled="flags.busy || !model.gameId" type=submit>New Game</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/login.html',
-    '<dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=x-input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=x-input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
+    '<dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/register.html',
-    '<dialog><form name=registerForm ng-submit=register()><header>Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=x-input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=x-input-group><i class="fa fa-envelope"></i> <input ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=x-input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=x-input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.login\');" type=reset>Log In</button> <button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
+    '<dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
   );
 
 }]);
