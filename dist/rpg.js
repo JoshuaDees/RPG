@@ -135,8 +135,9 @@
 
   module
     .factory('GamesResource', ['RestfulService', function(RestfulService) {
-      return RestfulService('rest/games.php', null, {
+      return RestfulService('data/games.php', null, {
         load: {
+          method: 'POST',
           params: { action: 'load' }
         }
       });
@@ -148,7 +149,7 @@
 
   module
     .factory('UsersResource', ['RestfulService', function(RestfulService) {
-      return RestfulService('rest/users.php', null, {
+      return RestfulService('data/users.php', null, {
         login: {
           method: 'POST',
           params: { action: 'login' }
@@ -162,7 +163,7 @@
           params: { action: 'register' }
         }
       });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/games.js

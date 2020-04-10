@@ -1,7 +1,7 @@
 angular
   .module('rpg')
   .factory('UsersResource', ['RestfulService', function(RestfulService) {
-    return RestfulService('rest/users.php', null, {
+    return RestfulService('data/users.php', null, {
       login: {
         method: 'POST',
         params: { action: 'login' }
@@ -15,4 +15,4 @@ angular
         params: { action: 'register' }
       }
     });
-  }])
+  }]);
