@@ -1,27 +1,18 @@
 <?php
-  include '~php.php';
+  include '../includes/php.php';
 
   class Games {
-    private $json;
-
-    public function __construct() {
-      $this->json = new JSON();
-    }
-
     public function load() {
-      global $conn;
-
       $userId = post("userId");
 
-      $sql = "SELECT * FROM Games WHERE UserId = '$userId'";
-      $tbl = mysqli_query($conn, $sql);
+      $response = new MySQL("SELECT * FROM Games WHERE UserId = '$userId'");
 
-      $this->json->success(mysqli_to_json_array($tbl, array(
+      $json = $response->toArray(array(
         "id" => "GameId",
         "title" => "GameTitle"
-      )));
+      ));
 
-      $this->json->print();
+      (new JSON())->success($json)->print();
     }
   }
 

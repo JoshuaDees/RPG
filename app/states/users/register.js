@@ -32,6 +32,7 @@ angular
           .then(function(response) {
             if (response.success) {
               SessionProvider.set('userId', response.model.id);
+              SessionProvider.set('userName', response.model.name);
 
               $state.transitionTo('games.load');
             } else {

@@ -4,11 +4,15 @@
 
     public function success($model) {
       $this->data["model"] = $model;
+
+      return $this;
     }
 
     public function error($error) {
       $this->data["success"] = false;
       $this->data["error"] = $error;
+
+      return $this;
     }
 
     public function print() {

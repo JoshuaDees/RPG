@@ -1,36 +1,25 @@
 <?php
-  include "~php.php";
+  include '../includes/php.php';
 
   class Users {
-    private $json;
-
-    public function __construct() {
-      $this->json = new JSON();
-    }
-
     public function login() {
       global $conn;
 
       $user = post("user");
       $pass = base64_encode(post("pass"));
 
-      $sql = "SELECT * FROM Users WHERE UserName = '$user' AND UserPassword = '$pass'";
-      $tbl = mysqli_query($conn, $sql);
+      $response = new MySQL("SELECT * FROM Users WHERE UserName = '$user' AND UserPassword = '$pass'");
 
-      if($row = mysqli_fetch_array($tbl)) {
-        $this->json->success(array(
-          "id" => $row["UserId"],
-          "name" => $row["UserName"]
-        ));
-      } else {
-        $this->json->error("Username and/or password did not match. ($sql)");
-      }
+      $json = $response->toObject(array(
+        "id" => "UserId",
+        "name" => "UserName"
+      ));
 
-      $this->json->print();
+      (new JSON())->success($json)->print();
     }
 
     public function logout() {
-      $this->json->print();
+      (new JSON())->print();
     }
 
     public function register() {
@@ -40,17 +29,14 @@
       $user = post("user");
       $pass = base64_encode(post("pass"));
 
-      $sql = "INSERT INTO Users (UserEmail, UserName, UserPassword) VALUES ('$email', '$user', '$pass')";
+      $response = new MySQL("INSERT INTO Users (UserEmail, UserName, UserPassword) VALUES ('$email', '$user', '$pass')");
 
-      if(mysqli_query($conn, $sql)) {
-        $this->json->success(array(
-          "userId" => mysqli_insert_id($conn)
-        ));
-      } else {
-        $this->json->error(mysqli_error($conn));
-      }
+      $json = array(
+        "id" => MySQL::getLastIndex(),
+        "name" => "$user"
+      );
 
-      $this->json->print();
+      (new JSON())->success($json)->print();
     }
   }
 
