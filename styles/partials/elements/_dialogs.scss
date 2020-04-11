@@ -1,16 +1,14 @@
 dialog {
   background-color: rgba($black, .75);
   border: 1px solid $input-border-color;
+  border-radius: ($border-radius * 2);
+  box-shadow: $shadow-inset;
   color: inherit;
   min-width: 384px;
   padding: $padding;
 
-  &::backdrop {
+  &:not([modal])::backdrop {
     display: none;
-  }
-
-  &#error::backdrop {
-    background: rgba($black, .5);
   }
 
   header,
@@ -48,9 +46,14 @@ dialog {
     }
   }
 
+  &[modal]::backdrop {
+    background: rgba($black, .5);
+  }
+
   &.transparent {
     background-color: transparent;
     border-width: 0;
+    box-shadow: none;
     min-width: 0;
     padding: 0;
 

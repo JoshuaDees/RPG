@@ -163,15 +163,14 @@ li label {
 dialog {
   background-color: rgba(0, 0, 0, 0.75);
   border: 1px solid #756759;
+  border-radius: 8px;
+  box-shadow: inset 0 0 1px 1px black;
   color: inherit;
   min-width: 384px;
   padding: 16px;
 }
-dialog::backdrop {
+dialog:not([modal])::backdrop {
   display: none;
-}
-dialog#error::backdrop {
-  background: rgba(0, 0, 0, 0.5);
 }
 dialog header,
 dialog footer {
@@ -202,9 +201,13 @@ dialog footer {
 dialog footer button:only-child {
   margin: 0 auto;
 }
+dialog[modal]::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
 dialog.transparent {
   background-color: transparent;
   border-width: 0;
+  box-shadow: none;
   min-width: 0;
   padding: 0;
 }
