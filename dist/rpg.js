@@ -23,14 +23,18 @@
       return {};
     })
     .directive('dialog', [
+      '$timeout',
       'DialogService',
     function(
+      $timeout,
       DialogService
     ) {
       return {
         restrict: 'E',
         link: function($scope, $element) {
-          $element[0].showModal();
+          $timeout(function() {
+            $element[0].showModal();
+          });
         }
       }
     }]);
@@ -191,7 +195,44 @@
       $stateProvider
         .state('games', {
           abstract: true,
+          controller: 'GamesController',
           template: '<ui-view />'
+        });
+    }])
+    .controller('GamesController', [
+      '$scope',
+      'GamesResource',
+      'SessionProvider',
+    function(
+      $scope,
+      GamesResource,
+      SessionProvider
+    ) {
+      $scope.model = {
+        userId: SessionProvider.get('userId')
+      };
+
+      $scope.flags = {
+        busy: true
+      };
+
+      GamesResource.abort().load($scope.model)
+        .then(function(response) {
+          if (response.success) {
+            $scope.games = response.model;
+
+            if (_.get($scope, 'games[0]')) {
+              $scope.model.gameId = $scope.games[0].id;
+            }
+          } else {
+            alert(response.message);
+          }
+        })
+        .catch(function(error) {
+          alert(error);
+        })
+        .finally(function() {
+          $scope.flags.busy = false;
         });
     }]);
 
@@ -220,58 +261,31 @@
       KeyEventProvider,
       SessionProvider
     ) {
-      $scope.model = {
-        userId: SessionProvider.get('userId')
-      };
-
-      $scope.flags = {
-        busy: true
-      };
-
       $scope.load = function() {
         // TODO:
       };
 
-      GamesResource.abort().load($scope.model)
-        .then(function(response) {
-          if (response.success) {
-            $scope.games = response.model;
-
-            if (_.get($scope, 'games[0]')) {
-              $scope.model.gameId = $scope.games[0].id;
-            }
-          } else {
-            alert(response.message);
-          }
-        })
-        .catch(function(error) {
-          alert(error);
-        })
-        .finally(function() {
-          $scope.flags.busy = false;
-        });
-
       KeyEventProvider.actions = [
         {
           matches: /(Shift\+)?Escape/,
-          callback: function() { $state.transitionTo('games.menu'); }
+          callback: function() { $state.transitionTo('games.nav'); }
         }
       ];
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
-// File: app/states/games/menu.js
+// File: app/states/games/nav.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
     .config(['$stateProvider', function($stateProvider) {
       $stateProvider
-        .state('games.menu', {
-          controller: 'GamesMenuController',
-          templateUrl: 'app/templates/games/menu.html'
+        .state('games.nav', {
+          controller: 'GamesNavController',
+          templateUrl: 'app/templates/games/nav.html'
         });
     }])
-    .controller('GamesMenuController', [
+    .controller('GamesNavController', [
       '$scope',
       'KeyEventProvider',
     function(
@@ -282,15 +296,16 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
-// File: app/states/games/new.js
+// File: app/states/games/new/new.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
     .config(['$stateProvider', function($stateProvider) {
       $stateProvider
         .state('games.new', {
+          abstract: true,
           controller: 'NewGameController',
-          templateUrl: 'app/templates/games/new.html'
+          template: '<ui-view />'
         });
     }])
     .controller('NewGameController', [
@@ -305,13 +320,68 @@
       SessionProvider
     ) {
       $scope.model = {
-        userId: SessionProvider.get('userId')
+        userId: SessionProvider.get('userId'),
+        characters: [{
+          name: 'Crag Hack',
+          race: { name: 'Half-Orc' },
+          'class': { name: 'Knight' },
+          gender: { name: 'Male' }
+        }, {
+          name: 'Sir Galland',
+          race: { name: 'Dwarf' },
+          'class': { name: 'Paladin' },
+          gender: { name: 'Male' }
+        }, {
+          name: 'Sure Valla',
+          race: { name: 'Half-Elf' },
+          'class': { name: 'Archer' },
+          gender: { name: 'Female' }
+        }, {
+          name: 'Swifty Sarg',
+          race: { name: 'Gnome' },
+          'class': { name: 'Robber' },
+          gender: { name: 'Male' }
+        }, {
+          name: 'Serena',
+          race: { name: 'Human' },
+          'class': { name: 'Cleric' },
+          gender: { name: 'Female' }
+        }, {
+          name: 'Wizz Bane',
+          race: { name: 'Elf' },
+          'class': { name: 'Sorcerer' },
+          gender: { name: 'Male' }
+        }]
       };
 
+      $scope.isTeamFull = function() {
+        return _.compact($scope.model.characters).length === 6;
+      };
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
+// File: app/states/games/new/party.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config(['$stateProvider', function($stateProvider) {
+      $stateProvider
+        .state('games.new.party', {
+          controller: 'GamesNewPartyController',
+          templateUrl: 'app/templates/games/new/party.html'
+        });
+    }])
+    .controller('GamesNewPartyController', [
+      '$state',
+      'KeyEventProvider',
+    function(
+      $state,
+      KeyEventProvider
+    ) {
       KeyEventProvider.actions = [
         {
           matches: /(Shift\+)?Escape/,
-          callback: function() { $state.transitionTo('games.menu'); }
+          callback: function() { $state.transitionTo('games.nav'); }
         }
       ];
     }]);
@@ -333,7 +403,7 @@
       SessionProvider
     ) {
       if (SessionProvider.get('userId')) {
-        $state.transitionTo('games.menu');
+        $state.transitionTo('games.nav');
       } else {
         $state.transitionTo('users.login');
       }
@@ -379,7 +449,7 @@
               SessionProvider.set('userId', response.model.id);
               SessionProvider.set('userName', response.model.name);
 
-              $state.transitionTo('games.menu');
+              $state.transitionTo('games.nav');
             } else {
               alert(response.error);
             }
@@ -469,7 +539,7 @@
                 SessionProvider.set('userId', response.model.id);
                 SessionProvider.set('userName', response.model.name);
 
-                $state.transitionTo('games.menu');
+                $state.transitionTo('games.nav');
               } else {
                 alert(response.error);
               }
@@ -512,27 +582,27 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/templates/games/load.html',
-    '<dialog><form ng-submit=load()><header><a ui-sref=games.menu><i class="fa fa-times"></i></a> Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: model.gameId == game.id }" ng-repeat="game in games"><label class=input-checkbox><input ng-model=model.gameId ng-value=game.id type=radio /> {{ game.title }}</label></li></ul></main><footer><button ng-disabled="flags.busy || !model.gameId" type=submit>Load Game</button></footer></form></dialog>'
+    '<dialog><form ng-submit=load()><header><a ui-sref=games.nav><i class="fa fa-times"></i></a> Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: $parent.model.gameId == game.id }" ng-repeat="game in $parent.games"><label class=input-checkbox><input ng-model=$parent.model.gameId ng-value=game.id type=radio /> {{ game.title }}</label></li></ul></main><footer><button ng-disabled="flags.busy || !$parent.model.gameId" type=submit>Load Game</button></footer></form></dialog>'
   );
 
 
-  $templateCache.put('app/templates/games/menu.html',
-    '<dialog class=transparent><main><nav><button ng-click="transitionTo(\'games.load\');" type=submit>Load Game</button> <button ng-click="transitionTo(\'games.new\')" type=submit>New Game</button> <button disabled type=submit>Help</button> <button ng-click="transitionTo(\'users.logout\');" type=submit>Log Out</button></nav></main></dialog>'
+  $templateCache.put('app/templates/games/nav.html',
+    '<dialog class=transparent><main><nav><button ng-click="transitionTo(\'games.load\');" ng-disabled=!$parent.model.gameId type=submit>Load Game</button> <button ng-click="transitionTo(\'games.new.party\')" type=submit>New Game</button> <button disabled type=submit>Help</button> <button ng-click="transitionTo(\'users.logout\');" type=submit>Log Out</button></nav></main></dialog>'
   );
 
 
-  $templateCache.put('app/templates/games/new.html',
-    '<dialog><form ng-submit=new()><header><a ui-sref=games.menu><i class="fa fa-times"></i></a> New Game</header><main></main><footer><button ng-disabled="flags.busy || !model.gameId" type=submit>New Game</button></footer></form></dialog>'
+  $templateCache.put('app/templates/games/new/party.html',
+    '<dialog><header><a ui-sref=games.nav><i class="fa fa-times"></i></a> Create Party</header><main><figure ng-repeat="x in [].constructor(6) track by $index"><img class=portrait ng-if-start=$parent.model.characters[$index] ng-src="./media/images/characters/portraits/{{ $parent.model.characters[$index].race.name }}.{{ $parent.model.characters[$index].gender.name }}.1.jpg"/><figcaption ng-if-end><p><b>{{ $parent.model.characters[$index].name }}</b><br/>{{ $parent.model.characters[$index].race.name }} {{ $parent.model.characters[$index].class.name }}</p><nav class=compact><button disabled>Edit</button></nav></figcaption><img class=portrait ng-if-start=!$parent.model.characters[$index] src=./media/images/transparent.gif /><figcaption ng-if-end><p>No Character<br/>Created</p><nav class=compact><button disabled>Create</button></nav></figcaption></figure></main><footer><button ng-disabled=!$parent.isTeamFull() type=submit>Start Game</button></footer></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/login.html',
-    '<dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
+    '<dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/register.html',
-    '<dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
+    '<dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
   );
 
 }]);

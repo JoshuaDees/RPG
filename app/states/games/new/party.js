@@ -2,28 +2,18 @@ angular
   .module('rpg')
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider
-      .state('games.load', {
-        controller: 'LoadController',
-        templateUrl: 'app/templates/games/load.html'
+      .state('games.new.party', {
+        controller: 'GamesNewPartyController',
+        templateUrl: 'app/templates/games/new/party.html'
       });
   }])
-  .controller('LoadController', [
-    '$scope',
+  .controller('GamesNewPartyController', [
     '$state',
-    'GamesResource',
     'KeyEventProvider',
-    'SessionProvider',
   function(
-    $scope,
     $state,
-    GamesResource,
-    KeyEventProvider,
-    SessionProvider
+    KeyEventProvider
   ) {
-    $scope.load = function() {
-      // TODO:
-    };
-
     KeyEventProvider.actions = [
       {
         matches: /(Shift\+)?Escape/,

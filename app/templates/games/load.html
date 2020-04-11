@@ -1,21 +1,21 @@
 <dialog>
   <form ng-submit="load()">
     <header>
-      <a ui-sref="games.menu"><i class="fa fa-times"></i></a>
+      <a ui-sref="games.nav"><i class="fa fa-times"></i></a>
       Load Game
     </header>
     <main>
       <ul style="height: 160px;">
-        <li ng-class="{ active: model.gameId == game.id }" ng-repeat="game in games">
+        <li ng-class="{ active: $parent.model.gameId == game.id }" ng-repeat="game in $parent.games">
           <label class="input-checkbox">
-            <input ng-model="model.gameId" ng-value="game.id" type="radio" />
+            <input ng-model="$parent.model.gameId" ng-value="game.id" type="radio" />
             {{ game.title }}
           </label>
         </li>
       </ul>
     </main>
     <footer>
-      <button ng-disabled="flags.busy || !model.gameId" type="submit">Load Game</button>
+      <button ng-disabled="flags.busy || !$parent.model.gameId" type="submit">Load Game</button>
     </footer>
   </form>
 </dialog>

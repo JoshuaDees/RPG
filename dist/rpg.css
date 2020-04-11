@@ -31,7 +31,7 @@ html[ng-app] {
 body {
   background: black;
   color: white;
-  font: 400 11px Dalelands;
+  font: 400 12px Dalelands;
   line-height: 1.5;
 }
 body[ng-controller] {
@@ -42,6 +42,18 @@ body[ng-controller] {
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+p {
+  margin: 16px 0;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+
+img.portrait {
+  height: 150px;
+  width: 96px;
 }
 
 label {
@@ -105,7 +117,7 @@ button:active, input[type=button]:active, input[type=reset]:active, input[type=s
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(0, 0, 0, 0.125) 10%, rgba(0, 0, 0, 0.0625) 50%, rgba(255, 255, 255, 0.0625) 50%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
 }
 button:disabled, input[type=button]:disabled, input[type=reset]:disabled, input[type=submit]:disabled {
-  background-color: rgba(10, 11, 10, 0.25);
+  background-color: rgba(10, 11, 10, 0.375);
   border-color: rgba(155, 155, 155, 0.5);
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
   color: rgba(255, 251, 247, 0.5);
@@ -115,7 +127,7 @@ button[type=submit], input[type=submit] {
   background-color: rgba(128, 32, 0, 0.75);
 }
 button[type=submit]:disabled, input[type=submit]:disabled {
-  background-color: rgba(128, 32, 0, 0.25);
+  background-color: rgba(128, 32, 0, 0.375);
 }
 
 .jumbotron {
@@ -162,11 +174,9 @@ dialog footer {
   text-align: center;
 }
 dialog header {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid #756759;
   font-size: 15px;
   margin: -16px -16px 16px;
-  padding: 8px 16px;
+  padding: 8px 16px 0;
   position: relative;
 }
 dialog header a[ui-sref] {
@@ -202,11 +212,31 @@ nav {
   flex-direction: column;
 }
 nav button {
-  min-width: 192px;
   margin: 0 auto;
 }
 nav button:not(:last-child) {
   margin-bottom: 16px;
+}
+nav:not(.compact) button {
+  min-width: 192px;
+}
+
+figure {
+  display: inline-block;
+  margin: 0;
+  vertical-align: top;
+}
+figure:not(:last-child) {
+  margin-right: 16px;
+}
+figure img {
+  border: 1px solid #756759;
+  display: block;
+  margin: 0 auto;
+  padding: 1px;
+}
+figure p {
+  text-align: center;
 }
 
 .input-group {

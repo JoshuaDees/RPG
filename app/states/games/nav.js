@@ -2,12 +2,12 @@ angular
   .module('rpg')
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider
-      .state('games.menu', {
-        controller: 'GamesMenuController',
-        templateUrl: 'app/templates/games/menu.html'
+      .state('games.nav', {
+        controller: 'GamesNavController',
+        templateUrl: 'app/templates/games/nav.html'
       });
   }])
-  .controller('GamesMenuController', [
+  .controller('GamesNavController', [
     '$scope',
     'KeyEventProvider',
   function(

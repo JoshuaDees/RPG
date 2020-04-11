@@ -1,6 +1,6 @@
 dialog {
   background-color: rgba($black, .75);
-  border: 1px solid $input-border;
+  border: 1px solid $input-border-color;
   color: inherit;
   min-width: 384px;
   padding: $padding;
@@ -13,11 +13,9 @@ dialog {
   }
 
   header {
-    background-color: rgba($black, .5);
-    border-bottom: 1px solid $input-border;
     font-size: 15px;
     margin: (-$margin) (-$margin) $margin;
-    padding: $padding/2 $padding;
+    padding: $padding/2 $padding 0;
     position: relative;
 
     a[ui-sref] {

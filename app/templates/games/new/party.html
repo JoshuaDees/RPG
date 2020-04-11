@@ -1,0 +1,38 @@
+<dialog>
+  <header>
+    <a ui-sref="games.nav"><i class="fa fa-times"></i></a>
+    Create Party
+  </header>
+  <main>
+    <figure ng-repeat="x in [].constructor(6) track by $index">
+      <img
+        class="portrait"
+        ng-if-start="$parent.model.characters[$index]"
+        ng-src="./media/images/characters/portraits/{{ $parent.model.characters[$index].race.name }}.{{ $parent.model.characters[$index].gender.name }}.1.jpg" />
+      <figcaption ng-if-end>
+        <p>
+          <b>{{ $parent.model.characters[$index].name }}</b>
+          <br />
+          {{ $parent.model.characters[$index].race.name }}
+          {{ $parent.model.characters[$index].class.name }}
+        </p>
+        <nav class="compact">
+          <button disabled>Edit</button>
+        </nav>
+      </figcaption>
+      <img
+        class="portrait"
+        ng-if-start="!$parent.model.characters[$index]"
+        src="./media/images/transparent.gif" />
+      <figcaption ng-if-end>
+        <p>No Character<br />Created</p>
+        <nav class="compact">
+          <button disabled>Create</button>
+        </nav>
+      </figcaption>
+    </figure>
+  </main>
+  <footer>
+    <button ng-disabled="!$parent.isTeamFull()" type="submit">Start Game</button>
+  </footer>
+</dialog>

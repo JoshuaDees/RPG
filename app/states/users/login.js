@@ -31,7 +31,7 @@ angular
             SessionProvider.set('userId', response.model.id);
             SessionProvider.set('userName', response.model.name);
 
-            $state.transitionTo('games.menu');
+            $state.transitionTo('games.nav');
           } else {
             alert(response.error);
           }

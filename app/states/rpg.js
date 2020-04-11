@@ -12,7 +12,7 @@ angular
     SessionProvider
   ) {
     if (SessionProvider.get('userId')) {
-      $state.transitionTo('games.menu');
+      $state.transitionTo('games.nav');
     } else {
       $state.transitionTo('users.login');
     }

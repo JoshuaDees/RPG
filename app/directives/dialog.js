@@ -11,14 +11,18 @@ angular
     return {};
   })
   .directive('dialog', [
+    '$timeout',
     'DialogService',
   function(
+    $timeout,
     DialogService
   ) {
     return {
       restrict: 'E',
       link: function($scope, $element) {
-        $element[0].showModal();
+        $timeout(function() {
+          $element[0].showModal();
+        });
       }
     }
   }]);
