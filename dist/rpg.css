@@ -167,6 +167,12 @@ dialog {
   min-width: 384px;
   padding: 16px;
 }
+dialog::backdrop {
+  display: none;
+}
+dialog#error::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
 dialog header,
 dialog footer {
   color: #fffbf7;

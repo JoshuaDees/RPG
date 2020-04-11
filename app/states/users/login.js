@@ -10,11 +10,13 @@ angular
   .controller('LoginController', [
     '$scope',
     '$state',
+    'ErrorProvider',
     'SessionProvider',
     'UsersResource',
   function(
     $scope,
     $state,
+    ErrorProvider,
     SessionProvider,
     UsersResource
   ) {
@@ -33,7 +35,7 @@ angular
 
             $state.transitionTo('games.nav');
           } else {
-            alert(response.error);
+            ErrorProvider.alert(response.error);
           }
         })
         .catch(function(error) {

@@ -13,6 +13,7 @@ angular
         });
 
         if (stringify($event).match(/(Shift\+)?Escape/)) {
+          $('#error').remove();
           $event.preventDefault();
         }
       };

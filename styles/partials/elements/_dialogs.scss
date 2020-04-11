@@ -5,6 +5,14 @@ dialog {
   min-width: 384px;
   padding: $padding;
 
+  &::backdrop {
+    display: none;
+  }
+
+  &#error::backdrop {
+    background: rgba($black, .5);
+  }
+
   header,
   footer {
     color: $input-text-color;

@@ -15,7 +15,14 @@
         "name" => "UserName"
       ));
 
-      (new JSON())->success($json)->print();
+      if ($json) {
+        (new JSON())->success($json)->print();
+      } else {
+        (new JSON())->error(
+          "The username and password you entered did not match our records. ".
+          "Please try again."
+        )->print();
+      }
     }
 
     public function logout() {

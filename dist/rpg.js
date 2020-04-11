@@ -40,6 +40,30 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/providers/error.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .factory('ErrorProvider', [function() {
+      return new function() {
+        this.alert = function(error) {
+          $(document.body).append(
+            '<dialog id="error">' +
+              '<header>' +
+                '<a onclick="$(\'#error\').remove();" ui-sref><i class="fa fa-times"></i></a>' +
+                'Error' +
+              '</header>' +
+              '<main>' + error + '</main>' +
+              '<footer><button onclick="$(\'#error\').remove();">Close</button></footer>' +
+            '</dialog>'
+          );
+
+          $('#error')[0].showModal();
+        };
+      }
+    }])
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/providers/keyEvent.js
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -57,6 +81,7 @@
           });
 
           if (stringify($event).match(/(Shift\+)?Escape/)) {
+            $('#error').remove();
             $event.preventDefault();
           }
         };
@@ -428,11 +453,13 @@
     .controller('LoginController', [
       '$scope',
       '$state',
+      'ErrorProvider',
       'SessionProvider',
       'UsersResource',
     function(
       $scope,
       $state,
+      ErrorProvider,
       SessionProvider,
       UsersResource
     ) {
@@ -451,7 +478,7 @@
 
               $state.transitionTo('games.nav');
             } else {
-              alert(response.error);
+              ErrorProvider.alert(response.error);
             }
           })
           .catch(function(error) {
