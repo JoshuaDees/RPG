@@ -4,6 +4,7 @@ angular
     $stateProvider
       .state('users', {
         abstract: true,
+        scope: {},
         template: '<ui-view />'
       });
   }]);

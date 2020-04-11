@@ -14,7 +14,7 @@ li {
   white-space: nowrap;
 
   &:hover {
-    background-color: darken($listitem-background-color-hover, 15);
+    background-color: $listitem-background-color-hover;
   }
 
   &.active {
@@ -23,6 +23,7 @@ li {
 
   label {
     display: block;
+    line-height: inherit;
     margin-bottom: 0;
   }
 }

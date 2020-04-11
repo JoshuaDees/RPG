@@ -1,10 +1,9 @@
 <dialog class="transparent">
-  <main>
-    <nav>
-      <button ng-click="transitionTo('games.load');" ng-disabled="!$parent.model.gameId" type="submit">Load Game</button>
-      <button ng-click="transitionTo('games.new.party')" type="submit">New Game</button>
-      <button disabled type="submit">Help</button>
-      <button ng-click="transitionTo('users.logout');" type="submit">Log Out</button>
-    </nav>
-  </main>
+  <nav>
+    <button ng-click="transitionTo('games.load');" ng-disabled="!$parent.model.gameId" type="submit">Load Game</button>
+    <button ng-click="transitionTo('games.new.party')" type="submit">New Game</button>
+    <button disabled>Options</button>
+    <button disabled>Help</button>
+    <button ng-click="transitionTo('users.logout');" type="submit">Log Out</button>
+  </nav>
 </dialog>

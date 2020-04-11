@@ -5,6 +5,8 @@
 @import 'partials/variables/selectors';
 @import 'partials/variables/shadows';
 @import 'partials/variables/spacing';
+@import 'partials/layout/containers';
+@import 'partials/layout/flex';
 @import 'partials/elements';
 @import 'partials/elements/html';
 @import 'partials/elements/body';
@@ -14,7 +16,8 @@
 @import 'partials/elements/buttons';
 @import 'partials/elements/lists';
 @import 'partials/elements/dialogs';
+@import 'partials/elements/containers';
 @import 'partials/elements/navs';
 @import 'partials/elements/figure';
-@import 'partials/classes/input-group';
-@import 'partials/layout/containers';
+@import 'partials/classes/borders';
+@import 'partials/classes/text';

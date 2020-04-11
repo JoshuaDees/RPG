@@ -1,0 +1,40 @@
+article {
+  display: flex;
+
+  aside,
+  section {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  aside {
+    max-width: 255;
+
+    &:first-child {
+      margin-right: $margin;
+    }
+
+    &:last-child {
+      margin-left: $margin;
+    }
+  }
+
+  section {
+    flex: 1 0 auto;
+    max-width: 505;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &:not(:first-child) {
+      max-width: 75%;
+    }
+
+    &:not(:last-child) {
+      max-width: 75%;
+    }
+
+    &:not(:first-child):not(:last-child) {
+      max-width: 100%;
+    }
+  }
+}

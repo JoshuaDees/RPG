@@ -1,10 +1,10 @@
 dialog {
   background-color: rgba($black, .75);
   border: 1px solid $input-border-color;
-  border-radius: ($border-radius * 2);
+  border-radius: ($border-radius*2);
   box-shadow: $shadow-inset;
   color: inherit;
-  min-width: 384px;
+  min-width: 320px;
   padding: $padding;
 
   &:not([modal])::backdrop {
@@ -21,7 +21,7 @@ dialog {
   header {
     font-size: 15px;
     margin: (-$margin) (-$margin) $margin;
-    padding: $padding/2 $padding 0;
+    padding: ($padding/2) $padding 0;
     position: relative;
 
     a[ui-sref] {
@@ -48,6 +48,12 @@ dialog {
 
   &[modal]::backdrop {
     background: rgba($black, .5);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   &.transparent {

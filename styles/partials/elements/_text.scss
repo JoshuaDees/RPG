@@ -1,7 +1,8 @@
 p {
-  margin: $margin 0;
+  margin: ($margin/2) 0;
+  padding: 0 ($padding*(3/4));
+}
 
-  &:last-child {
-    margin-bottom: 0;
-  }
+small {
+  font-size: $font-size-small;
 }

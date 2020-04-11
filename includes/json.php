@@ -19,6 +19,7 @@
       header("Content-type: application/json");
 
       echo json_encode($this->data);
+      //print_r($this->data);
     }
   }
 ?>

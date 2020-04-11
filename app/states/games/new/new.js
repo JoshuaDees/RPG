@@ -4,57 +4,46 @@ angular
     $stateProvider
       .state('games.new', {
         abstract: true,
-        controller: 'NewGameController',
-        template: '<ui-view />'
-      });
-  }])
-  .controller('NewGameController', [
-    '$scope',
-    '$state',
-    'KeyEventProvider',
-    'SessionProvider',
-  function(
-    $scope,
-    $state,
-    KeyEventProvider,
-    SessionProvider
-  ) {
-    $scope.model = {
-      userId: SessionProvider.get('userId'),
-      characters: [{
-        name: 'Crag Hack',
-        race: { name: 'Half-Orc' },
-        'class': { name: 'Knight' },
-        gender: { name: 'Male' }
-      }, {
-        name: 'Sir Galland',
-        race: { name: 'Dwarf' },
-        'class': { name: 'Paladin' },
-        gender: { name: 'Male' }
-      }, {
-        name: 'Sure Valla',
-        race: { name: 'Half-Elf' },
-        'class': { name: 'Archer' },
-        gender: { name: 'Female' }
-      }, {
-        name: 'Swifty Sarg',
-        race: { name: 'Gnome' },
-        'class': { name: 'Robber' },
-        gender: { name: 'Male' }
-      }, {
-        name: 'Serena',
-        race: { name: 'Human' },
-        'class': { name: 'Cleric' },
-        gender: { name: 'Female' }
-      }, {
-        name: 'Wizz Bane',
-        race: { name: 'Elf' },
-        'class': { name: 'Sorcerer' },
-        gender: { name: 'Male' }
-      }]
-    };
+        scope: {},
+        template: '<ui-view />',
+        controller: [
+          '$scope',
+          '$state',
+          'KeyEventProvider',
+          'SessionProvider',
+        function(
+          $scope,
+          $state,
+          KeyEventProvider,
+          SessionProvider
+        ) {
+          $scope.model = {
+            userId: SessionProvider.get('userId'),
+            characters: [{
+              name: 'Crag Hack',
+              gender: { id: 1, name: 'Male' },
+              race: { id: 6, name: 'Half-Orc' },
+              class: { id: 1, name: 'Barbarian' },
+              portrait: 'half-orc.male.1',
+              abilities: {
+                might: 15,
+                intellect: 7,
+                personality: 9,
+                endurance: 13,
+                accuracy: 9,
+                speed: 11
+              },
+              skills: []
+            }, {}, {}, {}, {}, {}]
+          };
 
-    $scope.isTeamFull = function() {
-      return _.compact($scope.model.characters).length === 6;
-    };
+          $scope.isTeamFull = function() {
+            return _.filter($scope.model.characters, function(character) {
+              return character.name;
+            }).length === 6;
+          };
+
+          KeyEventProvider.actions = [];
+        }]
+      });
   }]);

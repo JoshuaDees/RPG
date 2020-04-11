@@ -6,10 +6,17 @@ angular
       this.actions = [];
 
       this.$handleEvent = function($event) {
+        var str, match;
+
         _.forEach(this.actions, function(action) {
-          if (stringify($event).match(action.matches)) {
-            action.callback($event);
-          }
+          _.forEach(action.matches, function(regex) {
+            str = stringify($event);
+            match = str.match(new RegExp('^' + regex + '$'))
+
+            if (match && match[0] && str == match[0]) {
+              action.callback(match[0]);
+            }
+          })
         });
 
         if (stringify($event).match(/(Shift\+)?Escape/)) {
@@ -34,7 +41,7 @@ angular
 
       var KeyEventProvider = this;
 
-      $(document).on('keydown keyup keypress', function($event) {
+      $(document).on('keydown', function($event) {
         KeyEventProvider.$handleEvent($event);
       });
     }();

@@ -1,0 +1,48 @@
+<dialog>
+  <form>
+    <header>
+      <a ui-sref="games.new.party"><i class="fa fa-times"></i></a>
+      Create Character
+    </header>
+    <main>
+      <article style="width: 832px;">
+        <aside>
+          <nav class="compact">
+            <button onfocus="this.blur();" ng-click="transitionTo('games.new.character.gender', { model: model })">Gender</button>
+            <button ng-disabled="!model.gender" onfocus="this.blur();" ng-click="transitionTo('games.new.character.race', { model: model })">Race</button>
+            <button ng-disabled="!model.race" onfocus="this.blur();" ng-click="transitionTo('games.new.character.class', { model: model })">Class</button>
+            <button ng-disabled="!model.class" onfocus="this.blur();" ng-click="transitionTo('games.new.character.abilities', { model: model })">Abilities</button>
+            <button ng-disabled="!model.abilities" onfocus="this.blur();" ng-click="transitionTo('games.new.character.skills', { model: model })">Skills</button>
+            <button ng-disabled="!model.skills" onfocus="this.blur();" ng-click="transitionTo('games.new.character.name', { model: model })">Name</button>
+          </nav>
+        </aside>
+        <section class="border">
+          <p ng-if="model.name"><b>Name:</b> {{ model.name }}</p>
+          <p ng-if="model.gender"><b>Gender:</b> {{ model.gender.name }}</p>
+          <p ng-if="model.race"><b>Race:</b> {{ model.race.name }}</p>
+          <p ng-if="model.class"><b>Class:</b> {{ model.class.name }}</p>
+          <p ng-if="model.abilities">
+            <b>Abilities:</b>
+            Mgt: {{ model.abilities.might }},
+            Int: {{ model.abilities.intellect }},
+            Per: {{ model.abilities.personality }},
+            End: {{ model.abilities.endurance }},
+            Acc: {{ model.abilities.accuracy }},
+            Spd: {{ model.abilities.speed }}
+          </p>
+          <p ng-if="model.skills"><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p>
+        </section>
+        <aside>
+          <figure>
+            <img class="portrait large" ng-if="model.portrait" ng-src="./media/images/characters/portraits/{{ model.portrait }}.jpg" />
+            <img class="portrait large" ng-if="!model.portrait" ng-src="./media/images/transparent.gif" />
+          </figure>
+        </aside>
+      </article>
+    </main>
+    <footer>
+      <button disabled type="submit">Create</button>
+    </footer>
+  </form>
+</dialog>
+<ui-view />

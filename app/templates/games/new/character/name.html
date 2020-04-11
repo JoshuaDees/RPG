@@ -1,0 +1,14 @@
+<dialog modal>
+  <form ng-submit="accept()">
+    <header>
+      <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
+      Select Name
+    </header>
+    <main class="row">
+      <input class="flex text-center" maxlength="45" ng-model="model.selected" placeholder="Character Name" />
+    </main>
+    <footer>
+      <button type="submit">Accept</button>
+    </footer>
+  </form>
+</dialog>

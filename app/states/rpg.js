@@ -17,7 +17,7 @@ angular
       $state.transitionTo('users.login');
     }
 
-    $scope.transitionTo = function(state) {
-      $state.transitionTo(state);
+    $scope.transitionTo = function(state, params) {
+      $state.transitionTo(state, params);
     };
   }]);

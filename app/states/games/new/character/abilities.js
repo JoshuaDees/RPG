@@ -2,28 +2,28 @@ angular
   .module('rpg')
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider
-      .state('games.nav', {
+      .state('games.new.character.abilities', {
         scope: {},
-        templateUrl: 'app/templates/games/nav.html',
+        templateUrl: 'app/templates/games/new/character/abilities.html',
         controller: [
           '$scope',
           '$state',
+          '$stateParams',
           'KeyEventProvider',
         function(
           $scope,
           $state,
+          $stateParams,
           KeyEventProvider
         ) {
           KeyEventProvider.actions = [
             {
-              matches: ['l'],
-              callback: function() { $state.transitionTo('games.load'); }
-            },
-            {
-              matches: ['n'],
-              callback: function() { $state.transitionTo('games.new.party'); }
+              matches: ['Shift+Escape', 'Escape'],
+              callback: function() {
+                $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
+              }
             }
           ];
         }]
       });
-  }]);
+  }])

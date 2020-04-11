@@ -1,0 +1,20 @@
+<dialog modal>
+  <form ng-submit="accept()">
+    <header>
+      <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
+      Select Abilities
+    </header>
+    <main>
+      <div ng-repeat="ability in ['might', 'intellect', 'personality', 'endurance', 'accuracy', 'speed']">
+        <label class="text-right" style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability }}:</label>
+        <input class="text-center" style="width: 64px;" disabled value="11" />
+        <input class="text-center" style="width: 64px;" disabled value="+1" />
+        <button style="min-width: 32px;"><i class="fa fa-plus"></i></button>
+        <button style="min-width: 32px;"><i class="fa fa-minus"></i></button>
+      </div>
+    </main>
+    <footer>
+      <button type="submit">Accept</button>
+    </footer>
+  </form>
+</dialog>
