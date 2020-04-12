@@ -31,7 +31,15 @@ angular
             _.set($scope, 'model.' + property, value);
 
             $state.transitionTo('games.new.character.details', { model: $scope.model });
-          }
+          };
+
+          _.forEach(['race', 'class', 'attributes', 'skills', 'name'], function(attribute) {
+            if (!_.get($scope, 'model.' + attribute)) {
+              $state.transitionTo('games.new.character.' + attribute, { model: $scope.model });
+
+              return false;
+            }
+          });
         }]
       });
   }])

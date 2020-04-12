@@ -6,3 +6,14 @@ p {
 small {
   font-size: $font-size-small;
 }
+
+a {
+  color: rgba($input-text-color, .5);
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: $input-text-color;
+    text-decoration: underline;
+  }
+}

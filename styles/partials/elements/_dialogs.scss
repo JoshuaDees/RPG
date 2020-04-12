@@ -41,6 +41,10 @@ dialog {
     margin: $margin (-$margin) (-$margin);
     padding: 0 $padding $padding;
 
+    button + button {
+      margin-left: $margin;
+    }
+
     button:only-child {
       margin: 0 auto;
     }

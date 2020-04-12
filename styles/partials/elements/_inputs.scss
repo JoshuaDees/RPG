@@ -1,10 +1,13 @@
 label {
   line-height: 31px;
-  margin-bottom: $margin;
 
-  &:last-child {
-    margin-bottom: 0;
+  + label {
+    margin-top: $margin;
   }
+
+  /*&:last-child {
+    margin-bottom: 0;
+  }*/
 
   #{$input-selectors} {
     margin-bottom: 0;

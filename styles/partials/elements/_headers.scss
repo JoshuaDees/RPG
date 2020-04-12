@@ -1,0 +1,29 @@
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+}
+
+h1, h2 {
+  background-image: $header-gradient;
+  border: 1px solid $input-border-color;
+  border-left-width: 0;
+  border-right-width: 0;
+  left: 50%;
+  margin: 0;
+  position: absolute;
+  text-align: center;
+}
+
+h1 {
+  font-size: $font-size-large;
+  margin-left: -160px;
+  padding: $spacing 0;
+  top: 16px;
+  width: 320px;
+}
+
+h2 {
+  margin-left: -96px;
+  padding: ($spacing/2) 0;
+  top: 54px;
+  width: 192px;
+}

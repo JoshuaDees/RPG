@@ -34,7 +34,7 @@ form:last-child {
   margin-block-end: 0;
 }
 
-html[ng-app] {
+html.viewport {
   height: 100%;
   overflow: hidden;
   margin: 0;
@@ -47,7 +47,7 @@ body {
   font: 400 12px Dalelands;
   line-height: 1.5;
 }
-body[ng-controller] {
+body.viewport {
   align-items: center;
   display: flex;
   height: 100%;
@@ -57,6 +57,36 @@ body[ng-controller] {
   padding: 0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+}
+
+h1, h2 {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.375) 15%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.375) 85%, rgba(0, 0, 0, 0));
+  border: 1px solid #756759;
+  border-left-width: 0;
+  border-right-width: 0;
+  left: 50%;
+  margin: 0;
+  position: absolute;
+  text-align: center;
+}
+
+h1 {
+  font-size: 14px;
+  margin-left: -160px;
+  padding: 8px 0;
+  top: 16px;
+  width: 320px;
+}
+
+h2 {
+  margin-left: -96px;
+  padding: 4px 0;
+  top: 54px;
+  width: 192px;
+}
+
 p {
   margin: 8px 0;
   padding: 0 12px;
@@ -64,6 +94,15 @@ p {
 
 small {
   font-size: 10px;
+}
+
+a {
+  color: rgba(255, 251, 247, 0.5);
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #fffbf7;
+  text-decoration: underline;
 }
 
 img.portrait {
@@ -77,10 +116,12 @@ img.portrait.large {
 
 label {
   line-height: 31px;
-  margin-bottom: 16px;
+  /*&:last-child {
+    margin-bottom: 0;
+  }*/
 }
-label:last-child {
-  margin-bottom: 0;
+label + label {
+  margin-top: 16px;
 }
 label input:not([type]), label input[type=email], label input[type=password], label input[type=text] {
   margin-bottom: 0;
@@ -191,16 +232,17 @@ li {
   overflow: hidden;
   white-space: nowrap;
 }
-li:hover {
-  background-color: rgba(255, 255, 255, 0.125);
-}
-li.active {
-  background-color: rgba(255, 255, 255, 0.25);
-}
 li label {
   display: block;
-  line-height: inherit;
-  margin-bottom: 0;
+  line-height: 24px;
+  margin: -4px -8px;
+  padding: 4px 8px;
+}
+li:hover label {
+  background-color: rgba(255, 255, 255, 0.125);
+}
+li.active label {
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 dialog {
@@ -241,6 +283,9 @@ dialog footer {
   margin: 16px -16px -16px;
   padding: 0 16px 16px;
 }
+dialog footer button + button {
+  margin-left: 16px;
+}
 dialog footer button:only-child {
   margin: 0 auto;
 }
@@ -262,6 +307,10 @@ dialog.transparent {
 dialog.transparent header {
   background: transparent;
   border-bottom-width: 0;
+}
+
+div.input-helper {
+  padding: 4px 0;
 }
 
 article {

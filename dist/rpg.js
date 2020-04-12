@@ -89,6 +89,7 @@
 
           if (stringify($event).match(/(Shift\+)?Escape/)) {
             $('#error').remove();
+
             $event.preventDefault();
           }
         };
@@ -325,7 +326,7 @@
             KeyEventProvider.actions = [
               {
                 matches: ['Shift+Escape', 'Escape'],
-                callback: function() { $state.transitionTo('games.nav'); }
+                callback: function() { $state.transitionTo('games.menu'); }
               }
             ];
           }]
@@ -333,15 +334,15 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
-// File: app/states/games/nav.js
+// File: app/states/games/menu.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
     .config(['$stateProvider', function($stateProvider) {
       $stateProvider
-        .state('games.nav', {
+        .state('games.menu', {
           scope: {},
-          templateUrl: 'app/templates/games/nav.html',
+          templateUrl: 'app/templates/games/menu.html',
           controller: [
             '$scope',
             '$state',
@@ -434,7 +435,15 @@
               _.set($scope, 'model.' + property, value);
 
               $state.transitionTo('games.new.character.details', { model: $scope.model });
-            }
+            };
+
+            _.forEach(['race', 'class', 'attributes', 'skills', 'name'], function(attribute) {
+              if (!_.get($scope, 'model.' + attribute)) {
+                $state.transitionTo('games.new.character.' + attribute, { model: $scope.model });
+
+                return false;
+              }
+            });
           }]
         });
     }])
@@ -817,7 +826,7 @@
           ) {
             KeyEventProvider.actions = [{
               matches: ['Shift+Escape', 'Escape'],
-              callback: function() { $state.transitionTo('games.nav'); }
+              callback: function() { $state.transitionTo('games.menu'); }
             }, {
               matches: ['1|2|3|4|5|6'],
               callback: function(match) {
@@ -845,7 +854,7 @@
       SessionProvider
     ) {
       if (SessionProvider.get('userId')) {
-        $state.transitionTo('games.nav');
+        $state.transitionTo('games.menu');
       } else {
         $state.transitionTo('users.login');
       }
@@ -893,7 +902,7 @@
                     SessionProvider.set('userId', response.model.id);
                     SessionProvider.set('userName', response.model.name);
 
-                    $state.transitionTo('games.nav');
+                    $state.transitionTo('games.menu');
                   } else {
                     ErrorProvider.alert(response.error);
                   }
@@ -989,7 +998,7 @@
                       SessionProvider.set('userId', response.model.id);
                       SessionProvider.set('userName', response.model.name);
 
-                      $state.transitionTo('games.nav');
+                      $state.transitionTo('games.menu');
                     } else {
                       alert(response.error);
                     }
@@ -1035,12 +1044,12 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/templates/games/load.html',
-    '<dialog><form ng-submit=load()><header><a ui-sref=games.nav><i class="fa fa-times"></i></a> Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: $parent.model.gameId == game.id }" ng-repeat="game in $parent.games"><label class=input-checkbox><input name=game ng-model=$parent.model.gameId ng-value=game.id type=radio /> {{ game.title }}</label></li></ul></main><footer><button ng-disabled="flags.busy || !$parent.model.gameId" type=submit>Load Game</button></footer></form></dialog>'
+    '<h2>Load Game</h2><dialog><form ng-submit=load()><header><a ui-sref=games.menu><i class="fa fa-times"></i></a> Load Game</header><main><ul style="height: 160px;"><li ng-class="{ active: $parent.model.gameId == game.id }" ng-repeat="game in $parent.games"><label class=input-checkbox><input name=game ng-model=$parent.model.gameId ng-value=game.id type=radio /> {{ game.title }}</label></li></ul></main><footer><button ng-disabled="flags.busy || !$parent.model.gameId" type=submit>Load Game</button></footer></form></dialog>'
   );
 
 
-  $templateCache.put('app/templates/games/nav.html',
-    '<dialog class=transparent><nav><button ng-click="transitionTo(\'games.load\');" ng-disabled=!$parent.model.gameId type=submit>Load Game</button> <button ng-click="transitionTo(\'games.new.party\')" type=submit>New Game</button> <button disabled>Options</button> <button disabled>Help</button> <button ng-click="transitionTo(\'users.logout\');" type=submit>Log Out</button></nav></dialog>'
+  $templateCache.put('app/templates/games/menu.html',
+    '<h2>Menu</h2><dialog class=transparent><nav><button ng-click="transitionTo(\'games.load\');" ng-disabled=!$parent.model.gameId type=submit>Load Game</button> <button ng-click="transitionTo(\'games.new.party\')" type=submit>New Game</button> <button disabled>Options</button> <button disabled>Help</button> <button ng-click="transitionTo(\'users.logout\');" type=submit>Log Out</button></nav></dialog>'
   );
 
 
@@ -1050,7 +1059,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/character.html',
-    '<dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.gender\', { model: model })">Gender</button> <button ng-disabled=!model.gender onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if=model.portrait ng-src="./media/images/characters/portraits/{{ model.portrait }}.jpg"/> <img class="portrait large" ng-if=!model.portrait ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
+    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.gender\', { model: model })">Gender</button> <button ng-disabled=!model.gender onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if=model.portrait ng-src="./media/images/characters/portraits/{{ model.portrait }}.jpg"/> <img class="portrait large" ng-if=!model.portrait ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
   );
 
 
@@ -1075,17 +1084,17 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/party.html',
-    '<dialog><form><header><a ui-sref=games.nav><i class="fa fa-times"></i></a> Create Party</header><main><figure ng-repeat="x in [].constructor(6) track by $index"><img class=portrait ng-if-start=$parent.model.characters[$index].name ng-src="./media/images/characters/portraits/{{ $parent.model.characters[$index].race.name }}.{{ $parent.model.characters[$index].gender.name }}.1.jpg"/><figcaption ng-if-end><p><b>{{ $parent.model.characters[$index].name }}</b><br/><small>{{ $parent.model.characters[$index].race.name }} {{ $parent.model.characters[$index].class.name }}</small></p><nav class=compact><button ui-sref="games.new.character.details({ model: $parent.model.characters[$index] })">Edit</button></nav></figcaption><img class=portrait ng-if-start=!$parent.model.characters[$index].name src=./media/images/transparent.gif /><figcaption ng-if-end><p>&nbsp;<br/><small>&nbsp;</small></p><nav class=compact><button ui-sref="games.new.character.details({ model: $parent.model.characters[$index] })">Create</button></nav></figcaption></figure></main><footer><button ng-disabled=!$parent.isTeamFull() type=submit>Start Game</button></footer></form></dialog>'
+    '<h2>New Game</h2><dialog><form><header><a ui-sref=games.menu><i class="fa fa-times"></i></a> Create Party</header><main><figure ng-repeat="x in [].constructor(6) track by $index"><img class=portrait ng-if-start=$parent.model.characters[$index].name ng-src="./media/images/characters/portraits/{{ $parent.model.characters[$index].race.name }}.{{ $parent.model.characters[$index].gender.name }}.1.jpg"/><figcaption ng-if-end><p><b>{{ $parent.model.characters[$index].name }}</b><br/><small>{{ $parent.model.characters[$index].race.name }} {{ $parent.model.characters[$index].class.name }}</small></p><nav class=compact><button ui-sref="games.new.character.details({ model: $parent.model.characters[$index] })">Edit</button></nav></figcaption><img class=portrait ng-if-start=!$parent.model.characters[$index].name src=./media/images/transparent.gif /><figcaption ng-if-end><p>&nbsp;<br/><small>&nbsp;</small></p><nav class=compact><button ui-sref="games.new.character.details({ model: $parent.model.characters[$index] })">Create</button></nav></figcaption></figure></main><footer><button ng-disabled=!$parent.isTeamFull() type=submit>Start Game</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/login.html',
-    '<dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
+    '<h2>Log In</h2><dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label><div class="input-helper text-right"><a href=javascript:;>Forgot Password?</a></div></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/register.html',
-    '<dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
+    '<h2>Register</h2><dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
   );
 
 }]);

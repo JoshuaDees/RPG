@@ -1,5 +1,5 @@
 <?php include "./includes/cache.php"; ?>
-<html ng-app="rpg">
+<html class="viewport" ng-app="rpg">
   <head>
     <title>My First RPG</title>
     <link href="./assets/fontawesome/css/all.min.css?bust=<?php echo $bust; ?>" rel="stylesheet" />
@@ -15,10 +15,14 @@
       .container {
         --background-blend-mode: luminosity;
         background-image: url('./media/images/theme/wallpaper.jpg');
+        position: relative;
       }
     </style>
   </head>
-  <body ng-controller="RPGController">
-    <div class="container" ui-view></div>
+  <body class="viewport" ng-controller="RPGController">
+    <div class="container">
+      <h1>My First RPG</h1>
+      <div ui-view></div>
+    </div>
   </body>
 </html>

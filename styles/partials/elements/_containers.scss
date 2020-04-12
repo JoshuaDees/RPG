@@ -1,3 +1,9 @@
+div {
+  &.input-helper {
+    padding: ($spacing/2) 0;
+  }
+}
+
 article {
   display: flex;
 

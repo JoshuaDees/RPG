@@ -13,17 +13,18 @@ li {
   overflow: hidden;
   white-space: nowrap;
 
-  &:hover {
+  label {
+    display: block;
+    line-height: 24px;
+    margin: $padding-field-inverse;
+    padding: $padding-field;
+  }
+
+  &:hover label {
     background-color: $listitem-background-color-hover;
   }
 
-  &.active {
+  &.active label {
     background-color: $listitem-background-color-active;
-  }
-
-  label {
-    display: block;
-    line-height: inherit;
-    margin-bottom: 0;
   }
 }

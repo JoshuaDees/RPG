@@ -1,3 +1,4 @@
+<h2>Log In</h2>
 <dialog>
   <form name="loginForm" ng-submit="login()">
     <header>Log In</header>
@@ -12,6 +13,9 @@
         <i class="fa fa-key"></i>
         <input maxlength="45" ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
       </label>
+      <div class="input-helper text-right">
+        <a href="javascript:;">Forgot Password?</a>
+      </div>
     </main>
     <footer>
       <button ng-disabled="flags.busy" ng-click="transitionTo('users.register');" type="reset">Register</button>

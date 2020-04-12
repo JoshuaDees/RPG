@@ -2,9 +2,9 @@ angular
   .module('rpg')
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider
-      .state('games.nav', {
+      .state('games.menu', {
         scope: {},
-        templateUrl: 'app/templates/games/nav.html',
+        templateUrl: 'app/templates/games/menu.html',
         controller: [
           '$scope',
           '$state',

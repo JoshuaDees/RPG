@@ -16,7 +16,7 @@ angular
         ) {
           KeyEventProvider.actions = [{
             matches: ['Shift+Escape', 'Escape'],
-            callback: function() { $state.transitionTo('games.nav'); }
+            callback: function() { $state.transitionTo('games.menu'); }
           }, {
             matches: ['1|2|3|4|5|6'],
             callback: function(match) {
