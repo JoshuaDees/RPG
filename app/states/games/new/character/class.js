@@ -30,7 +30,9 @@ angular
           };
 
           $scope.accept = function() {
-            $scope.$parent.update('class', $scope.model.selected);
+            $scope.$parent.update({
+              'class': $scope.model.selected
+            });
           };
 
           CharactersResource.abort().classes()

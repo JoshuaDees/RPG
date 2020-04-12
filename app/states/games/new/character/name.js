@@ -21,7 +21,9 @@ angular
           };
 
           $scope.accept = function() {
-            $scope.$parent.update('name', $scope.model.selected);
+            $scope.$parent.update({
+              'name': $scope.model.selected
+            });
           };
 
           KeyEventProvider.actions = [

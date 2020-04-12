@@ -30,7 +30,9 @@ angular
           };
 
           $scope.accept = function() {
-            $scope.$parent.update('race', $scope.model.selected);
+            $scope.$parent.update({
+              'race': $scope.model.selected
+            });
           };
 
           CharactersResource.abort().races()

@@ -37,6 +37,12 @@ angular
             return modifier;
           };
 
+          $scope.accept = function() {
+            $scope.$parent.update({
+              'abilities': $scope.model.selected
+            });
+          };
+
           KeyEventProvider.actions = [
             {
               matches: ['Shift+Escape', 'Escape'],

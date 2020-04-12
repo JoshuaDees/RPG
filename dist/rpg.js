@@ -408,6 +408,12 @@
               return modifier;
             };
 
+            $scope.accept = function() {
+              $scope.$parent.update({
+                'abilities': $scope.model.selected
+              });
+            };
+
             KeyEventProvider.actions = [
               {
                 matches: ['Shift+Escape', 'Escape'],
@@ -452,19 +458,21 @@
               callback: function() { $state.transitionTo('games.new.party'); }
             }];
 
-            $scope.update = function(property, value) {
-              _.set($scope, 'model.' + property, value);
+            $scope.update = function(attributes) {
+              _.forEach(attributes, function(value, property) {
+                _.set($scope, 'model.' + property, value);
+              });
 
               $state.transitionTo('games.new.character.details', { model: $scope.model });
             };
 
-            _.forEach(['race', 'class', 'attributes', 'skills', 'name'], function(attribute) {
+            /*_.forEach(['race', 'class', 'attributes', 'skills', 'name'], function(attribute) {
               if (!_.get($scope, 'model.' + attribute)) {
                 $state.transitionTo('games.new.character.' + attribute, { model: $scope.model });
 
                 return false;
               }
-            });
+            });*/
           }]
         });
     }])
@@ -504,7 +512,9 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update('class', $scope.model.selected);
+              $scope.$parent.update({
+                'class': $scope.model.selected
+              });
             };
 
             CharactersResource.abort().classes()
@@ -619,7 +629,9 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update('gender', $scope.model.selected);
+              $scope.$parent.update({
+                'gender': $scope.model.selected
+              });
             };
 
             CharactersResource.abort().genders()
@@ -684,7 +696,9 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update('name', $scope.model.selected);
+              $scope.$parent.update({
+                'name': $scope.model.selected
+              });
             };
 
             KeyEventProvider.actions = [
@@ -734,7 +748,9 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update('race', $scope.model.selected);
+              $scope.$parent.update({
+                'race': $scope.model.selected
+              });
             };
 
             CharactersResource.abort().races()
@@ -1080,7 +1096,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/character.html',
-    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.gender\', { model: model })">Gender</button> <button ng-disabled=!model.gender onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if=model.portrait ng-src="./media/images/characters/portraits/{{ model.portrait }}.jpg"/> <img class="portrait large" ng-if=!model.portrait ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
+    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.gender\', { model: model })">Gender</button> <button ng-disabled=!model.gender onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if="model.race && model.gender" ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg"/> <img class="portrait large" ng-if="!model.race || !model.gender" ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
   );
 
 
