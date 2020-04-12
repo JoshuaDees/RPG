@@ -577,11 +577,9 @@
                 $state.transitionTo('games.new.party');
               }
             }, {
-              matches: ['g|r|c|a|s|n'],
+              matches: ['r|c|a|s|n'],
               callback: function(match) {
-                console.log('g');
                 $state.transitionTo('games.new.character.' + ({
-                  g: 'gender',
                   r: 'race',
                   c: 'class',
                   a: 'abilities',
@@ -590,82 +588,6 @@
                 })[match], { model: $scope.$parent.model });
               }
             }];
-          }]
-        });
-    }])
-
-//--------------------------------------------------------------------------------------------------------------------
-// File: app/states/games/new/character/gender.js
-//--------------------------------------------------------------------------------------------------------------------
-
-  module
-    .config(['$stateProvider', function($stateProvider) {
-      $stateProvider
-        .state('games.new.character.gender', {
-          scope: {},
-          templateUrl: 'app/templates/games/new/character/gender.html',
-          controller: [
-            '$scope',
-            '$state',
-            '$stateParams',
-            '$timeout',
-            'CharactersResource',
-            'KeyEventProvider',
-          function(
-            $scope,
-            $state,
-            $stateParams,
-            $timeout,
-            CharactersResource,
-            KeyEventProvider
-          ) {
-            $scope.model = {
-              items: [],
-              selected: null
-            };
-
-            $scope.flags = {
-              busy: true
-            };
-
-            $scope.accept = function() {
-              $scope.$parent.update({
-                'gender': $scope.model.selected
-              });
-            };
-
-            CharactersResource.abort().genders()
-              .then(function(response) {
-                if (response.success) {
-                  $scope.model.items = response.model;
-
-                  $scope.model.selected = _.filter($scope.model.items, function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.gender.id');
-                    return selected ? current.id == selected : index == 0;
-                  })[0];
-
-                  $timeout(function() {
-                    $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
-                  });
-                } else {
-                  alert(response.message);
-                }
-              })
-              .catch(function(error) {
-                alert(error);
-              })
-              .finally(function() {
-                $scope.flags.busy = false;
-              });
-
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() {
-                  $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-                }
-              }
-            ];
           }]
         });
     }])
@@ -739,8 +661,14 @@
             KeyEventProvider
           ) {
             $scope.model = {
-              items: [],
-              selected: null
+              options: {
+                genders: null,
+                races: null
+              },
+              selected: {
+                gender: null,
+                race: null
+              }
             };
 
             $scope.flags = {
@@ -748,24 +676,40 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update({
-                'race': $scope.model.selected
-              });
+              $scope.$parent.update($scope.model.selected);
             };
 
-            CharactersResource.abort().races()
+            CharactersResource.abort();
+
+            CharactersResource.genders()
               .then(function(response) {
                 if (response.success) {
-                  $scope.model.items = response.model;
+                  $scope.model.options.genders = response.model;
 
-                  $scope.model.selected = _.filter($scope.model.items, function(current, index) {
+                  $scope.model.selected.gender = _.filter($scope.model.options.genders, function(current, index) {
+                    var selected = _.get($scope.$parent, 'model.gender.id');
+                    return selected ? current.id == selected : index == 0;
+                  })[0];
+                } else {
+                  alert(response.message);
+                }
+              })
+              .catch(function(error) {
+                alert(error);
+              })
+              .finally(function() {
+                $scope.flags.busy = false;
+              });
+
+            CharactersResource.races()
+              .then(function(response) {
+                if (response.success) {
+                  $scope.model.options.races = response.model;
+
+                  $scope.model.selected.race = _.filter($scope.model.options.races, function(current, index) {
                     var selected = _.get($scope.$parent, 'model.race.id');
                     return selected ? current.id == selected : index == 0;
                   })[0];
-
-                  $timeout(function() {
-                    $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
-                  });
                 } else {
                   alert(response.message);
                 }
@@ -1096,17 +1040,12 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/character.html',
-    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.gender\', { model: model })">Gender</button> <button ng-disabled=!model.gender onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if="model.race && model.gender" ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg"/> <img class="portrait large" ng-if="!model.race || !model.gender" ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
+    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button ng-disabled="false && !model.gender" onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if="model.race && model.gender" ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg"/> <img class="portrait large" ng-if="!model.race || !model.gender" ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
   );
 
 
   $templateCache.put('app/templates/games/new/character/class.html',
     '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected == item }" ng-repeat="item in model.items"><label class=input-checkbox><input name=class ng-model=model.selected ng-value=item type=radio /> {{ item.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
-  );
-
-
-  $templateCache.put('app/templates/games/new/character/gender.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Gender</header><main style="height: 66px;"><ul><li ng-class="{ active: model.selected == item }" ng-repeat="item in model.items track by $index"><label class=input-checkbox><input name=gender ng-model=model.selected ng-value=item type=radio /> {{ item.name }}</label></li></ul></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 
@@ -1116,7 +1055,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/race.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Race</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected == item }" ng-repeat="item in model.items track by $index"><label class=input-checkbox><input name=race ng-checked="model.selected.id === item.id" ng-model=model.selected ng-value=item type=radio /> {{ item.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Race</header><main><article style="height: 360px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races"><label class=input-checkbox><input name=race ng-checked="model.selected.race.id === race.id" ng-model=model.selected.race ng-value=race type=radio /> {{ race.name }}</label></li></ul></aside><section class=border style="width: 480px;"><p>{{ model.selected.race.description }}</p></section><aside style=width:160px;><figure style="display: block; margin: 0 0 16px;"><img class="portrait large" ng-src="./media/images/characters/portraits/{{ model.selected.race.name }}.{{ model.selected.gender.name }}.1.jpg"/></figure><ul><li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders"><label class=input-checkbox><input name=gender ng-checked="model.selected.gender.id === gender.id" ng-model=model.selected.gender ng-value=gender type=radio /> {{ gender.name }}</label></li></ul></aside></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 

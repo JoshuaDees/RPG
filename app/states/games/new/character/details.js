@@ -19,11 +19,9 @@ angular
               $state.transitionTo('games.new.party');
             }
           }, {
-            matches: ['g|r|c|a|s|n'],
+            matches: ['r|c|a|s|n'],
             callback: function(match) {
-              console.log('g');
               $state.transitionTo('games.new.character.' + ({
-                g: 'gender',
                 r: 'race',
                 c: 'class',
                 a: 'abilities',

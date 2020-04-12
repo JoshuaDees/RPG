@@ -5,20 +5,33 @@
       Select Race
     </header>
     <main>
-      <article style="height: 360px; width: 640px;">
+      <article style="height: 360px;">
         <aside style="width: 160px;">
           <ul style="height: 100%;">
-            <li ng-class="{ active: model.selected == item }" ng-repeat="item in model.items track by $index">
+            <li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races">
               <label class="input-checkbox">
-                <input name="race" ng-checked="model.selected.id === item.id" ng-model="model.selected" ng-value="item" type="radio" />
-                {{ item.name }}
+                <input name="race" ng-checked="model.selected.race.id === race.id" ng-model="model.selected.race" ng-value="race" type="radio" />
+                {{ race.name }}
               </label>
             </li>
           </ul>
         </aside>
-        <section class="border">
-          <p>{{ model.selected.description }}</p>
+        <section class="border" style="width: 480px;">
+          <p>{{ model.selected.race.description }}</p>
         </section>
+        <aside style="width:160px;">
+          <figure style="display: block; margin: 0 0 16px;">
+            <img class="portrait large" ng-src="./media/images/characters/portraits/{{ model.selected.race.name }}.{{ model.selected.gender.name }}.1.jpg" />
+          </figure>
+          <ul>
+            <li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders">
+              <label class="input-checkbox">
+                <input name="gender" ng-checked="model.selected.gender.id === gender.id" ng-model="model.selected.gender" ng-value="gender" type="radio" />
+                {{ gender.name }}
+              </label>
+            </li>
+          </ul>
+        </aside>
       </article>
     </main>
     <footer>

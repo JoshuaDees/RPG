@@ -21,8 +21,14 @@ angular
           KeyEventProvider
         ) {
           $scope.model = {
-            items: [],
-            selected: null
+            options: {
+              genders: null,
+              races: null
+            },
+            selected: {
+              gender: null,
+              race: null
+            }
           };
 
           $scope.flags = {
@@ -30,24 +36,40 @@ angular
           };
 
           $scope.accept = function() {
-            $scope.$parent.update({
-              'race': $scope.model.selected
-            });
+            $scope.$parent.update($scope.model.selected);
           };
 
-          CharactersResource.abort().races()
+          CharactersResource.abort();
+
+          CharactersResource.genders()
             .then(function(response) {
               if (response.success) {
-                $scope.model.items = response.model;
+                $scope.model.options.genders = response.model;
 
-                $scope.model.selected = _.filter($scope.model.items, function(current, index) {
+                $scope.model.selected.gender = _.filter($scope.model.options.genders, function(current, index) {
+                  var selected = _.get($scope.$parent, 'model.gender.id');
+                  return selected ? current.id == selected : index == 0;
+                })[0];
+              } else {
+                alert(response.message);
+              }
+            })
+            .catch(function(error) {
+              alert(error);
+            })
+            .finally(function() {
+              $scope.flags.busy = false;
+            });
+
+          CharactersResource.races()
+            .then(function(response) {
+              if (response.success) {
+                $scope.model.options.races = response.model;
+
+                $scope.model.selected.race = _.filter($scope.model.options.races, function(current, index) {
                   var selected = _.get($scope.$parent, 'model.race.id');
                   return selected ? current.id == selected : index == 0;
                 })[0];
-
-                $timeout(function() {
-                  $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
-                });
               } else {
                 alert(response.message);
               }
