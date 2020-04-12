@@ -387,6 +387,27 @@
             $stateParams,
             KeyEventProvider
           ) {
+            $scope.model = {
+              selected: {
+                might: 15,
+                intellect: 7,
+                personality: 14,
+                endurance: 11,
+                accuracy: 11,
+                speed: 9
+              }
+            };
+
+            $scope.getModifier = function(attribute) {
+              var modifier = Math.floor(($scope.model.selected[attribute] - 10) / 2);
+
+              if (modifier > 0) {
+                modifier = '+' + modifier;
+              }
+
+              return modifier;
+            };
+
             KeyEventProvider.actions = [
               {
                 matches: ['Shift+Escape', 'Escape'],
@@ -1054,7 +1075,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/abilities.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main><div ng-repeat="ability in [\'might\', \'intellect\', \'personality\', \'endurance\', \'accuracy\', \'speed\']"><label class=text-right style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability }}:</label> <input class=text-center style="width: 64px;" disabled value=11 /> <input class=text-center style="width: 64px;" disabled value=+1 /> <button style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main><div ng-repeat="ability in [\'might\', \'intellect\', \'personality\', \'endurance\', \'accuracy\', \'speed\']"><label class=text-right style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability }}:</label> <input class=text-center disabled ng-model=model.selected[ability] style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier(ability) style="width: 64px;"/> <button style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 

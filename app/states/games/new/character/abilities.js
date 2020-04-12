@@ -16,6 +16,27 @@ angular
           $stateParams,
           KeyEventProvider
         ) {
+          $scope.model = {
+            selected: {
+              might: 15,
+              intellect: 7,
+              personality: 14,
+              endurance: 11,
+              accuracy: 11,
+              speed: 9
+            }
+          };
+
+          $scope.getModifier = function(attribute) {
+            var modifier = Math.floor(($scope.model.selected[attribute] - 10) / 2);
+
+            if (modifier > 0) {
+              modifier = '+' + modifier;
+            }
+
+            return modifier;
+          };
+
           KeyEventProvider.actions = [
             {
               matches: ['Shift+Escape', 'Escape'],
