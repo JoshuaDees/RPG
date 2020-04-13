@@ -2,6 +2,20 @@
   include '../includes/php.php';
 
   class Characters {
+    public function abilities() {
+      $raceId = post("raceId");
+      $classId = post("classId");
+      $response = new MySQL("SELECT *, (SELECT RaceAbilities.RaceAbilityModifier FROM RaceAbilities WHERE RaceAbilities.RaceId = $raceId AND RaceAbilities.AbilityId = Abilities.AbilityId) AS RaceAbilityModifier, (SELECT ClassAbilities.ClassAbilityModifier FROM ClassAbilities WHERE ClassAbilities.ClassId = $classId AND ClassAbilities.AbilityId = Abilities.AbilityId) AS ClassAbilityModifier FROM Abilities");
+
+      $json = $response->toArray(array(
+        "id" => "AbilityId",
+        "name" => "AbilityName",
+        "raceModifier" => "RaceAbilityModifier",
+        "classModifier" => "ClassAbilityModifier"
+      ));
+
+      (new JSON())->success($json)->print();
+    }
     public function classes() {
       $raceId = post("raceId");
 

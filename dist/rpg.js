@@ -144,6 +144,10 @@
   module
     .factory('CharactersResource', ['RestfulService', function(RestfulService) {
       return RestfulService('data/characters.php', null, {
+        abilities: {
+          method: 'POST',
+          params: { action: 'abilities' }
+        },
         classes: {
           method: 'POST',
           params: { action: 'classes' }
@@ -380,26 +384,28 @@
             '$scope',
             '$state',
             '$stateParams',
+            'CharactersResource',
             'KeyEventProvider',
           function(
             $scope,
             $state,
             $stateParams,
+            CharactersResource,
             KeyEventProvider
           ) {
             $scope.model = {
-              selected: {
-                might: 15,
-                intellect: 7,
-                personality: 14,
-                endurance: 11,
-                accuracy: 11,
-                speed: 9
-              }
+              abilities: [],
+              selected: [11, 11, 11, 11, 11, 11]
+            };
+
+            $scope.getValue = function(attribute) {
+              return $scope.model.selected[attribute] +
+                parseFloat(_.get($scope, 'model.abilities[' + attribute + '].raceModifier') || 0) +
+                parseFloat(_.get($scope, 'model.abilities[' + attribute + '].classModifier') || 0);
             };
 
             $scope.getModifier = function(attribute) {
-              var modifier = Math.floor(($scope.model.selected[attribute] - 10) / 2);
+              var modifier = Math.floor(($scope.getValue(attribute) - 10) / 2);
 
               if (modifier > 0) {
                 modifier = '+' + modifier;
@@ -413,6 +419,24 @@
                 'abilities': $scope.model.selected
               });
             };
+
+            CharactersResource.abort().abilities({
+              raceId: _.get($scope.$parent, 'model.race.id'),
+              classId: _.get($scope.$parent, 'model.class.id')
+            })
+              .then(function(response) {
+                if (response.success) {
+                  $scope.model.abilities = response.model;
+                } else {
+                  alert(response.message);
+                }
+              })
+              .catch(function(error) {
+                alert(error);
+              })
+              .finally(function() {
+                $scope.flags.busy = false;
+              });
 
             KeyEventProvider.actions = [
               {
@@ -1037,7 +1061,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/abilities.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main><div ng-repeat="ability in [\'might\', \'intellect\', \'personality\', \'endurance\', \'accuracy\', \'speed\']"><label class=text-right style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability }}:</label> <input class=text-center disabled ng-model=model.selected[ability] style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier(ability) style="width: 64px;"/> <button style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main style="height: 192px;"><div ng-repeat="ability in model.abilities track by $index"><label class=text-right style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label> <input class=text-center disabled ng-value=getValue($index) style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier($index) style="width: 64px;"/> <button style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 
