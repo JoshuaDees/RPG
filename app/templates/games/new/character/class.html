@@ -8,9 +8,9 @@
       <article style="height: 360px; width: 640px;">
         <aside style="width: 160px;">
           <ul style="height: 100%;">
-            <li ng-class="{ active: model.selected == item }" ng-repeat="item in model.items">
+            <li ng-class="{ active: model.selected == item, disabled: item.enabled == null }" ng-repeat="item in model.items">
               <label class="input-checkbox">
-                <input name="class" ng-model="model.selected" ng-value="item" type="radio" />
+                <input name="class" ng-disabled="item.enabled == null" ng-model="model.selected" ng-value="item" type="radio" />
                 {{ item.name }}
               </label>
             </li>

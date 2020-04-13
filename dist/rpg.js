@@ -517,7 +517,9 @@
               });
             };
 
-            CharactersResource.abort().classes()
+            CharactersResource.abort().classes({
+              raceId: _.get($scope.$parent, 'model.race.id')
+            })
               .then(function(response) {
                 if (response.success) {
                   $scope.model.items = response.model;
@@ -1045,7 +1047,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/class.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected == item }" ng-repeat="item in model.items"><label class=input-checkbox><input name=class ng-model=model.selected ng-value=item type=radio /> {{ item.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected == item, disabled: item.enabled == null }" ng-repeat="item in model.items"><label class=input-checkbox><input name=class ng-disabled="item.enabled == null" ng-model=model.selected ng-value=item type=radio /> {{ item.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 

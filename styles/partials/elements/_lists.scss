@@ -27,4 +27,12 @@ li {
   &.active label {
     background-color: $listitem-background-color-active;
   }
+
+  &.disabled {
+    color: rgba($font-color, .25);
+
+    label {
+      background-color: transparent;
+    }
+  }
 }

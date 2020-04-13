@@ -35,7 +35,9 @@ angular
             });
           };
 
-          CharactersResource.abort().classes()
+          CharactersResource.abort().classes({
+            raceId: _.get($scope.$parent, 'model.race.id')
+          })
             .then(function(response) {
               if (response.success) {
                 $scope.model.items = response.model;

@@ -244,6 +244,12 @@ li:hover label {
 li.active label {
   background-color: rgba(255, 255, 255, 0.25);
 }
+li.disabled {
+  color: rgba(255, 251, 247, 0.25);
+}
+li.disabled label {
+  background-color: transparent;
+}
 
 dialog {
   background-color: rgba(0, 0, 0, 0.75);

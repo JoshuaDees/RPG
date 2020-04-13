@@ -3,12 +3,15 @@
 
   class Characters {
     public function classes() {
-      $response = new MySQL("SELECT * FROM Classes");
+      $raceId = post("raceId");
+
+      $response = new MySQL("SELECT *, (SELECT RaceClasses.RaceId FROM RaceClasses WHERE RaceClasses.RaceId = $raceId AND RaceClasses.ClassId = Classes.ClassId) AS ClassEnabled FROM Classes");
 
       $json = $response->toArray(array(
         "id" => "ClassId",
         "name" => "ClassName",
-        "description" => "ClassDescription"
+        "description" => "ClassDescription",
+        "enabled" => "ClassEnabled"
       ));
 
       (new JSON())->success($json)->print();
