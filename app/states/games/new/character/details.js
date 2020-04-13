@@ -32,7 +32,7 @@ angular
                 's': 'skills',
                 'n': 'name'
               })[match], {
-                'model': $scope.$parent.model
+                'model': _.get($scope.$parent, 'model')
               });
             }
           }];

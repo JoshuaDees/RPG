@@ -537,7 +537,7 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update($scope.model.selected);
+              _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
             };
 
             CharactersResource.abort().abilities({
@@ -547,7 +547,7 @@
               .then(function(response) {
                 if (response.success) {
                   _.set($scope, 'model.selected.abilities',
-                    _.merge([], response.model, $scope.$parent.model.abilities)
+                    _.merge([], response.model, _.get($scope.$parent, 'model.abilities'))
                   );
                 } else {
                   alert(response.message);
@@ -564,7 +564,7 @@
               'matches': ['Shift+Escape', 'Escape'],
               'callback': function() {
                 $state.transitionTo('games.new.character.details', {
-                  'model': $scope.$parent.model
+                  'model': _.get($scope.$parent, 'model')
                 });
               }
             }];
@@ -673,7 +673,7 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update($scope.model.selected);
+              _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
             };
 
             CharactersResource.abort().classes({
@@ -709,7 +709,7 @@
               'matches': ['Shift+Escape', 'Escape'],
               'callback': function() {
                 $state.transitionTo('games.new.character.details', {
-                  'model': $scope.$parent.model
+                  'model': _.get($scope.$parent, 'model')
                 });
               }
             }];
@@ -754,7 +754,7 @@
                   's': 'skills',
                   'n': 'name'
                 })[match], {
-                  'model': $scope.$parent.model
+                  'model': _.get($scope.$parent, 'model')
                 });
               }
             }];
@@ -792,8 +792,8 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update({
-                'name': $scope.model.selected
+              _.invoke($scope.$parent, 'update', {
+                'name': _.get($scope.model, 'selected')
               });
             };
 
@@ -801,7 +801,7 @@
               'matches': ['Shift+Escape', 'Escape'],
               'callback': function() {
                 $state.transitionTo('games.new.character.details', {
-                  'model': $scope.$parent.model
+                  'model': _.get($scope.$parent, 'model')
                 });
               }
             }];
@@ -856,7 +856,7 @@
             };
 
             $scope.accept = function() {
-              $scope.$parent.update($scope.model.selected);
+              _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
             };
 
             CharactersResource.abort();
@@ -916,7 +916,7 @@
               'matches': ['Shift+Escape', 'Escape'],
               'callback': function() {
                 $state.transitionTo('games.new.character.details', {
-                  'model': $scope.$parent.model
+                  'model': _.get($scope.$parent, 'model')
                 });
               }
             }];
@@ -956,7 +956,7 @@
             };
 
             $scope.isTeamFull = function() {
-              return _.filter($scope.model.characters, function(character) {
+              return _.filter(_.get($scope, 'model.characters'), function(character) {
                 return character.name;
               }).length === 6;
             };
@@ -998,7 +998,7 @@
               'matches': ['1|2|3|4|5|6'],
               'callback': function(match) {
                 $state.transitionTo('games.new.character.details', {
-                  'model': $scope.$parent.model.characters[match - 1]
+                  'model': _get($scope, '$parent.model.characters[' + (match - 1) + ']')
                 });
               }
             }];

@@ -25,8 +25,8 @@ angular
           };
 
           $scope.accept = function() {
-            $scope.$parent.update({
-              'name': $scope.model.selected
+            _.invoke($scope.$parent, 'update', {
+              'name': _.get($scope.model, 'selected')
             });
           };
 
@@ -34,7 +34,7 @@ angular
             'matches': ['Shift+Escape', 'Escape'],
             'callback': function() {
               $state.transitionTo('games.new.character.details', {
-                'model': $scope.$parent.model
+                'model': _.get($scope.$parent, 'model')
               });
             }
           }];

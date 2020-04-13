@@ -27,7 +27,7 @@ angular
           };
 
           $scope.isTeamFull = function() {
-            return _.filter($scope.model.characters, function(character) {
+            return _.filter(_.get($scope, 'model.characters'), function(character) {
               return character.name;
             }).length === 6;
           };

@@ -27,7 +27,7 @@ angular
             'matches': ['1|2|3|4|5|6'],
             'callback': function(match) {
               $state.transitionTo('games.new.character.details', {
-                'model': $scope.$parent.model.characters[match - 1]
+                'model': _get($scope, '$parent.model.characters[' + (match - 1) + ']')
               });
             }
           }];

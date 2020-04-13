@@ -42,7 +42,7 @@ angular
           };
 
           $scope.accept = function() {
-            $scope.$parent.update($scope.model.selected);
+            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
           };
 
           CharactersResource.abort();
@@ -102,7 +102,7 @@ angular
             'matches': ['Shift+Escape', 'Escape'],
             'callback': function() {
               $state.transitionTo('games.new.character.details', {
-                'model': $scope.$parent.model
+                'model': _.get($scope.$parent, 'model')
               });
             }
           }];
