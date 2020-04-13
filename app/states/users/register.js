@@ -28,7 +28,7 @@ angular
 
           $scope.register = function() {
             if(_.get($scope, 'model.pass') === _.get($scope, 'model.pass2')) {
-              _.set($scope, 'flags.busy', true);
+              _.set($scope, 'flags.loading', true);
 
               UsersResource.abort().register($scope.model)
                 .then(function(response) {
@@ -45,7 +45,7 @@ angular
                   alert(error);
                 })
                 .finally(function() {
-                  _.set($scope, 'flags.busy', false);
+                  _.set($scope, 'flags.loading', false);
                 });
             } else {
               alert('The passwords do not match.');

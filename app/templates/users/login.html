@@ -2,24 +2,24 @@
 <dialog>
   <form name="loginForm" ng-submit="login()">
     <header>Log In</header>
-    <main>
+    <main overlay="flags.loading">
       <input style="display: none;" />
       <input style="display: none;" type="password" />
       <label class="input-group">
         <i class="fa fa-user"></i>
-        <input maxlength="45" ng-disabled="flags.busy" ng-model="model.user" placeholder="Username" required />
+        <input maxlength="45" ng-disabled="flags.loading" ng-model="model.user" placeholder="Username" required />
       </label>
       <label class="input-group">
         <i class="fa fa-key"></i>
-        <input maxlength="45" ng-disabled="flags.busy" ng-model="model.pass" placeholder="Password" required type="password" />
+        <input maxlength="45" ng-disabled="flags.loading" ng-model="model.pass" placeholder="Password" required type="password" />
       </label>
       <div class="input-helper text-right">
         <a href="javascript:;">Forgot Password?</a>
       </div>
     </main>
     <footer>
-      <button ng-disabled="flags.busy" ng-click="transitionTo('users.register');" type="reset">Register</button>
-      <button ng-disabled="flags.busy || loginForm.$invalid" type="submit">Log In</button>
+      <button ng-disabled="flags.loading" ng-click="transitionTo('users.register');" type="reset">Register</button>
+      <button ng-disabled="flags.loading || loginForm.$invalid" type="submit">Log In</button>
     </footer>
   </form>
 </dialog>

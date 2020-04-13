@@ -1169,7 +1169,7 @@
 
             $scope.register = function() {
               if(_.get($scope, 'model.pass') === _.get($scope, 'model.pass2')) {
-                _.set($scope, 'flags.busy', true);
+                _.set($scope, 'flags.loading', true);
 
                 UsersResource.abort().register($scope.model)
                   .then(function(response) {
@@ -1186,7 +1186,7 @@
                     alert(error);
                   })
                   .finally(function() {
-                    _.set($scope, 'flags.busy', false);
+                    _.set($scope, 'flags.loading', false);
                   });
               } else {
                 alert('The passwords do not match.');
@@ -1267,12 +1267,12 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/users/login.html',
-    '<h2>Log In</h2><dialog><form name=loginForm ng-submit=login()><header>Log In</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label><div class="input-helper text-right"><a href=javascript:;>Forgot Password?</a></div></main><footer><button ng-disabled=flags.busy ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.busy || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
+    '<h2>Log In</h2><dialog><form name=loginForm ng-submit=login()><header>Log In</header><main overlay=flags.loading><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.loading ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.loading ng-model=model.pass placeholder=Password required type=password /></label><div class="input-helper text-right"><a href=javascript:;>Forgot Password?</a></div></main><footer><button ng-disabled=flags.loading ng-click="transitionTo(\'users.register\');" type=reset>Register</button> <button ng-disabled="flags.loading || loginForm.$invalid" type=submit>Log In</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/users/register.html',
-    '<h2>Register</h2><dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.busy ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.busy || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
+    '<h2>Register</h2><dialog><form name=registerForm ng-submit=register()><header><a ui-sref=users.login><i class="fa fa-times"></i></a> Register</header><main overlay=flags.loading><input style="display: none;"/> <input style="display: none;" type=password /> <label class=input-group><i class="fa fa-user"></i> <input maxlength=45 ng-disabled=flags.loading ng-model=model.user placeholder=Username required/></label> <label class=input-group><i class="fa fa-envelope"></i> <input maxlength=45 ng-disabled=flags.loading ng-model=model.email placeholder=Email required type=email /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.loading ng-model=model.pass placeholder=Password required type=password /></label> <label class=input-group><i class="fa fa-key"></i> <input maxlength=45 ng-disabled=flags.loading ng-model=model.pass2 placeholder="Password (again)" required type=password /></label></main><footer><button ng-disabled="flags.loading || registerForm.$invalid || model.pass !== model.pass2" type=submit>Register</button></footer></form></dialog>'
   );
 
 }]);
