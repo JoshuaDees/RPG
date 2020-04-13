@@ -25,15 +25,33 @@ angular
           }, {
             'matches': ['r|c|a|s|n'],
             'callback': function(match) {
-              $state.transitionTo('games.new.character.' + ({
-                'r': 'race',
-                'c': 'class',
-                'a': 'abilities',
-                's': 'skills',
-                'n': 'name'
-              })[match], {
-                'model': _.get($scope.$parent, 'model')
-              });
+              var options = ({
+                'r': {
+                  'state': 'race'
+                },
+                'c': {
+                  'requirement': 'race',
+                  'state': 'class'
+                },
+                'a': {
+                  'requirement': 'class',
+                  'state': 'abilities'
+                },
+                's': {
+                  'requirement': 'abilities',
+                  'state': 'skills'
+                },
+                'n': {
+                  'requirement': 'skills',
+                  'state': 'name'
+                }
+              })[match];
+
+              if (!options.requirement || _.get($scope.$parent, 'model.' + options.requirement)) {
+                $state.transitionTo('games.new.character.' + options.state, {
+                  'model': _.get($scope.$parent, 'model')
+                });
+              }
             }
           }];
         }]
