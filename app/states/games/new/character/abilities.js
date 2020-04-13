@@ -92,11 +92,11 @@ angular
                   _.merge([], response.model, _.get($scope.$parent, 'model.abilities'))
                 );
               } else {
-                alert(response.message);
+                ErrorProvider.alert(response.message);
               }
             })
             .catch(function(error) {
-              alert(error);
+              ErrorProvider.alert(error);
             })
             .finally(function() {
               _.set($scope, 'flags.loading', false);

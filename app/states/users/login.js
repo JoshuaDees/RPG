@@ -43,7 +43,7 @@ angular
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               })
               .finally(function() {
                 _.set($scope, 'flags.loading', false);

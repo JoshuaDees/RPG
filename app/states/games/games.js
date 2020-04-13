@@ -38,11 +38,11 @@ angular
                   _.get($scope, 'games[0].id')
                 );
               } else {
-                alert(response.message);
+                ErrorProvider.alert(response.message);
               }
             })
             .catch(function(error) {
-              alert(error);
+              ErrorProvider.alert(error);
             })
             .finally(function() {
               _.set($scope, 'flags.loading', false);

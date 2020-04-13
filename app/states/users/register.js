@@ -38,17 +38,17 @@ angular
 
                     $state.transitionTo('games.menu');
                   } else {
-                    alert(response.error);
+                    ErrorProvider.alert(response.error);
                   }
                 })
                 .catch(function(error) {
-                  alert(error);
+                  ErrorProvider.alert(error);
                 })
                 .finally(function() {
                   _.set($scope, 'flags.loading', false);
                 });
             } else {
-              alert('The passwords do not match.');
+              ErrorProvider.alert('The passwords do not match.');
             }
           };
 

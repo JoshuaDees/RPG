@@ -62,11 +62,11 @@ angular
                   }
                 )[0]);
               } else {
-                alert(response.message);
+                ErrorProvider.alert(response.message);
               }
             })
             .catch(function(error) {
-              alert(error);
+              ErrorProvider.alert(error);
             });
 
           promises.races = CharactersResource.races()
@@ -82,11 +82,11 @@ angular
                   }
                 )[0]);
               } else {
-                alert(response.message);
+                ErrorProvider.alert(response.message);
               }
             })
             .catch(function(error) {
-              alert(error);
+              ErrorProvider.alert(error);
             });
 
           $q.all(promises)

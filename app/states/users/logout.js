@@ -26,11 +26,11 @@ angular
 
                 $state.transitionTo('users.login');
               } else {
-                alert(response.message);
+                ErrorProvider.alert(response.message);
               }
             })
             .catch(function(error) {
-              alert(error);
+              ErrorProvider.alert(error);
             });
 
           KeyEventProvider.actions = [];

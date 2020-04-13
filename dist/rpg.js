@@ -359,11 +359,11 @@
                     _.get($scope, 'games[0].id')
                   );
                 } else {
-                  alert(response.message);
+                  ErrorProvider.alert(response.message);
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               })
               .finally(function() {
                 _.set($scope, 'flags.loading', false);
@@ -550,11 +550,11 @@
                     _.merge([], response.model, _.get($scope.$parent, 'model.abilities'))
                   );
                 } else {
-                  alert(response.message);
+                  ErrorProvider.alert(response.message);
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               })
               .finally(function() {
                 _.set($scope, 'flags.loading', false);
@@ -691,11 +691,11 @@
                     }
                   )[0]);
                 } else {
-                  alert(response.message);
+                  ErrorProvider.alert(response.message);
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               })
               .finally(function() {
                 _.set($scope, 'flags.loading', false);
@@ -876,11 +876,11 @@
                     }
                   )[0]);
                 } else {
-                  alert(response.message);
+                  ErrorProvider.alert(response.message);
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               });
 
             promises.races = CharactersResource.races()
@@ -896,11 +896,11 @@
                     }
                   )[0]);
                 } else {
-                  alert(response.message);
+                  ErrorProvider.alert(response.message);
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               });
 
             $q.all(promises)
@@ -1081,7 +1081,7 @@
                   }
                 })
                 .catch(function(error) {
-                  alert(error);
+                  ErrorProvider.alert(error);
                 })
                 .finally(function() {
                   _.set($scope, 'flags.loading', false);
@@ -1124,11 +1124,11 @@
 
                   $state.transitionTo('users.login');
                 } else {
-                  alert(response.message);
+                  ErrorProvider.alert(response.message);
                 }
               })
               .catch(function(error) {
-                alert(error);
+                ErrorProvider.alert(error);
               });
 
             KeyEventProvider.actions = [];
@@ -1179,17 +1179,17 @@
 
                       $state.transitionTo('games.menu');
                     } else {
-                      alert(response.error);
+                      ErrorProvider.alert(response.error);
                     }
                   })
                   .catch(function(error) {
-                    alert(error);
+                    ErrorProvider.alert(error);
                   })
                   .finally(function() {
                     _.set($scope, 'flags.loading', false);
                   });
               } else {
-                alert('The passwords do not match.');
+                ErrorProvider.alert('The passwords do not match.');
               }
             };
 
