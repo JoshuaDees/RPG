@@ -35,11 +35,16 @@ dialog {
     }
   }
 
+  main {
+    position: relative;
+  }
+
   footer {
     display: flex;
     justify-content: space-between;
     margin: $margin (-$margin) (-$margin);
     padding: 0 $padding $padding;
+    position: relative;
 
     button + button {
       margin-left: $margin;

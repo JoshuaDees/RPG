@@ -1,10 +1,10 @@
 <dialog modal>
-  <form ng-submit="accept()">
+  <form ng-submit="!loading && accept()">
     <header>
       <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
       Select Race
     </header>
-    <main>
+    <main overlay="flags.loading">
       <article style="height: 360px;">
         <aside style="width: 160px;">
           <ul style="height: 100%;">
@@ -42,7 +42,7 @@
       </article>
     </main>
     <footer>
-      <button type="submit">Accept</button>
+      <button ng-disabled="flags.loading" type="submit">Accept</button>
     </footer>
   </form>
 </dialog>

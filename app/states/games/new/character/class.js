@@ -30,7 +30,7 @@ angular
           };
 
           $scope.flags = {
-            'busy': true
+            'loading': true
           };
 
           $scope.accept = function() {
@@ -51,10 +51,6 @@ angular
                     return selected ? current.id == selected : index == 0;
                   }
                 )[0]);
-
-                $timeout(function() {
-                  $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
-                });
               } else {
                 alert(response.message);
               }
@@ -63,7 +59,11 @@ angular
               alert(error);
             })
             .finally(function() {
-              _.set($scope, 'flags.busy', false);
+              _.set($scope, 'flags.loading', false);
+
+              $timeout(function() {
+                $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
+              });
             });
 
           KeyEventProvider.actions = [

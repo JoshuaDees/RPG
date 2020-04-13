@@ -1,0 +1,18 @@
+.overlay {
+  align-items: center;
+  background-color: rgba(0, 0, 0, .5);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 0;
+
+  .message {
+    background-color: rgba(0, 0, 0, .75);
+    border: 1px solid $input-border-color;
+    padding: ($padding/2) $padding;
+  }
+}

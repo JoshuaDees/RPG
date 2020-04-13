@@ -27,6 +27,10 @@ angular
             }
           };
 
+          $scope.flags = {
+            'loading': true
+          };
+
           $scope.getValue = function(attribute) {
             return parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].default')) +
               parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].raceModifier') || 0) +
@@ -89,7 +93,7 @@ angular
               alert(error);
             })
             .finally(function() {
-              _.set($scope, 'flags.busy', false);
+              _.set($scope, 'flags.loading', false);
             });
 
           KeyEventProvider.actions = [

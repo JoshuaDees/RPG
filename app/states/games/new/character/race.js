@@ -6,6 +6,7 @@ angular
         scope: {},
         templateUrl: 'app/templates/games/new/character/race.html',
         controller: [
+          '$q',
           '$scope',
           '$state',
           '$stateParams',
@@ -13,6 +14,7 @@ angular
           'CharactersResource',
           'KeyEventProvider',
         function(
+          $q,
           $scope,
           $state,
           $stateParams,
@@ -32,7 +34,7 @@ angular
           };
 
           $scope.flags = {
-            'busy': true
+            'loading': true
           };
 
           $scope.accept = function() {
@@ -41,7 +43,9 @@ angular
 
           CharactersResource.abort();
 
-          CharactersResource.genders()
+          var promises = {};
+
+          promises.genders = CharactersResource.genders()
             .then(function(response) {
               if (response.success) {
                 _.set($scope, 'model.options.genders', response.model);
@@ -59,12 +63,9 @@ angular
             })
             .catch(function(error) {
               alert(error);
-            })
-            .finally(function() {
-              $scope.flags.busy = false;
             });
 
-          CharactersResource.races()
+          promises.races = CharactersResource.races()
             .then(function(response) {
               if (response.success) {
                 _.set($scope, 'model.options.races', response.model);
@@ -82,9 +83,15 @@ angular
             })
             .catch(function(error) {
               alert(error);
-            })
+            });
+
+          $q.all(promises)
             .finally(function() {
-              _.set($scope, 'flags.busy', false);
+              _.set($scope, 'flags.loading', false);
+
+              $timeout(function() {
+                $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
+              });
             });
 
           KeyEventProvider.actions = [

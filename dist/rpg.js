@@ -40,6 +40,26 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/directives/overlay.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .directive('overlay', function() {
+      return {
+        constrain: 'A',
+        link: function($scope, $element, $attributes) {
+          $scope.$watchGroup([$attributes.overlay, $attributes.overlayText], function(options) {
+            $element.find('> .overlay').remove();
+
+            if (options[0]) {
+              $element.append('<div class="overlay"><span class="message">' + (options[1] || 'Loading...') + '</span></div>');
+            }
+          });
+        }
+      };
+    });
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/filters/modifier.js
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -413,6 +433,10 @@
               }
             };
 
+            $scope.flags = {
+              'loading': true
+            };
+
             $scope.getValue = function(attribute) {
               return parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].default')) +
                 parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].raceModifier') || 0) +
@@ -475,7 +499,7 @@
                 alert(error);
               })
               .finally(function() {
-                _.set($scope, 'flags.busy', false);
+                _.set($scope, 'flags.loading', false);
               });
 
             KeyEventProvider.actions = [
@@ -575,7 +599,7 @@
             };
 
             $scope.flags = {
-              'busy': true
+              'loading': true
             };
 
             $scope.accept = function() {
@@ -596,10 +620,6 @@
                       return selected ? current.id == selected : index == 0;
                     }
                   )[0]);
-
-                  $timeout(function() {
-                    $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
-                  });
                 } else {
                   alert(response.message);
                 }
@@ -608,7 +628,11 @@
                 alert(error);
               })
               .finally(function() {
-                _.set($scope, 'flags.busy', false);
+                _.set($scope, 'flags.loading', false);
+
+                $timeout(function() {
+                  $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
+                });
               });
 
             KeyEventProvider.actions = [
@@ -716,6 +740,7 @@
           scope: {},
           templateUrl: 'app/templates/games/new/character/race.html',
           controller: [
+            '$q',
             '$scope',
             '$state',
             '$stateParams',
@@ -723,6 +748,7 @@
             'CharactersResource',
             'KeyEventProvider',
           function(
+            $q,
             $scope,
             $state,
             $stateParams,
@@ -742,7 +768,7 @@
             };
 
             $scope.flags = {
-              'busy': true
+              'loading': true
             };
 
             $scope.accept = function() {
@@ -751,7 +777,9 @@
 
             CharactersResource.abort();
 
-            CharactersResource.genders()
+            var promises = {};
+
+            promises.genders = CharactersResource.genders()
               .then(function(response) {
                 if (response.success) {
                   _.set($scope, 'model.options.genders', response.model);
@@ -769,12 +797,9 @@
               })
               .catch(function(error) {
                 alert(error);
-              })
-              .finally(function() {
-                $scope.flags.busy = false;
               });
 
-            CharactersResource.races()
+            promises.races = CharactersResource.races()
               .then(function(response) {
                 if (response.success) {
                   _.set($scope, 'model.options.races', response.model);
@@ -792,9 +817,15 @@
               })
               .catch(function(error) {
                 alert(error);
-              })
+              });
+
+            $q.all(promises)
               .finally(function() {
-                _.set($scope, 'flags.busy', false);
+                _.set($scope, 'flags.loading', false);
+
+                $timeout(function() {
+                  $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
+                });
               });
 
             KeyEventProvider.actions = [
@@ -1111,7 +1142,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/abilities.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main style="height: 272px; width: 330px;"><div class="row condensed separated"><label class="flex text-right" style="display: inline-block; width: 104px; text-transform: capitalize;">Bonus Points:</label> <input class=text-center disabled ng-value=getBonus() style="width: 64px;"/></div><div class="row condensed separated" ng-repeat="ability in model.selected.abilities track by $index"><label class="flex text-right" style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label> <input class=text-center disabled ng-value=getValue($index) style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier($index) style="width: 64px;"/> <button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus=this.blur(); style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus=this.blur(); style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit="!flags.loading && (getBonus() == 0) && accept()"><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main overlay=flags.loading style="height: 272px; width: 330px;"><div class="row condensed separated"><label class="flex text-right" style="display: inline-block; width: 104px; text-transform: capitalize;">Bonus Points:</label> <input class=text-center disabled ng-value=getBonus() style="width: 64px;"/></div><div class="row condensed separated" ng-repeat="ability in model.selected.abilities track by $index"><label class="flex text-right" style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label> <input class=text-center disabled ng-value=getValue($index) style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier($index) style="width: 64px;"/> <button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus=this.blur(); style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus=this.blur(); style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button ng-disabled="flags.loading || (getBonus() != 0)" type=submit>Accept</button></footer></form></dialog>'
   );
 
 
@@ -1121,7 +1152,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/class.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.id === class.id" ng-disabled="class.enabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.class.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit="!flags.loading && accept()"><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main overlay=flags.loading><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.id === class.id" ng-disabled="class.enabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.class.description }}</p></section></article></main><footer><button ng-disabled=flags.loading type=submit>Accept</button></footer></form></dialog>'
   );
 
 
@@ -1131,7 +1162,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/race.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Race</header><main><article style="height: 360px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races"><label class=input-checkbox><input name=race ng-checked="model.selected.race.id === race.id" ng-model=model.selected.race ng-value=race type=radio /> {{ race.name }}</label></li></ul></aside><section class=border style="width: 480px;"><p>{{ model.selected.race.description }}</p></section><aside style=width:160px;><figure style="display: block; margin: 0 0 16px;"><img class="portrait large" ng-src="./media/images/characters/portraits/{{ model.selected.race.name }}.{{ model.selected.gender.name }}.1.jpg"/></figure><ul><li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders"><label class=input-checkbox><input name=gender ng-checked="model.selected.gender.id === gender.id" ng-model=model.selected.gender ng-value=gender type=radio /> {{ gender.name }}</label></li></ul></aside></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit="!loading && accept()"><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Race</header><main overlay=flags.loading><article style="height: 360px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races"><label class=input-checkbox><input name=race ng-checked="model.selected.race.id === race.id" ng-model=model.selected.race ng-value=race type=radio /> {{ race.name }}</label></li></ul></aside><section class=border style="width: 480px;"><p>{{ model.selected.race.description }}</p></section><aside style=width:160px;><figure style="display: block; margin: 0 0 16px;"><img class="portrait large" ng-src="./media/images/characters/portraits/{{ model.selected.race.name }}.{{ model.selected.gender.name }}.1.jpg"/></figure><ul><li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders"><label class=input-checkbox><input name=gender ng-checked="model.selected.gender.id === gender.id" ng-model=model.selected.gender ng-value=gender type=radio /> {{ gender.name }}</label></li></ul></aside></article></main><footer><button ng-disabled=flags.loading type=submit>Accept</button></footer></form></dialog>'
   );
 
 
