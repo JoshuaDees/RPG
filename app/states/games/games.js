@@ -1,12 +1,16 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games', {
-        abstract: {},
-        scope: true,
-        template: '<ui-view />',
-        controller: [
+        'abstract': {},
+        'scope': true,
+        'template': '<ui-view />',
+        'controller': [
           '$scope',
           'GamesResource',
           'KeyEventProvider',
@@ -18,11 +22,11 @@ angular
           SessionProvider
         ) {
           $scope.model = {
-            userId: SessionProvider.get('userId')
+            'userId': SessionProvider.get('userId')
           };
 
           $scope.flags = {
-            busy: true
+            'loading': true
           };
 
           GamesResource.abort().load($scope.model)
@@ -30,9 +34,9 @@ angular
               if (response.success) {
                 $scope.games = response.model;
 
-                if (_.get($scope, 'games[0]')) {
-                  $scope.model.gameId = $scope.games[0].id;
-                }
+                _.set($scope, 'model.gameId',
+                  _.get($scope, 'games[0].id')
+                );
               } else {
                 alert(response.message);
               }
@@ -41,7 +45,7 @@ angular
               alert(error);
             })
             .finally(function() {
-              $scope.flags.busy = false;
+              _.set($scope, 'flags.loading', false);
             });
 
           KeyEventProvider.actions = [];

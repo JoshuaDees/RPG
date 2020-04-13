@@ -1,11 +1,15 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new.character.class', {
-        scope: {},
-        templateUrl: 'app/templates/games/new/character/class.html',
-        controller: [
+        'scope': {},
+        'templateUrl': 'app/templates/games/new/character/class.html',
+        'controller': [
           '$scope',
           '$state',
           '$stateParams',
@@ -38,7 +42,7 @@ angular
           };
 
           CharactersResource.abort().classes({
-            raceId: _.get($scope.$parent, 'model.race.id')
+            'raceId': _.get($scope.$parent, 'model.race.id')
           })
             .then(function(response) {
               if (response.success) {
@@ -66,14 +70,14 @@ angular
               });
             });
 
-          KeyEventProvider.actions = [
-            {
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() {
-                $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-              }
+          KeyEventProvider.actions = [{
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.new.character.details', {
+                'model': $scope.$parent.model
+              });
             }
-          ];
+          }];
         }]
       });
-  }])
+  }]);

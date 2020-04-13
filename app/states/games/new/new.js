@@ -1,12 +1,16 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new', {
-        abstract: true,
-        scope: {},
-        template: '<ui-view />',
-        controller: [
+        'abstract': true,
+        'scope': {},
+        'template': '<ui-view />',
+        'controller': [
           '$scope',
           '$state',
           'KeyEventProvider',
@@ -18,23 +22,8 @@ angular
           SessionProvider
         ) {
           $scope.model = {
-            userId: SessionProvider.get('userId'),
-            characters: [{
-              name: 'Crag Hack',
-              gender: { id: 1, name: 'Male' },
-              race: { id: 6, name: 'Half-Orc' },
-              class: { id: 1, name: 'Barbarian' },
-              portrait: 'half-orc.male.1',
-              abilities: {
-                might: 15,
-                intellect: 7,
-                personality: 9,
-                endurance: 13,
-                accuracy: 9,
-                speed: 11
-              },
-              skills: []
-            }, {}, {}, {}, {}, {}]
+            'userId': SessionProvider.get('userId'),
+            'characters': [{}, {}, {}, {}, {}, {}]
           };
 
           $scope.isTeamFull = function() {

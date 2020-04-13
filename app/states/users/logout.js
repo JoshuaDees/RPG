@@ -1,10 +1,14 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('users.logout', {
-        scope: {},
-        controller: [
+        'scope': {},
+        'controller': [
           '$state',
           'KeyEventProvider',
           'SessionProvider',

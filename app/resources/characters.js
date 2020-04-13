@@ -1,22 +1,34 @@
 angular
   .module('rpg')
-  .factory('CharactersResource', ['RestfulService', function(RestfulService) {
+  .factory('CharactersResource', [
+    'RestfulService',
+  function(
+    RestfulService
+  ) {
     return RestfulService('data/characters.php', null, {
-      abilities: {
-        method: 'POST',
-        params: { action: 'abilities' }
+      'abilities': {
+        'method': 'POST',
+        'params': {
+          'action': 'abilities'
+        }
       },
-      classes: {
-        method: 'POST',
-        params: { action: 'classes' }
+      'classes': {
+        'method': 'POST',
+        'params': {
+          'action': 'classes'
+        }
       },
-      genders: {
-        method: 'POST',
-        params: { action: 'genders' }
+      'genders': {
+        'method': 'POST',
+        'params': {
+          'action': 'genders'
+        }
       },
-      races: {
-        method: 'POST',
-        params: { action: 'races' }
+      'races': {
+        'method': 'POST',
+        'params': {
+          'action': 'races'
+        }
       }
     });
   }])

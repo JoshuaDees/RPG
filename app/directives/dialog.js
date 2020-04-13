@@ -18,8 +18,8 @@ angular
     DialogService
   ) {
     return {
-      restrict: 'E',
-      link: function($scope, $element) {
+      'restrict': 'E',
+      'link': function($scope, $element) {
         $timeout(function() {
           $element[0].showModal();
         });

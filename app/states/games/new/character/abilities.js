@@ -1,11 +1,15 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new.character.abilities', {
-        scope: {},
-        templateUrl: 'app/templates/games/new/character/abilities.html',
-        controller: [
+        'scope': {},
+        'templateUrl': 'app/templates/games/new/character/abilities.html',
+        'controller': [
           '$scope',
           '$state',
           '$stateParams',
@@ -19,11 +23,11 @@ angular
           KeyEventProvider
         ) {
           $scope.model = {
-            selected: {
-              abilities: []
+            'selected': {
+              'abilities': []
             },
-            details: {
-              bonus: 15
+            'details': {
+              'bonus': 15
             }
           };
 
@@ -79,12 +83,14 @@ angular
           };
 
           CharactersResource.abort().abilities({
-            raceId: _.get($scope.$parent, 'model.race.id'),
-            classId: _.get($scope.$parent, 'model.class.id')
+            'raceId': _.get($scope.$parent, 'model.race.id'),
+            'classId': _.get($scope.$parent, 'model.class.id')
           })
             .then(function(response) {
               if (response.success) {
-                _.set($scope, 'model.selected.abilities', _.merge([], response.model, $scope.$parent.model.abilities));
+                _.set($scope, 'model.selected.abilities',
+                  _.merge([], response.model, $scope.$parent.model.abilities)
+                );
               } else {
                 alert(response.message);
               }
@@ -96,14 +102,14 @@ angular
               _.set($scope, 'flags.loading', false);
             });
 
-          KeyEventProvider.actions = [
-            {
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() {
-                $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-              }
+          KeyEventProvider.actions = [{
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.new.character.details', {
+                'model': $scope.$parent.model
+              });
             }
-          ];
+          }];
         }]
       });
-  }])
+  }]);

@@ -1,11 +1,15 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.load', {
-        scope: {},
-        templateUrl: 'app/templates/games/load.html',
-        controller: [
+        'scope': {},
+        'templateUrl': 'app/templates/games/load.html',
+        'controller': [
           '$scope',
           '$state',
           'GamesResource',
@@ -22,13 +26,12 @@ angular
             // TODO:
           };
 
-            matches: ['Shift+Escape', 'Escape'],
-          KeyEventProvider.actions = [
-            {
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() { $state.transitionTo('games.menu'); }
+          KeyEventProvider.actions = [{
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.menu');
             }
-          ];
+          }];
         }]
       });
   }]);

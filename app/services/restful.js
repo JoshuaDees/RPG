@@ -1,11 +1,21 @@
 angular
   .module('rpg')
-  .config(['$qProvider', '$resourceProvider', function($qProvider, $resourceProvider) {
+  .config([
+    '$qProvider',
+    '$resourceProvider',
+  function(
+    $qProvider,
+    $resourceProvider
+  ) {
     $qProvider.errorOnUnhandledRejections(false);
 
     $resourceProvider.defaults.cancellable = true;
   }])
-  .service('RestfulService', ['$resource', function($resource) {
+  .service('RestfulService', [
+    '$resource',
+  function(
+    $resource
+  ) {
     return function(url, paramDefaults, actions) {
       var resource = $resource.apply($resource, arguments);
 

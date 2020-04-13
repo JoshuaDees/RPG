@@ -1,6 +1,6 @@
 angular
   .module('rpg')
-  .factory('SessionProvider', [function() {
+  .factory('SessionProvider', function() {
     return new function() {
       this.set = function(key, value) {
         return sessionStorage.setItem(key, value);
@@ -14,4 +14,4 @@ angular
         return sessionStorage.removeItem(key);
       };
     }
-  }])
+  });

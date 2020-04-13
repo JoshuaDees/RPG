@@ -1,7 +1,6 @@
 angular
   .module('rpg')
   .factory('KeyEventProvider', function() {
-
     return new function() {
       this.actions = [];
 

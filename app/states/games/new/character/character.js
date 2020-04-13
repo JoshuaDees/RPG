@@ -1,15 +1,19 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new.character', {
-        abstract: true,
-        scope: {},
-        templateUrl: 'app/templates/games/new/character/character.html',
-        params: {
-          model: null
+        'abstract': true,
+        'scope': {},
+        'templateUrl': 'app/templates/games/new/character/character.html',
+        'params': {
+          'model': null
         },
-        controller: [
+        'controller': [
           '$scope',
           '$state',
           '$stateParams',
@@ -34,13 +38,17 @@ angular
               _.set($scope, 'model.' + property, value);
             });
 
-            $state.transitionTo('games.new.character.details', { model: $scope.model });
+            $state.transitionTo('games.new.character.details', {
+              'model': $scope.model
+            });
           };
 
           KeyEventProvider.actions = [{
-            matches: ['Shift+Escape', 'Escape'],
-            callback: function() { $state.transitionTo('games.new.party'); }
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.new.party');
+            }
           }];
         }]
       });
-  }])
+  }]);

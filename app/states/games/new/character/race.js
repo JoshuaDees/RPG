@@ -1,11 +1,15 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new.character.race', {
-        scope: {},
-        templateUrl: 'app/templates/games/new/character/race.html',
-        controller: [
+        'scope': {},
+        'templateUrl': 'app/templates/games/new/character/race.html',
+        'controller': [
           '$q',
           '$scope',
           '$state',
@@ -94,14 +98,14 @@ angular
               });
             });
 
-          KeyEventProvider.actions = [
-            {
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() {
-                $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-              }
+          KeyEventProvider.actions = [{
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.new.character.details', {
+                'model': $scope.$parent.model
+              });
             }
-          ];
+          }];
         }]
       });
-  }])
+  }]);

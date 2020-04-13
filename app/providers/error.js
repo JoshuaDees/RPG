@@ -1,6 +1,6 @@
 angular
   .module('rpg')
-  .factory('ErrorProvider', [function() {
+  .factory('ErrorProvider', function() {
     return new function() {
       this.alert = function(error) {
         $(document.body).append(
@@ -17,4 +17,4 @@ angular
         $('#error')[0].showModal();
       };
     }
-  }])
+  });

@@ -1,11 +1,15 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new.character.name', {
-        scope: {},
-        templateUrl: 'app/templates/games/new/character/name.html',
-        controller: [
+        'scope': {},
+        'templateUrl': 'app/templates/games/new/character/name.html',
+        'controller': [
           '$scope',
           '$state',
           '$stateParams',
@@ -17,7 +21,7 @@ angular
           KeyEventProvider
         ) {
           $scope.model = {
-            selected: _.get($scope.$parent, 'model.name')
+            'selected': _.get($scope.$parent, 'model.name')
           };
 
           $scope.accept = function() {
@@ -26,14 +30,14 @@ angular
             });
           };
 
-          KeyEventProvider.actions = [
-            {
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() {
-                $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-              }
+          KeyEventProvider.actions = [{
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.new.character.details', {
+                'model': $scope.$parent.model
+              });
             }
-          ];
+          }];
         }]
       });
-  }])
+  }]);

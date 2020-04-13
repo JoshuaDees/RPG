@@ -1,11 +1,15 @@
 angular
   .module('rpg')
-  .config(['$stateProvider', function($stateProvider) {
+  .config([
+    '$stateProvider',
+  function(
+    $stateProvider
+  ) {
     $stateProvider
       .state('games.new.party', {
-        scope: {},
-        templateUrl: 'app/templates/games/new/party.html',
-        controller: [
+        'scope': {},
+        'templateUrl': 'app/templates/games/new/party.html',
+        'controller': [
           '$scope',
           '$state',
           'KeyEventProvider',
@@ -15,12 +19,16 @@ angular
           KeyEventProvider
         ) {
           KeyEventProvider.actions = [{
-            matches: ['Shift+Escape', 'Escape'],
-            callback: function() { $state.transitionTo('games.menu'); }
+            'matches': ['Shift+Escape', 'Escape'],
+            'callback': function() {
+              $state.transitionTo('games.menu');
+            }
           }, {
-            matches: ['1|2|3|4|5|6'],
-            callback: function(match) {
-              $state.transitionTo('games.new.character.details', { model: $scope.$parent.model.characters[match - 1] });
+            'matches': ['1|2|3|4|5|6'],
+            'callback': function(match) {
+              $state.transitionTo('games.new.character.details', {
+                'model': $scope.$parent.model.characters[match - 1]
+              });
             }
           }];
         }]

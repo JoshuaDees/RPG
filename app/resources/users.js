@@ -1,18 +1,28 @@
 angular
   .module('rpg')
-  .factory('UsersResource', ['RestfulService', function(RestfulService) {
+  .factory('UsersResource', [
+    'RestfulService',
+  function(
+    RestfulService
+  ) {
     return RestfulService('data/users.php', null, {
-      login: {
-        method: 'POST',
-        params: { action: 'login' }
+      'login': {
+        'method': 'POST',
+        'params': {
+          'action': 'login'
+        }
       },
-      logout: {
-        method: 'POST',
-        params: { action: 'logout' }
+      'logout': {
+        'method': 'POST',
+        'params': {
+          'action': 'logout'
+        }
       },
-      register: {
-        method: 'POST',
-        params: { action: 'register' }
+      'register': {
+        'method': 'POST',
+        'params': {
+          'action': 'register'
+        }
       }
     });
   }]);

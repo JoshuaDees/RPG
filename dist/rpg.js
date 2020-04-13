@@ -30,8 +30,8 @@
       DialogService
     ) {
       return {
-        restrict: 'E',
-        link: function($scope, $element) {
+        'restrict': 'E',
+        'link': function($scope, $element) {
           $timeout(function() {
             $element[0].showModal();
           });
@@ -46,9 +46,12 @@
   module
     .directive('overlay', function() {
       return {
-        constrain: 'A',
-        link: function($scope, $element, $attributes) {
-          $scope.$watchGroup([$attributes.overlay, $attributes.overlayText], function(options) {
+        'constrain': 'A',
+        'link': function($scope, $element, $attributes) {
+          $scope.$watchGroup([
+            $attributes.overlay,
+            $attributes.overlayText
+          ], function(options) {
             $element.find('> .overlay').remove();
 
             if (options[0]) {
@@ -75,7 +78,7 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .factory('ErrorProvider', [function() {
+    .factory('ErrorProvider', function() {
       return new function() {
         this.alert = function(error) {
           $(document.body).append(
@@ -92,7 +95,7 @@
           $('#error')[0].showModal();
         };
       }
-    }])
+    });
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/providers/keyEvent.js
@@ -100,7 +103,6 @@
 
   module
     .factory('KeyEventProvider', function() {
-
       return new function() {
         this.actions = [];
 
@@ -152,7 +154,7 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .factory('SessionProvider', [function() {
+    .factory('SessionProvider', function() {
       return new function() {
         this.set = function(key, value) {
           return sessionStorage.setItem(key, value);
@@ -166,30 +168,42 @@
           return sessionStorage.removeItem(key);
         };
       }
-    }])
+    });
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/resources/characters.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .factory('CharactersResource', ['RestfulService', function(RestfulService) {
+    .factory('CharactersResource', [
+      'RestfulService',
+    function(
+      RestfulService
+    ) {
       return RestfulService('data/characters.php', null, {
-        abilities: {
-          method: 'POST',
-          params: { action: 'abilities' }
+        'abilities': {
+          'method': 'POST',
+          'params': {
+            'action': 'abilities'
+          }
         },
-        classes: {
-          method: 'POST',
-          params: { action: 'classes' }
+        'classes': {
+          'method': 'POST',
+          'params': {
+            'action': 'classes'
+          }
         },
-        genders: {
-          method: 'POST',
-          params: { action: 'genders' }
+        'genders': {
+          'method': 'POST',
+          'params': {
+            'action': 'genders'
+          }
         },
-        races: {
-          method: 'POST',
-          params: { action: 'races' }
+        'races': {
+          'method': 'POST',
+          'params': {
+            'action': 'races'
+          }
         }
       });
     }])
@@ -199,11 +213,17 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .factory('GamesResource', ['RestfulService', function(RestfulService) {
+    .factory('GamesResource', [
+      'RestfulService',
+    function(
+      RestfulService
+    ) {
       return RestfulService('data/games.php', null, {
-        load: {
-          method: 'POST',
-          params: { action: 'load' }
+        'load': {
+          'method': 'POST',
+          'params': {
+            'action': 'load'
+          }
         }
       });
     }])
@@ -213,19 +233,29 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .factory('UsersResource', ['RestfulService', function(RestfulService) {
+    .factory('UsersResource', [
+      'RestfulService',
+    function(
+      RestfulService
+    ) {
       return RestfulService('data/users.php', null, {
-        login: {
-          method: 'POST',
-          params: { action: 'login' }
+        'login': {
+          'method': 'POST',
+          'params': {
+            'action': 'login'
+          }
         },
-        logout: {
-          method: 'POST',
-          params: { action: 'logout' }
+        'logout': {
+          'method': 'POST',
+          'params': {
+            'action': 'logout'
+          }
         },
-        register: {
-          method: 'POST',
-          params: { action: 'register' }
+        'register': {
+          'method': 'POST',
+          'params': {
+            'action': 'register'
+          }
         }
       });
     }]);
@@ -235,12 +265,22 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$qProvider', '$resourceProvider', function($qProvider, $resourceProvider) {
+    .config([
+      '$qProvider',
+      '$resourceProvider',
+    function(
+      $qProvider,
+      $resourceProvider
+    ) {
       $qProvider.errorOnUnhandledRejections(false);
 
       $resourceProvider.defaults.cancellable = true;
     }])
-    .service('RestfulService', ['$resource', function($resource) {
+    .service('RestfulService', [
+      '$resource',
+    function(
+      $resource
+    ) {
       return function(url, paramDefaults, actions) {
         var resource = $resource.apply($resource, arguments);
 
@@ -281,13 +321,17 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games', {
-          abstract: {},
-          scope: true,
-          template: '<ui-view />',
-          controller: [
+          'abstract': {},
+          'scope': true,
+          'template': '<ui-view />',
+          'controller': [
             '$scope',
             'GamesResource',
             'KeyEventProvider',
@@ -299,11 +343,11 @@
             SessionProvider
           ) {
             $scope.model = {
-              userId: SessionProvider.get('userId')
+              'userId': SessionProvider.get('userId')
             };
 
             $scope.flags = {
-              busy: true
+              'loading': true
             };
 
             GamesResource.abort().load($scope.model)
@@ -311,9 +355,9 @@
                 if (response.success) {
                   $scope.games = response.model;
 
-                  if (_.get($scope, 'games[0]')) {
-                    $scope.model.gameId = $scope.games[0].id;
-                  }
+                  _.set($scope, 'model.gameId',
+                    _.get($scope, 'games[0].id')
+                  );
                 } else {
                   alert(response.message);
                 }
@@ -322,7 +366,7 @@
                 alert(error);
               })
               .finally(function() {
-                $scope.flags.busy = false;
+                _.set($scope, 'flags.loading', false);
               });
 
             KeyEventProvider.actions = [];
@@ -335,12 +379,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.load', {
-          scope: {},
-          templateUrl: 'app/templates/games/load.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/load.html',
+          'controller': [
             '$scope',
             '$state',
             'GamesResource',
@@ -357,13 +405,12 @@
               // TODO:
             };
 
-              matches: ['Shift+Escape', 'Escape'],
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() { $state.transitionTo('games.menu'); }
+            KeyEventProvider.actions = [{
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.menu');
               }
-            ];
+            }];
           }]
         });
     }]);
@@ -373,12 +420,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.menu', {
-          scope: {},
-          templateUrl: 'app/templates/games/menu.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/menu.html',
+          'controller': [
             '$scope',
             '$state',
             'KeyEventProvider',
@@ -387,16 +438,17 @@
             $state,
             KeyEventProvider
           ) {
-            KeyEventProvider.actions = [
-              {
-                matches: ['l'],
-                callback: function() { $state.transitionTo('games.load'); }
-              },
-              {
-                matches: ['n'],
-                callback: function() { $state.transitionTo('games.new.party'); }
+            KeyEventProvider.actions = [{
+              'matches': ['l'],
+              'callback': function() {
+                $state.transitionTo('games.load');
               }
-            ];
+            }, {
+              'matches': ['n'],
+              'callback': function() {
+                $state.transitionTo('games.new.party');
+              }
+            }];
           }]
         });
     }]);
@@ -406,12 +458,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.character.abilities', {
-          scope: {},
-          templateUrl: 'app/templates/games/new/character/abilities.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/character/abilities.html',
+          'controller': [
             '$scope',
             '$state',
             '$stateParams',
@@ -425,11 +481,11 @@
             KeyEventProvider
           ) {
             $scope.model = {
-              selected: {
-                abilities: []
+              'selected': {
+                'abilities': []
               },
-              details: {
-                bonus: 15
+              'details': {
+                'bonus': 15
               }
             };
 
@@ -485,12 +541,14 @@
             };
 
             CharactersResource.abort().abilities({
-              raceId: _.get($scope.$parent, 'model.race.id'),
-              classId: _.get($scope.$parent, 'model.class.id')
+              'raceId': _.get($scope.$parent, 'model.race.id'),
+              'classId': _.get($scope.$parent, 'model.class.id')
             })
               .then(function(response) {
                 if (response.success) {
-                  _.set($scope, 'model.selected.abilities', _.merge([], response.model, $scope.$parent.model.abilities));
+                  _.set($scope, 'model.selected.abilities',
+                    _.merge([], response.model, $scope.$parent.model.abilities)
+                  );
                 } else {
                   alert(response.message);
                 }
@@ -502,33 +560,37 @@
                 _.set($scope, 'flags.loading', false);
               });
 
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() {
-                  $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-                }
+            KeyEventProvider.actions = [{
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.new.character.details', {
+                  'model': $scope.$parent.model
+                });
               }
-            ];
+            }];
           }]
         });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/new/character/character.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.character', {
-          abstract: true,
-          scope: {},
-          templateUrl: 'app/templates/games/new/character/character.html',
-          params: {
-            model: null
+          'abstract': true,
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/character/character.html',
+          'params': {
+            'model': null
           },
-          controller: [
+          'controller': [
             '$scope',
             '$state',
             '$stateParams',
@@ -553,28 +615,36 @@
                 _.set($scope, 'model.' + property, value);
               });
 
-              $state.transitionTo('games.new.character.details', { model: $scope.model });
+              $state.transitionTo('games.new.character.details', {
+                'model': $scope.model
+              });
             };
 
             KeyEventProvider.actions = [{
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() { $state.transitionTo('games.new.party'); }
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.new.party');
+              }
             }];
           }]
         });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/new/character/class.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.character.class', {
-          scope: {},
-          templateUrl: 'app/templates/games/new/character/class.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/character/class.html',
+          'controller': [
             '$scope',
             '$state',
             '$stateParams',
@@ -607,7 +677,7 @@
             };
 
             CharactersResource.abort().classes({
-              raceId: _.get($scope.$parent, 'model.race.id')
+              'raceId': _.get($scope.$parent, 'model.race.id')
             })
               .then(function(response) {
                 if (response.success) {
@@ -635,28 +705,32 @@
                 });
               });
 
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() {
-                  $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-                }
+            KeyEventProvider.actions = [{
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.new.character.details', {
+                  'model': $scope.$parent.model
+                });
               }
-            ];
+            }];
           }]
         });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/new/character/details.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.character.details', {
-          state: {},
-          controller: [
+          'state': {},
+          'controller': [
             '$scope',
             '$state',
             'KeyEventProvider',
@@ -666,37 +740,43 @@
             KeyEventProvider
           ) {
             KeyEventProvider.actions = [{
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() {
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
                 $state.transitionTo('games.new.party');
               }
             }, {
-              matches: ['r|c|a|s|n'],
-              callback: function(match) {
+              'matches': ['r|c|a|s|n'],
+              'callback': function(match) {
                 $state.transitionTo('games.new.character.' + ({
-                  r: 'race',
-                  c: 'class',
-                  a: 'abilities',
-                  s: 'skills',
-                  n: 'name'
-                })[match], { model: $scope.$parent.model });
+                  'r': 'race',
+                  'c': 'class',
+                  'a': 'abilities',
+                  's': 'skills',
+                  'n': 'name'
+                })[match], {
+                  'model': $scope.$parent.model
+                });
               }
             }];
           }]
         });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/new/character/name.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.character.name', {
-          scope: {},
-          templateUrl: 'app/templates/games/new/character/name.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/character/name.html',
+          'controller': [
             '$scope',
             '$state',
             '$stateParams',
@@ -708,7 +788,7 @@
             KeyEventProvider
           ) {
             $scope.model = {
-              selected: _.get($scope.$parent, 'model.name')
+              'selected': _.get($scope.$parent, 'model.name')
             };
 
             $scope.accept = function() {
@@ -717,29 +797,33 @@
               });
             };
 
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() {
-                  $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-                }
+            KeyEventProvider.actions = [{
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.new.character.details', {
+                  'model': $scope.$parent.model
+                });
               }
-            ];
+            }];
           }]
         });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/new/character/race.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.character.race', {
-          scope: {},
-          templateUrl: 'app/templates/games/new/character/race.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/character/race.html',
+          'controller': [
             '$q',
             '$scope',
             '$state',
@@ -828,30 +912,34 @@
                 });
               });
 
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() {
-                  $state.transitionTo('games.new.character.details', { model: $scope.$parent.model });
-                }
+            KeyEventProvider.actions = [{
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.new.character.details', {
+                  'model': $scope.$parent.model
+                });
               }
-            ];
+            }];
           }]
         });
-    }])
+    }]);
 
 //--------------------------------------------------------------------------------------------------------------------
 // File: app/states/games/new/new.js
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new', {
-          abstract: true,
-          scope: {},
-          template: '<ui-view />',
-          controller: [
+          'abstract': true,
+          'scope': {},
+          'template': '<ui-view />',
+          'controller': [
             '$scope',
             '$state',
             'KeyEventProvider',
@@ -863,23 +951,8 @@
             SessionProvider
           ) {
             $scope.model = {
-              userId: SessionProvider.get('userId'),
-              characters: [{
-                name: 'Crag Hack',
-                gender: { id: 1, name: 'Male' },
-                race: { id: 6, name: 'Half-Orc' },
-                class: { id: 1, name: 'Barbarian' },
-                portrait: 'half-orc.male.1',
-                abilities: {
-                  might: 15,
-                  intellect: 7,
-                  personality: 9,
-                  endurance: 13,
-                  accuracy: 9,
-                  speed: 11
-                },
-                skills: []
-              }, {}, {}, {}, {}, {}]
+              'userId': SessionProvider.get('userId'),
+              'characters': [{}, {}, {}, {}, {}, {}]
             };
 
             $scope.isTeamFull = function() {
@@ -898,12 +971,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('games.new.party', {
-          scope: {},
-          templateUrl: 'app/templates/games/new/party.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/party.html',
+          'controller': [
             '$scope',
             '$state',
             'KeyEventProvider',
@@ -913,12 +990,16 @@
             KeyEventProvider
           ) {
             KeyEventProvider.actions = [{
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() { $state.transitionTo('games.menu'); }
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': function() {
+                $state.transitionTo('games.menu');
+              }
             }, {
-              matches: ['1|2|3|4|5|6'],
-              callback: function(match) {
-                $state.transitionTo('games.new.character.details', { model: $scope.$parent.model.characters[match - 1] });
+              'matches': ['1|2|3|4|5|6'],
+              'callback': function(match) {
+                $state.transitionTo('games.new.character.details', {
+                  'model': $scope.$parent.model.characters[match - 1]
+                });
               }
             }];
           }]
@@ -957,12 +1038,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('users.login', {
-          scope: {},
-          templateUrl: 'app/templates/users/login.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/users/login.html',
+          'controller': [
             '$scope',
             '$state',
             'ErrorProvider',
@@ -978,11 +1063,11 @@
             UsersResource
           ) {
             $scope.flags = {
-              busy: false
+              'loading': false
             };
 
             $scope.login = function() {
-              $scope.flags.busy = true;
+              _.set($scope, 'flags.loading', true);
 
               UsersResource.abort().login($scope.model)
                 .then(function(response) {
@@ -999,7 +1084,7 @@
                   alert(error);
                 })
                 .finally(function() {
-                  $scope.flags.busy = false;
+                  _.set($scope, 'flags.loading', false);
                 });
 
               KeyEventProvider.actions = [];
@@ -1013,11 +1098,15 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('users.logout', {
-          scope: {},
-          controller: [
+          'scope': {},
+          'controller': [
             '$state',
             'KeyEventProvider',
             'SessionProvider',
@@ -1052,12 +1141,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('users.register', {
-          scope: {},
-          templateUrl: 'app/templates/users/register.html',
-          controller: [
+          'scope': {},
+          'templateUrl': 'app/templates/users/register.html',
+          'controller': [
             '$scope',
             '$state',
             'KeyEventProvider',
@@ -1071,14 +1164,12 @@
             UsersResource
           ) {
             $scope.flags = {
-              busy: false
+              'loading': false
             };
 
             $scope.register = function() {
-              console.log($scope.model);
-
-              if($scope.model.pass === $scope.model.pass2) {
-                $scope.flags.busy = true;
+              if(_.get($scope, 'model.pass') === _.get($scope, 'model.pass2')) {
+                _.set($scope, 'flags.busy', true);
 
                 UsersResource.abort().register($scope.model)
                   .then(function(response) {
@@ -1095,19 +1186,19 @@
                     alert(error);
                   })
                   .finally(function() {
-                    $scope.flags.busy = false;
+                    _.set($scope, 'flags.busy', false);
                   });
               } else {
                 alert('The passwords do not match.');
               }
             };
 
-            KeyEventProvider.actions = [
-              {
-                matches: ['Shift+Escape', 'Escape'],
-                callback: function() { $state.transitionTo('users.login'); }
-              }
-            ];
+            KeyEventProvider.actions = [{
+                'matches': ['Shift+Escape', 'Escape'],
+                'callback': function() {
+                  $state.transitionTo('users.login');
+                }
+              }];
           }]
         });
     }]);
@@ -1117,12 +1208,16 @@
 //--------------------------------------------------------------------------------------------------------------------
 
   module
-    .config(['$stateProvider', function($stateProvider) {
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
       $stateProvider
         .state('users', {
-          abstract: true,
-          scope: {},
-          template: '<ui-view />'
+          'abstract': true,
+          'scope': {},
+          'template': '<ui-view />'
         });
     }]);
 
