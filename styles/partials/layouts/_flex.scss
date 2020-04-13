@@ -1,0 +1,37 @@
+.row {
+  display: flex;
+
+  .flex {
+    flex: 1 0 auto;
+  }
+
+  & + & {
+    margin-top: $margin;
+  }
+
+  &.separated > * {
+    margin-left: $margin;
+  }
+
+  &.condensed {
+    & + & {
+      margin-top: ($margin/2);
+    }
+
+    &.separated > * {
+      margin-left: ($margin/2);
+    }
+  }
+}
+
+.col {
+  display: flex;
+
+  .flex {
+    flex: 1 0 auto;
+  }
+
+  & + & {
+    left: $margin;
+  }
+}

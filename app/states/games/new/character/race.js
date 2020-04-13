@@ -84,7 +84,7 @@ angular
               alert(error);
             })
             .finally(function() {
-              $scope.flags.busy = false;
+              _.set($scope, 'flags.busy', false);
             });
 
           KeyEventProvider.actions = [

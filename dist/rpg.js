@@ -40,6 +40,17 @@
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/filters/modifier.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .filter('modifier', function() {
+      return function(modifier) {
+        return '' + (modifier > 0 ? '+' : '') + modifier;
+      };
+    });
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/providers/error.js
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -394,30 +405,59 @@
             KeyEventProvider
           ) {
             $scope.model = {
-              abilities: [],
-              selected: [11, 11, 11, 11, 11, 11]
+              selected: {
+                abilities: []
+              },
+              details: {
+                bonus: 15
+              }
             };
 
             $scope.getValue = function(attribute) {
-              return $scope.model.selected[attribute] +
-                parseFloat(_.get($scope, 'model.abilities[' + attribute + '].raceModifier') || 0) +
-                parseFloat(_.get($scope, 'model.abilities[' + attribute + '].classModifier') || 0);
+              return parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].default')) +
+                parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].raceModifier') || 0) +
+                parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].classModifier') || 0) +
+                $scope.getBonus(attribute);
+            };
+
+            $scope.getBonus = function(attribute) {
+              var bonus;
+
+              if (attribute != undefined) {
+                bonus = parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0);
+              } else {
+                bonus = parseFloat(_.get($scope, 'model.details.bonus'));
+
+                _.forEach(_.get($scope, 'model.selected.abilities'), function(details, ability) {
+                  bonus -= $scope.getBonus(ability);
+                });
+              }
+
+              return bonus;
             };
 
             $scope.getModifier = function(attribute) {
-              var modifier = Math.floor(($scope.getValue(attribute) - 10) / 2);
+              return Math.floor(($scope.getValue(attribute) - 10) / 2);
+            };
 
-              if (modifier > 0) {
-                modifier = '+' + modifier;
-              }
+            $scope.increment = function(attribute, $event) {
+              _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
+                parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) + 1
+              );
 
-              return modifier;
+              $event.preventDefault();
+            };
+
+            $scope.decrement = function(attribute, $event) {
+              _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
+                parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) - 1
+              );
+
+              $event.preventDefault();
             };
 
             $scope.accept = function() {
-              $scope.$parent.update({
-                'abilities': $scope.model.selected
-              });
+              $scope.$parent.update($scope.model.selected);
             };
 
             CharactersResource.abort().abilities({
@@ -426,7 +466,7 @@
             })
               .then(function(response) {
                 if (response.success) {
-                  $scope.model.abilities = response.model;
+                  _.set($scope, 'model.selected.abilities', _.merge([], response.model, $scope.$parent.model.abilities));
                 } else {
                   alert(response.message);
                 }
@@ -435,7 +475,7 @@
                 alert(error);
               })
               .finally(function() {
-                $scope.flags.busy = false;
+                _.set($scope, 'flags.busy', false);
               });
 
             KeyEventProvider.actions = [
@@ -477,10 +517,12 @@
           ) {
             $scope.model = $stateParams.model || {};
 
-            KeyEventProvider.actions = [{
-              matches: ['Shift+Escape', 'Escape'],
-              callback: function() { $state.transitionTo('games.new.party'); }
-            }];
+            $scope.getAttributeValue = function(attribute) {
+              return parseFloat(_.get(attribute, 'default')) +
+                parseFloat(_.get(attribute, 'raceModifier') || 0) +
+                parseFloat(_.get(attribute, 'classModifier') || 0) +
+                parseFloat(_.get(attribute, 'bonus') || 0);
+            };
 
             $scope.update = function(attributes) {
               _.forEach(attributes, function(value, property) {
@@ -490,13 +532,10 @@
               $state.transitionTo('games.new.character.details', { model: $scope.model });
             };
 
-            /*_.forEach(['race', 'class', 'attributes', 'skills', 'name'], function(attribute) {
-              if (!_.get($scope, 'model.' + attribute)) {
-                $state.transitionTo('games.new.character.' + attribute, { model: $scope.model });
-
-                return false;
-              }
-            });*/
+            KeyEventProvider.actions = [{
+              matches: ['Shift+Escape', 'Escape'],
+              callback: function() { $state.transitionTo('games.new.party'); }
+            }];
           }]
         });
     }])
@@ -755,7 +794,7 @@
                 alert(error);
               })
               .finally(function() {
-                $scope.flags.busy = false;
+                _.set($scope, 'flags.busy', false);
               });
 
             KeyEventProvider.actions = [
@@ -1072,12 +1111,12 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/abilities.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main style="height: 192px;"><div ng-repeat="ability in model.abilities track by $index"><label class=text-right style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label> <input class=text-center disabled ng-value=getValue($index) style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier($index) style="width: 64px;"/> <button style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Abilities</header><main style="height: 272px; width: 330px;"><div class="row condensed separated"><label class="flex text-right" style="display: inline-block; width: 104px; text-transform: capitalize;">Bonus Points:</label> <input class=text-center disabled ng-value=getBonus() style="width: 64px;"/></div><div class="row condensed separated" ng-repeat="ability in model.selected.abilities track by $index"><label class="flex text-right" style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label> <input class=text-center disabled ng-value=getValue($index) style="width: 64px;"/> <input class=text-center disabled ng-value=getModifier($index) style="width: 64px;"/> <button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus=this.blur(); style="min-width: 32px;"><i class="fa fa-plus"></i></button> <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus=this.blur(); style="min-width: 32px;"><i class="fa fa-minus"></i></button></div></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 
   $templateCache.put('app/templates/games/new/character/character.html',
-    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button ng-disabled="false && !model.gender" onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> Mgt: {{ model.abilities.might }}, Int: {{ model.abilities.intellect }}, Per: {{ model.abilities.personality }}, End: {{ model.abilities.endurance }}, Acc: {{ model.abilities.accuracy }}, Spd: {{ model.abilities.speed }}</p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if="model.race && model.gender" ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg"/> <img class="portrait large" ng-if="!model.race || !model.gender" ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
+    '<h2>Create Character</h2><dialog><form><header><a ui-sref=games.new.party><i class="fa fa-times"></i></a> Create Character</header><main><article style="width: 832px;"><aside><nav class=compact><button ng-disabled="false && !model.gender" onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.race\', { model: model })">Race</button> <button ng-disabled=!model.race onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.class\', { model: model })">Class</button> <button ng-disabled=!model.class onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.abilities\', { model: model })">Abilities</button> <button ng-disabled=!model.abilities onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.skills\', { model: model })">Skills</button> <button ng-disabled=!model.skills onfocus=this.blur(); ng-click="transitionTo(\'games.new.character.name\', { model: model })">Name</button></nav></aside><section class=border><p ng-if=model.name><b>Name:</b> {{ model.name }}</p><p ng-if=model.gender><b>Gender:</b> {{ model.gender.name }}</p><p ng-if=model.race><b>Race:</b> {{ model.race.name }}</p><p ng-if=model.class><b>Class:</b> {{ model.class.name }}</p><p ng-if=model.abilities><b>Abilities:</b> <span ng-repeat="ability in model.abilities track by $index">{{ ability.abbreviation }}: {{ getAttributeValue(ability) }}<span ng-if=!$last>,&nbsp;</span></span></p><p ng-if=model.skills><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p></section><aside><figure><img class="portrait large" ng-if="model.race && model.gender" ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg"/> <img class="portrait large" ng-if="!model.race || !model.gender" ng-src=./media/images/transparent.gif /></figure></aside></article></main><footer><button disabled type=submit>Create</button></footer></form></dialog><ui-view/>'
   );
 
 

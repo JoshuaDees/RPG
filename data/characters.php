@@ -10,6 +10,8 @@
       $json = $response->toArray(array(
         "id" => "AbilityId",
         "name" => "AbilityName",
+        "abbreviation" => "AbilityAbbreviation",
+        "default" => "AbilityDefault",
         "raceModifier" => "RaceAbilityModifier",
         "classModifier" => "ClassAbilityModifier"
       ));

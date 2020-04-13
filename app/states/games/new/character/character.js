@@ -22,10 +22,12 @@ angular
         ) {
           $scope.model = $stateParams.model || {};
 
-          KeyEventProvider.actions = [{
-            matches: ['Shift+Escape', 'Escape'],
-            callback: function() { $state.transitionTo('games.new.party'); }
-          }];
+          $scope.getAttributeValue = function(attribute) {
+            return parseFloat(_.get(attribute, 'default')) +
+              parseFloat(_.get(attribute, 'raceModifier') || 0) +
+              parseFloat(_.get(attribute, 'classModifier') || 0) +
+              parseFloat(_.get(attribute, 'bonus') || 0);
+          };
 
           $scope.update = function(attributes) {
             _.forEach(attributes, function(value, property) {
@@ -35,13 +37,10 @@ angular
             $state.transitionTo('games.new.character.details', { model: $scope.model });
           };
 
-          /*_.forEach(['race', 'class', 'attributes', 'skills', 'name'], function(attribute) {
-            if (!_.get($scope, 'model.' + attribute)) {
-              $state.transitionTo('games.new.character.' + attribute, { model: $scope.model });
-
-              return false;
-            }
-          });*/
+          KeyEventProvider.actions = [{
+            matches: ['Shift+Escape', 'Escape'],
+            callback: function() { $state.transitionTo('games.new.party'); }
+          }];
         }]
       });
   }])

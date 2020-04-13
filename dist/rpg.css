@@ -20,6 +20,28 @@ textarea {
 .row .flex {
   flex: 1 0 auto;
 }
+.row + .row {
+  margin-top: 16px;
+}
+.row.separated > * {
+  margin-left: 16px;
+}
+.row.condensed + .row.condensed {
+  margin-top: 8px;
+}
+.row.condensed.separated > * {
+  margin-left: 8px;
+}
+
+.col {
+  display: flex;
+}
+.col .flex {
+  flex: 1 0 auto;
+}
+.col + .col {
+  left: 16px;
+}
 
 *, ::after, ::before {
   box-sizing: border-box;

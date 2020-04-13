@@ -19,30 +19,59 @@ angular
           KeyEventProvider
         ) {
           $scope.model = {
-            abilities: [],
-            selected: [11, 11, 11, 11, 11, 11]
+            selected: {
+              abilities: []
+            },
+            details: {
+              bonus: 15
+            }
           };
 
           $scope.getValue = function(attribute) {
-            return $scope.model.selected[attribute] +
-              parseFloat(_.get($scope, 'model.abilities[' + attribute + '].raceModifier') || 0) +
-              parseFloat(_.get($scope, 'model.abilities[' + attribute + '].classModifier') || 0);
+            return parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].default')) +
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].raceModifier') || 0) +
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].classModifier') || 0) +
+              $scope.getBonus(attribute);
+          };
+
+          $scope.getBonus = function(attribute) {
+            var bonus;
+
+            if (attribute != undefined) {
+              bonus = parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0);
+            } else {
+              bonus = parseFloat(_.get($scope, 'model.details.bonus'));
+
+              _.forEach(_.get($scope, 'model.selected.abilities'), function(details, ability) {
+                bonus -= $scope.getBonus(ability);
+              });
+            }
+
+            return bonus;
           };
 
           $scope.getModifier = function(attribute) {
-            var modifier = Math.floor(($scope.getValue(attribute) - 10) / 2);
+            return Math.floor(($scope.getValue(attribute) - 10) / 2);
+          };
 
-            if (modifier > 0) {
-              modifier = '+' + modifier;
-            }
+          $scope.increment = function(attribute, $event) {
+            _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) + 1
+            );
 
-            return modifier;
+            $event.preventDefault();
+          };
+
+          $scope.decrement = function(attribute, $event) {
+            _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) - 1
+            );
+
+            $event.preventDefault();
           };
 
           $scope.accept = function() {
-            $scope.$parent.update({
-              'abilities': $scope.model.selected
-            });
+            $scope.$parent.update($scope.model.selected);
           };
 
           CharactersResource.abort().abilities({
@@ -51,7 +80,7 @@ angular
           })
             .then(function(response) {
               if (response.success) {
-                $scope.model.abilities = response.model;
+                _.set($scope, 'model.selected.abilities', _.merge([], response.model, $scope.$parent.model.abilities));
               } else {
                 alert(response.message);
               }
@@ -60,7 +89,7 @@ angular
               alert(error);
             })
             .finally(function() {
-              $scope.flags.busy = false;
+              _.set($scope, 'flags.busy', false);
             });
 
           KeyEventProvider.actions = [

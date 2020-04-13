@@ -24,12 +24,9 @@
           <p ng-if="model.class"><b>Class:</b> {{ model.class.name }}</p>
           <p ng-if="model.abilities">
             <b>Abilities:</b>
-            Mgt: {{ model.abilities.might }},
-            Int: {{ model.abilities.intellect }},
-            Per: {{ model.abilities.personality }},
-            End: {{ model.abilities.endurance }},
-            Acc: {{ model.abilities.accuracy }},
-            Spd: {{ model.abilities.speed }}
+            <span ng-repeat="ability in model.abilities track by $index">
+              {{ ability.abbreviation }}: {{ getAttributeValue(ability) }}<span ng-if="!$last">,&nbsp;</span>
+            </span>
           </p>
           <p ng-if="model.skills"><b>Skills:</b> Bastard Sword, Plate Armor, Shield, Body Building</p>
         </section>

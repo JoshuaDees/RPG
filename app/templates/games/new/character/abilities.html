@@ -4,13 +4,18 @@
       <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
       Select Abilities
     </header>
-    <main style="height: 192px;">
-      <div ng-repeat="ability in model.abilities track by $index">
-        <label class="text-right" style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label>
+    <main style="height: 272px; width: 330px;">
+      <div class="row condensed separated">
+        <label class="flex text-right" style="display: inline-block; width: 104px; text-transform: capitalize;">Bonus Points:</label>
+        <input class="text-center" disabled ng-value="getBonus()" style="width: 64px;" />
+      </div>
+      <div class="row condensed separated" ng-repeat="ability in model.selected.abilities track by $index">
+        <label class="flex text-right" style="display: inline-block; width: 96px; text-transform: capitalize;">{{ ability.name }}:</label>
         <input class="text-center" disabled ng-value="getValue($index)" style="width: 64px;" />
+        <!-- input class="text-center" disabled ng-value="getBonus($index)" style="width: 64px;" / -->
         <input class="text-center" disabled ng-value="getModifier($index)" style="width: 64px;" />
-        <button style="min-width: 32px;"><i class="fa fa-plus"></i></button>
-        <button style="min-width: 32px;"><i class="fa fa-minus"></i></button>
+        <button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus="this.blur();" style="min-width: 32px;"><i class="fa fa-plus"></i></button>
+        <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus="this.blur();" style="min-width: 32px;"><i class="fa fa-minus"></i></button>
       </div>
     </main>
     <footer>
