@@ -21,18 +21,18 @@ angular
           KeyEventProvider
         ) {
           $scope.model = {
-            options: {
-              genders: null,
-              races: null
+            'options': {
+              'genders': [],
+              'races': []
             },
-            selected: {
-              gender: null,
-              race: null
+            'selected': {
+              'gender': null,
+              'race': null
             }
           };
 
           $scope.flags = {
-            busy: true
+            'busy': true
           };
 
           $scope.accept = function() {
@@ -44,12 +44,15 @@ angular
           CharactersResource.genders()
             .then(function(response) {
               if (response.success) {
-                $scope.model.options.genders = response.model;
+                _.set($scope, 'model.options.genders', response.model);
 
-                $scope.model.selected.gender = _.filter($scope.model.options.genders, function(current, index) {
-                  var selected = _.get($scope.$parent, 'model.gender.id');
-                  return selected ? current.id == selected : index == 0;
-                })[0];
+                _.set($scope, 'model.selected.gender', _.filter(
+                  _.get($scope, 'model.options.genders'),
+                  function(current, index) {
+                    var selected = _.get($scope.$parent, 'model.gender.id');
+                    return selected ? current.id == selected : index == 0;
+                  }
+                )[0]);
               } else {
                 alert(response.message);
               }
@@ -64,12 +67,15 @@ angular
           CharactersResource.races()
             .then(function(response) {
               if (response.success) {
-                $scope.model.options.races = response.model;
+                _.set($scope, 'model.options.races', response.model);
 
-                $scope.model.selected.race = _.filter($scope.model.options.races, function(current, index) {
-                  var selected = _.get($scope.$parent, 'model.race.id');
-                  return selected ? current.id == selected : index == 0;
-                })[0];
+                _.set($scope, 'model.selected.race', _.filter(
+                  _.get($scope, 'model.options.races'),
+                  function(current, index) {
+                    var selected = _.get($scope.$parent, 'model.race.id');
+                    return selected ? current.id == selected : index == 0;
+                  }
+                )[0]);
               } else {
                 alert(response.message);
               }

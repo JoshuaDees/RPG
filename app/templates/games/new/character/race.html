@@ -8,9 +8,16 @@
       <article style="height: 360px;">
         <aside style="width: 160px;">
           <ul style="height: 100%;">
-            <li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races">
+            <li
+              ng-class="{ active: model.selected.race.id == race.id }"
+              ng-repeat="race in model.options.races">
               <label class="input-checkbox">
-                <input name="race" ng-checked="model.selected.race.id === race.id" ng-model="model.selected.race" ng-value="race" type="radio" />
+                <input
+                  name="race"
+                  ng-checked="model.selected.race.id === race.id"
+                  ng-model="model.selected.race"
+                  ng-value="race"
+                  type="radio" />
                 {{ race.name }}
               </label>
             </li>

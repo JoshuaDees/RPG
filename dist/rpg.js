@@ -527,18 +527,20 @@
             KeyEventProvider
           ) {
             $scope.model = {
-              items: [],
-              selected: null
+              'options': {
+                'class': []
+              },
+              'selected': {
+                'class': null
+              }
             };
 
             $scope.flags = {
-              busy: true
+              'busy': true
             };
 
             $scope.accept = function() {
-              $scope.$parent.update({
-                'class': $scope.model.selected
-              });
+              $scope.$parent.update($scope.model.selected);
             };
 
             CharactersResource.abort().classes({
@@ -546,12 +548,15 @@
             })
               .then(function(response) {
                 if (response.success) {
-                  $scope.model.items = response.model;
+                  _.set($scope, 'model.options.class', response.model);
 
-                  $scope.model.selected = _.filter($scope.model.items, function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.class.id');
-                    return selected ? current.id == selected : index == 0;
-                  })[0];
+                  _.set($scope, 'model.selected.class', _.filter(
+                    _.get($scope, 'model.options.class'),
+                    function(current, index) {
+                      var selected = _.get($scope.$parent, 'model.class.id');
+                      return selected ? current.id == selected : index == 0;
+                    }
+                  )[0]);
 
                   $timeout(function() {
                     $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
@@ -564,7 +569,7 @@
                 alert(error);
               })
               .finally(function() {
-                $scope.flags.busy = false;
+                _.set($scope, 'flags.busy', false);
               });
 
             KeyEventProvider.actions = [
@@ -687,18 +692,18 @@
             KeyEventProvider
           ) {
             $scope.model = {
-              options: {
-                genders: null,
-                races: null
+              'options': {
+                'genders': [],
+                'races': []
               },
-              selected: {
-                gender: null,
-                race: null
+              'selected': {
+                'gender': null,
+                'race': null
               }
             };
 
             $scope.flags = {
-              busy: true
+              'busy': true
             };
 
             $scope.accept = function() {
@@ -710,12 +715,15 @@
             CharactersResource.genders()
               .then(function(response) {
                 if (response.success) {
-                  $scope.model.options.genders = response.model;
+                  _.set($scope, 'model.options.genders', response.model);
 
-                  $scope.model.selected.gender = _.filter($scope.model.options.genders, function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.gender.id');
-                    return selected ? current.id == selected : index == 0;
-                  })[0];
+                  _.set($scope, 'model.selected.gender', _.filter(
+                    _.get($scope, 'model.options.genders'),
+                    function(current, index) {
+                      var selected = _.get($scope.$parent, 'model.gender.id');
+                      return selected ? current.id == selected : index == 0;
+                    }
+                  )[0]);
                 } else {
                   alert(response.message);
                 }
@@ -730,12 +738,15 @@
             CharactersResource.races()
               .then(function(response) {
                 if (response.success) {
-                  $scope.model.options.races = response.model;
+                  _.set($scope, 'model.options.races', response.model);
 
-                  $scope.model.selected.race = _.filter($scope.model.options.races, function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.race.id');
-                    return selected ? current.id == selected : index == 0;
-                  })[0];
+                  _.set($scope, 'model.selected.race', _.filter(
+                    _.get($scope, 'model.options.races'),
+                    function(current, index) {
+                      var selected = _.get($scope.$parent, 'model.race.id');
+                      return selected ? current.id == selected : index == 0;
+                    }
+                  )[0]);
                 } else {
                   alert(response.message);
                 }
@@ -1071,7 +1082,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/class.html',
-    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected == item, disabled: item.enabled == null }" ng-repeat="item in model.items"><label class=input-checkbox><input name=class ng-disabled="item.enabled == null" ng-model=model.selected ng-value=item type=radio /> {{ item.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
+    '<dialog modal><form ng-submit=accept()><header><a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a> Select Class</header><main><article style="height: 360px; width: 640px;"><aside style="width: 160px;"><ul style="height: 100%;"><li ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.id === class.id" ng-disabled="class.enabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.name }}</label></li></ul></aside><section class=border><p>{{ model.selected.class.description }}</p></section></article></main><footer><button type=submit>Accept</button></footer></form></dialog>'
   );
 
 

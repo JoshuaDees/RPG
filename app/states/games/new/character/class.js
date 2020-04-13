@@ -21,18 +21,20 @@ angular
           KeyEventProvider
         ) {
           $scope.model = {
-            items: [],
-            selected: null
+            'options': {
+              'class': []
+            },
+            'selected': {
+              'class': null
+            }
           };
 
           $scope.flags = {
-            busy: true
+            'busy': true
           };
 
           $scope.accept = function() {
-            $scope.$parent.update({
-              'class': $scope.model.selected
-            });
+            $scope.$parent.update($scope.model.selected);
           };
 
           CharactersResource.abort().classes({
@@ -40,12 +42,15 @@ angular
           })
             .then(function(response) {
               if (response.success) {
-                $scope.model.items = response.model;
+                _.set($scope, 'model.options.class', response.model);
 
-                $scope.model.selected = _.filter($scope.model.items, function(current, index) {
-                  var selected = _.get($scope.$parent, 'model.class.id');
-                  return selected ? current.id == selected : index == 0;
-                })[0];
+                _.set($scope, 'model.selected.class', _.filter(
+                  _.get($scope, 'model.options.class'),
+                  function(current, index) {
+                    var selected = _.get($scope.$parent, 'model.class.id');
+                    return selected ? current.id == selected : index == 0;
+                  }
+                )[0]);
 
                 $timeout(function() {
                   $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
@@ -58,7 +63,7 @@ angular
               alert(error);
             })
             .finally(function() {
-              $scope.flags.busy = false;
+              _.set($scope, 'flags.busy', false);
             });
 
           KeyEventProvider.actions = [
