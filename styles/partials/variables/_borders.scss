@@ -1,1 +1,6 @@
 $border-radius: 4px;
+
+$list-border-color: $light-gray;
+$list-border-radius: ($border-radius*2);
+$list-border-style: solid;
+$list-border-width: ($border-radius/2) 0;

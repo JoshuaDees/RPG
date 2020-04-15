@@ -58,10 +58,6 @@ angular
             return bonus;
           };
 
-          $scope.getModifier = function(attribute) {
-            return Math.floor(($scope.getValue(attribute) - 10) / 2);
-          };
-
           $scope.increment = function(attribute, $event) {
             _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
               parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) + 1
@@ -105,7 +101,7 @@ angular
           KeyEventProvider.actions = [{
             'matches': ['Shift+Escape', 'Escape'],
             'callback': function() {
-              $state.transitionTo('games.new.character.details', {
+              $state.transitionTo('games.new.character.class', {
                 'model': _.get($scope.$parent, 'model')
               });
             }

@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Enchanted-Land';
+    src:url('Enchanted-Land.ttf.woff') format('woff'),
+        url('Enchanted-Land.ttf.svg#Enchanted-Land') format('svg'),
+        url('Enchanted-Land.ttf.eot'),
+        url('Enchanted-Land.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

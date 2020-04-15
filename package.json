@@ -16,9 +16,12 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "angular": "^1.7.9",
     "angular-resource": "^1.7.9",
+    "angular-sanitize": "^1.7.9",
     "angular-ui-router": "^1.0.25",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "malihu-custom-scrollbar-plugin": "^3.1.5",
+    "ng-scrollbars": "0.0.11"
   },
   "devDependencies": {
     "grunt": "^1.1.0",

@@ -16,3 +16,31 @@ nav {
     }
   }
 }
+
+header nav {
+  flex-direction: row;
+  justify-content: center;
+
+  button {
+    border-radius: ($border-radius*2);
+    margin: 0;
+    min-width: 96px !important;
+
+    &:hover,
+    &:focus {
+      z-index: 1;
+    }
+
+    &:not(:first-child) {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+
+    &:not(:last-child) {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      margin-left: -1px;
+      margin-bottom: 0 !important;
+    }
+  }
+}

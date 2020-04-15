@@ -1,0 +1,37 @@
+form {
+  fieldset {
+    background-color: rgba($black, .625);
+    border-color: $list-border-color;
+    border-radius: $list-border-radius;
+    border-style: $list-border-style;
+    border-width: $list-border-width;
+    margin: 0;
+    padding: ($padding/8) ($padding/2) ($padding/2);
+    width: 100%;
+
+    & + fieldset {
+      margin-top: $margin;
+    }
+
+    legend {
+      background-image: linear-gradient(
+        rgba($black, .625),
+        rgba($black, .625) 50%,
+        transparent 50%,
+        transparent
+      );
+      border-color: $list-border-color;
+      border-radius: $list-border-radius;
+      border-style: $list-border-style;
+      border-width: $list-border-width;
+      border-bottom-width: 0;
+      line-height: 24px;
+      padding: 0 $padding;
+      text-align: center;
+    }
+
+    > .flex {
+      height: calc(100% - 38px);
+    }
+  }
+}

@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'Blackwood-Castle';
-    src:url('Blackwood-Castle.ttf.woff') format('woff'),
-        url('Blackwood-Castle.ttf.svg#BlackwoodCastle') format('svg'),
-        url('Blackwood-Castle.ttf.eot'),
-        url('Blackwood-Castle.ttf.eot?#iefix') format('embedded-opentype');
-    font-weight: normal;
-    font-style: normal;
-}

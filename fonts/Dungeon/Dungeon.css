@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Dungeon';
+    src:url('Dungeon.ttf.woff') format('woff'),
+        url('Dungeon.ttf.svg#Dungeon') format('svg'),
+        url('Dungeon.ttf.eot'),
+        url('Dungeon.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

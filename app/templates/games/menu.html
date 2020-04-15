@@ -1,5 +1,5 @@
 <h2>Menu</h2>
-<dialog class="transparent">
+<main class="center">
   <nav>
     <button ng-click="transitionTo('games.load');" ng-disabled="!$parent.model.gameId" type="submit">Load Game</button>
     <button ng-click="transitionTo('games.new.party')" type="submit">New Game</button>
@@ -7,4 +7,4 @@
     <button disabled>Help</button>
     <button ng-click="transitionTo('users.logout');" type="submit">Log Out</button>
   </nav>
-</dialog>
+</main>

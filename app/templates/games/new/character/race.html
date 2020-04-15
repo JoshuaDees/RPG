@@ -1,48 +1,71 @@
-<dialog modal>
-  <form ng-submit="!loading && accept()">
-    <header>
-      <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
-      Select Race
-    </header>
-    <main overlay="flags.loading">
-      <article style="height: 360px;">
-        <aside style="width: 160px;">
-          <ul style="height: 100%;">
-            <li
-              ng-class="{ active: model.selected.race.id == race.id }"
-              ng-repeat="race in model.options.races">
-              <label class="input-checkbox">
-                <input
-                  name="race"
-                  ng-checked="model.selected.race.id === race.id"
-                  ng-model="model.selected.race"
-                  ng-value="race"
-                  type="radio" />
-                {{ race.name }}
-              </label>
-            </li>
-          </ul>
-        </aside>
-        <section class="border" style="width: 480px;">
-          <p>{{ model.selected.race.description }}</p>
-        </section>
-        <aside style="width:160px;">
-          <figure style="display: block; margin: 0 0 16px;">
-            <img class="portrait large" ng-src="./media/images/characters/portraits/{{ model.selected.race.name }}.{{ model.selected.gender.name }}.1.jpg" />
-          </figure>
-          <ul>
-            <li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders">
-              <label class="input-checkbox">
-                <input name="gender" ng-checked="model.selected.gender.id === gender.id" ng-model="model.selected.gender" ng-value="gender" type="radio" />
-                {{ gender.name }}
-              </label>
-            </li>
-          </ul>
-        </aside>
-      </article>
-    </main>
+<h2>Create Character</h2>
+<main overlay="flags.loading">
+  <form ng-submit="!flags.loading && accept()">
+    <article>
+      <aside class="col">
+        <div class="flex col">
+          <fieldset class="flex text-center">
+            <legend>Select Race</legend>
+            <div class="flex" ng-scrollbars>
+              <ul>
+                <li
+                  ng-class="{ active: model.selected.race.id == race.id }"
+                  ng-repeat="race in model.options.races">
+                  <label class="input-checkbox">
+                    <input
+                      name="race"
+                      ng-checked="model.selected.race.id === race.id"
+                      ng-model="model.selected.race"
+                      ng-value="race"
+                      type="radio" />
+                    {{ race.name }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col">
+          <fieldset class="text-center">
+            <legend>Select Gender</legend>
+            <ul>
+              <li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders">
+                <label class="input-checkbox">
+                  <input name="gender" ng-checked="model.selected.gender.id === gender.id" ng-model="model.selected.gender" ng-value="gender" type="radio" />
+                  {{ gender.name }}
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+        </div>
+      </aside>
+      <section class="col flex-center">
+        <figure class="flex">
+          <div class="flex">
+            <img
+              height="100%"
+              ng-src="./media/images/characters/classes/{{ model.selected.gender.name }}-{{ model.selected.race.name }}-{{ model.selected.race.class }}.png" />
+          </div>
+          <figcaption class="small">{{ model.selected.gender.name }} {{ model.selected.race.name }}</figcaption>
+        </figure>
+      </section>
+      <aside class="col">
+        <div class="flex col">
+          <fieldset class="flex">
+            <legend>Description</legend>
+            <div class="flex" ng-scrollbars>
+              <div>
+                <p>{{ model.selected.race.name }}</p>
+                <p class="small">{{ model.selected.race.description }}</p>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </aside>
+    </article>
     <footer>
-      <button ng-disabled="flags.loading" type="submit">Accept</button>
+      <button ng-click="transitionTo('games.new.party')" type="reset">Cancel</button>
+      <button ng-disabled="flags.loading" type="submit">Next</button>
     </footer>
   </form>
-</dialog>
+</main>

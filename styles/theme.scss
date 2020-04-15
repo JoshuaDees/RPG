@@ -6,13 +6,13 @@
 @import 'partials/variables/shadows';
 @import 'partials/variables/spacing';
 @import 'partials/layouts/containers';
-@import 'partials/layouts/flex';
 @import 'partials/elements';
 @import 'partials/elements/html';
 @import 'partials/elements/body';
 @import 'partials/elements/headers';
 @import 'partials/elements/text';
 @import 'partials/elements/images';
+@import 'partials/elements/forms';
 @import 'partials/elements/inputs';
 @import 'partials/elements/buttons';
 @import 'partials/elements/lists';
@@ -21,5 +21,6 @@
 @import 'partials/elements/navs';
 @import 'partials/elements/figure';
 @import 'partials/classes/borders';
+@import 'partials/classes/flex';
 @import 'partials/classes/overlay';
 @import 'partials/classes/text';

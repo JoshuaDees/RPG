@@ -36,6 +36,10 @@ dialog {
   }
 
   main {
+    align-items: stretch;
+    flex-direction: column;
+    overflow: visible;
+    padding: 0;
     position: relative;
   }
 

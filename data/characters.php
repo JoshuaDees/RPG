@@ -11,6 +11,7 @@
         "id" => "AbilityId",
         "name" => "AbilityName",
         "abbreviation" => "AbilityAbbreviation",
+        "description" => "AbilityDescription",
         "default" => "AbilityDefault",
         "raceModifier" => "RaceAbilityModifier",
         "classModifier" => "ClassAbilityModifier"
@@ -21,7 +22,7 @@
     public function classes() {
       $raceId = post("raceId");
 
-      $response = new MySQL("SELECT *, (SELECT RaceClasses.RaceId FROM RaceClasses WHERE RaceClasses.RaceId = $raceId AND RaceClasses.ClassId = Classes.ClassId) AS ClassEnabled FROM Classes");
+      $response = new MySQL("SELECT *, (SELECT RaceClasses.RaceId FROM RaceClasses WHERE RaceClasses.RaceId = $raceId AND RaceClasses.ClassId = Classes.ClassId) AS ClassEnabled FROM Classes ORDER BY ClassName");
 
       $json = $response->toArray(array(
         "id" => "ClassId",
@@ -45,12 +46,13 @@
     }
 
     public function races() {
-      $response = new MySQL("SELECT * FROM Races");
+      $response = new MySQL("SELECT * FROM Races NATURAL JOIN Classes ORDER BY RaceName");
 
       $json = $response->toArray(array(
         "id" => "RaceId",
         "name" => "RaceName",
-        "description" => "RaceDescription"
+        "description" => "RaceDescription",
+        "class" => "ClassName"
       ));
 
       (new JSON())->success($json)->print();

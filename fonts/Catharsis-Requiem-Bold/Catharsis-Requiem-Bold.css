@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'Catharsis-Requiem-Bold';
-    src:url('Catharsis-Requiem-Bold.ttf.woff') format('woff'),
-        url('Catharsis-Requiem-Bold.ttf.svg#Catharsis-Requiem-Bold') format('svg'),
-        url('Catharsis-Requiem-Bold.ttf.eot'),
-        url('Catharsis-Requiem-Bold.ttf.eot?#iefix') format('embedded-opentype');
-    font-weight: normal;
-    font-style: normal;
-}

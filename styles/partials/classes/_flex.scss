@@ -1,0 +1,49 @@
+.row {
+  display: flex;
+  flex-direction: row;
+
+  > * + *:not(button):not(input) {
+    padding-left: $margin;
+  }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+
+  > * + *:not(button):not(input) {
+    padding-top: $margin;
+  }
+
+  > .flex:not(fieldset) {
+    height: 0;
+  }
+}
+
+.flex {
+  flex: 1 0 auto;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+ul.condensed {
+  li {
+    line-height: 28px;;
+  }
+
+  #{$input-selectors} {
+    line-height: 18px;
+    min-height: 28px;
+    min-width: 48px;
+    width: 48px;
+  }
+
+  #{$button-selectors} {
+    line-height: 18px;
+    min-height: 28px;
+    min-width: 28px;
+  }
+}

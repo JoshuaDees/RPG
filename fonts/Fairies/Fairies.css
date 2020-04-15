@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Fairies';
+    src:url('Fairies.ttf.woff') format('woff'),
+        url('Fairies.ttf.svg#Fairies') format('svg'),
+        url('Fairies.ttf.eot'),
+        url('Fairies.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

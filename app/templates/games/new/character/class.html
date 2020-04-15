@@ -1,36 +1,59 @@
-<dialog modal>
+<h2>Create Character</h2>
+<main overlay="flags.loading">
   <form ng-submit="!flags.loading && accept()">
-    <header>
-      <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
-      Select Class
-    </header>
-    <main overlay="flags.loading">
-      <article style="height: 360px; width: 640px;">
-        <aside style="width: 160px;">
-          <ul style="height: 100%;">
-            <li
-              ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }"
-              ng-repeat="class in model.options.class">
-              <label class="input-checkbox">
-                <input
-                  name="class"
-                  ng-checked="model.selected.class.id === class.id"
-                  ng-disabled="class.enabled == null"
-                  ng-model="model.selected.class"
-                  ng-value="class"
-                  type="radio" />
-                {{ class.name }}
-              </label>
-            </li>
-          </ul>
-        </aside>
-        <section class="border">
-          <p>{{ model.selected.class.description }}</p>
-        </section>
-      </article>
-    </main>
+    <article>
+      <aside class="col">
+        <div class="col flex">
+          <fieldset class="flex text-center">
+            <legend>Select Race</legend>
+            <div class="flex" ng-scrollbars>
+              <ul>
+                <li
+                  ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }"
+                  ng-repeat="class in model.options.class">
+                  <label class="input-checkbox">
+                    <input
+                      name="class"
+                      ng-checked="model.selected.class.id === class.id"
+                      ng-disabled="class.enabled == null"
+                      ng-model="model.selected.class"
+                      ng-value="class"
+                      type="radio" />
+                    {{ class.name }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </fieldset>
+        </div>
+      </aside>
+      <section class="col flex-center">
+        <figure class="flex">
+          <div class="flex">
+            <img
+              height="100%"
+              ng-src="./media/images/characters/classes/{{ $parent.model.gender.name }}-{{ $parent.model.race.name }}-{{ model.selected.class.name }}.png" />
+          </div>
+          <figcaption class="small">{{ $parent.model.gender.name }} {{ $parent.model.race.name }} {{ model.selected.class.name }}</figcaption>
+        </figure>
+      </section>
+      <aside class="col">
+        <div class="col flex">
+          <fieldset class="flex">
+            <legend>Description</legend>
+            <div class="flex" ng-scrollbars>
+              <div>
+                <p>{{ model.selected.class.name }}</p>
+                <p class="small">{{ model.selected.class.description }}</p>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </aside>
+    </article>
     <footer>
-      <button ng-disabled="flags.loading" type="submit">Accept</button>
+      <button ng-click="transitionTo('games.new.character.race', { model: $parent.model })" type="reset">Back</button>
+      <button ng-disabled="flags.loading" type="submit">Next</button>
     </footer>
   </form>
-</dialog>
+</main>

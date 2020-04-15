@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'Dark11';
-    src:url('Dark11.ttf.woff') format('woff'),
-        url('Dark11.ttf.svg#Dark11') format('svg'),
-        url('Dark11.ttf.eot'),
-        url('Dark11.ttf.eot?#iefix') format('embedded-opentype');
-    font-weight: normal;
-    font-style: normal;
-}

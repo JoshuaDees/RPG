@@ -1,9 +1,13 @@
 p {
-  margin: ($margin/2) 0;
-  padding: 0 ($padding*(3/4));
+  margin: 0;
+  padding: 0 ($padding/2);
+
+  & + p {
+    margin-top: ($margin/2);
+  }
 }
 
-small {
+small, .small {
   font-size: $font-size-small;
 }
 
@@ -16,4 +20,12 @@ a {
     color: $input-text-color;
     text-decoration: underline;
   }
+}
+
+.scroll-x {
+  overflow-x: auto;
+}
+
+.scroll-y {
+  overflow-y: auto;
 }

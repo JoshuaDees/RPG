@@ -5,13 +5,13 @@
       <a ui-sref="games.menu"><i class="fa fa-times"></i></a>
       Create Party
     </header>
-    <main>
+    <main class="row">
       <figure ng-repeat="x in [].constructor(6) track by $index">
         <img
           class="portrait"
           ng-if-start="$parent.model.characters[$index].name"
           ng-src="./media/images/characters/portraits/{{ $parent.model.characters[$index].race.name }}.{{ $parent.model.characters[$index].gender.name }}.1.jpg" />
-        <figcaption ng-if-end>
+        <div ng-if-end>
           <p>
             <b>{{ $parent.model.characters[$index].name }}</b>
             <br />
@@ -21,19 +21,19 @@
             </small>
           </p>
           <nav class="compact">
-            <button ui-sref="games.new.character.details({ model: $parent.model.characters[$index] })">Edit</button>
+            <button ui-sref="games.new.character.race({ model: $parent.model.characters[$index] })">Edit</button>
           </nav>
-        </figcaption>
+        </div>
         <img
           class="portrait"
           ng-if-start="!$parent.model.characters[$index].name"
           src="./media/images/transparent.gif" />
-        <figcaption ng-if-end>
+        <div ng-if-end>
           <p>&nbsp;<br /><small>&nbsp;</small></p>
           <nav class="compact">
-            <button ui-sref="games.new.character.details({ model: $parent.model.characters[$index] })">Create</button>
+            <button ui-sref="games.new.character.race({ model: $parent.model.characters[$index] })">Create</button>
           </nav>
-        </figcaption>
+        </div>
       </figure>
     </main>
     <footer>

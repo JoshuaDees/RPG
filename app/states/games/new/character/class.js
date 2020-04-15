@@ -38,7 +38,7 @@ angular
           };
 
           $scope.accept = function() {
-            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
+            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'abilities');
           };
 
           CharactersResource.abort().classes({
@@ -51,8 +51,13 @@ angular
                 _.set($scope, 'model.selected.class', _.filter(
                   _.get($scope, 'model.options.class'),
                   function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.class.id');
-                    return selected ? current.id == selected : index == 0;
+                    if (_.get($scope.$parent, 'model.class.id')) {
+                      var selected = _.get($scope.$parent, 'model.class.id');
+                      return selected ? current.id == selected : index == 0;
+                    } else {
+                      var selected = _.get($scope.$parent, 'model.race.class');
+                      return selected ? current.name == selected : index == 0;
+                    }
                   }
                 )[0]);
               } else {
@@ -73,7 +78,7 @@ angular
           KeyEventProvider.actions = [{
             'matches': ['Shift+Escape', 'Escape'],
             'callback': function() {
-              $state.transitionTo('games.new.character.details', {
+              $state.transitionTo('games.new.character.race', {
                 'model': _.get($scope.$parent, 'model')
               });
             }

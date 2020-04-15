@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     // Compile Angular
     'angular-builder': {
       options: {
-        externalModules: ['ngResource', 'ui.router'],
+        externalModules: ['ngResource', 'ngSanitize', 'ngScrollbars', 'ui.router'],
         mainModule: '<%= pkg.name %>',
         releaseBuild: {
           moduleFooter: '\n'
@@ -38,7 +38,9 @@ module.exports = function(grunt) {
             src: [
               'node_modules/angular/angular.min.js',
               'node_modules/angular-resource/angular-resource.min.js',
-              'node_modules/angular-ui-router/release/angular-ui-router.min.js'
+              'node_modules/angular-sanitize/angular-sanitize.min.js',
+              'node_modules/angular-ui-router/release/angular-ui-router.min.js',
+              'node_modules/ng-scrollbars/dist/scrollbars.min.js'
             ],
             dest: 'assets/angular/',
             mode: '0755'
@@ -87,6 +89,17 @@ module.exports = function(grunt) {
               'node_modules/jquery/dist/jquery.min.js'
             ],
             dest: 'assets/jquery/',
+            mode: '0755'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: [
+              'node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css',
+              'node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js',
+              'node_modules/malihu-custom-scrollbar-plugin/mCSB_buttons.png'
+            ],
+            dest: 'assets/jquery/plugins/malihu-custom-scrollbar-plugin',
             mode: '0755'
           },
           {

@@ -42,7 +42,7 @@ angular
           };
 
           $scope.accept = function() {
-            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
+            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'class');
           };
 
           CharactersResource.abort();
@@ -101,7 +101,7 @@ angular
           KeyEventProvider.actions = [{
             'matches': ['Shift+Escape', 'Escape'],
             'callback': function() {
-              $state.transitionTo('games.new.character.details', {
+              $state.transitionTo('games.new.party', {
                 'model': _.get($scope.$parent, 'model')
               });
             }

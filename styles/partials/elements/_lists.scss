@@ -1,5 +1,4 @@
 ul {
-  border: 1px solid $input-border-color;
   list-style: none;
   margin: 0;
   overflow-x: hidden;
@@ -8,14 +7,14 @@ ul {
 }
 
 li {
-  line-height: 24px;
+  line-height: 20px;
   padding: $padding-field;
   overflow: hidden;
   white-space: nowrap;
 
   label {
     display: block;
-    line-height: 24px;
+    line-height: inherit;
     margin: $padding-field-inverse;
     padding: $padding-field;
   }

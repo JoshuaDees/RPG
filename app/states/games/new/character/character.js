@@ -9,7 +9,7 @@ angular
       .state('games.new.character', {
         'abstract': true,
         'scope': {},
-        'templateUrl': 'app/templates/games/new/character/character.html',
+        //'templateUrl': 'app/templates/games/new/character/character.html',
         'params': {
           'model': null
         },
@@ -33,12 +33,12 @@ angular
               parseFloat(_.get(attribute, 'bonus') || 0);
           };
 
-          $scope.update = function(attributes) {
+          $scope.update = function(attributes, state) {
             _.forEach(attributes, function(value, property) {
               _.set($scope, 'model.' + property, value);
             });
 
-            $state.transitionTo('games.new.character.details', {
+            $state.transitionTo('games.new.character.' + state, {
               'model': $scope.model
             });
           };

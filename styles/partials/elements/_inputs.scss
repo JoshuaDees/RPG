@@ -42,7 +42,8 @@ label {
   }
 }
 
-input[type=radio] {
+input[type=radio],
+input[type=checkbox] {
   opacity: 0;
   margin: 0;
   position: absolute;

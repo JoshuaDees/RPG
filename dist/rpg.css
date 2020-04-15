@@ -14,35 +14,6 @@ textarea {
   width: 960px;
 }
 
-.row {
-  display: flex;
-}
-.row .flex {
-  flex: 1 0 auto;
-}
-.row + .row {
-  margin-top: 16px;
-}
-.row.separated > * {
-  margin-left: 16px;
-}
-.row.condensed + .row.condensed {
-  margin-top: 8px;
-}
-.row.condensed.separated > * {
-  margin-left: 8px;
-}
-
-.col {
-  display: flex;
-}
-.col .flex {
-  flex: 1 0 auto;
-}
-.col + .col {
-  left: 16px;
-}
-
 *, ::after, ::before {
   box-sizing: border-box;
 }
@@ -95,7 +66,8 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 14px;
+  font-size: 115%;
+  line-height: 21px;
   margin-left: -160px;
   padding: 8px 0;
   top: 16px;
@@ -103,6 +75,7 @@ h1 {
 }
 
 h2 {
+  line-height: 19px;
   margin-left: -96px;
   padding: 4px 0;
   top: 54px;
@@ -110,12 +83,15 @@ h2 {
 }
 
 p {
-  margin: 8px 0;
-  padding: 0 12px;
+  margin: 0;
+  padding: 0 8px;
+}
+p + p {
+  margin-top: 8px;
 }
 
-small {
-  font-size: 10px;
+small, .small {
+  font-size: 80%;
 }
 
 a {
@@ -127,6 +103,14 @@ a:hover, a:active {
   text-decoration: underline;
 }
 
+.scroll-x {
+  overflow-x: auto;
+}
+
+.scroll-y {
+  overflow-y: auto;
+}
+
 img.portrait {
   height: 150px;
   width: 96px;
@@ -134,6 +118,34 @@ img.portrait {
 img.portrait.large {
   height: 200px;
   width: 128px;
+}
+
+form fieldset {
+  background-color: rgba(0, 0, 0, 0.625);
+  border-color: #9b967f;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 2px 0;
+  margin: 0;
+  padding: 2px 8px 8px;
+  width: 100%;
+}
+form fieldset + fieldset {
+  margin-top: 16px;
+}
+form fieldset legend {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.625), rgba(0, 0, 0, 0.625) 50%, transparent 50%, transparent);
+  border-color: #9b967f;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 2px 0;
+  border-bottom-width: 0;
+  line-height: 24px;
+  padding: 0 16px;
+  text-align: center;
+}
+form fieldset > .flex {
+  height: calc(100% - 38px);
 }
 
 label {
@@ -174,7 +186,8 @@ input:not([type])::placeholder, input[type=email]::placeholder, input[type=passw
   color: #57534f;
 }
 
-input[type=radio] {
+input[type=radio],
+input[type=checkbox] {
   opacity: 0;
   margin: 0;
   position: absolute;
@@ -221,8 +234,9 @@ button:focus, button:hover, input[type=button]:focus, input[type=button]:hover, 
 button:active, input[type=button]:active, input[type=reset]:active, input[type=submit]:active, .button:active {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(0, 0, 0, 0.125) 10%, rgba(0, 0, 0, 0.0625) 50%, rgba(255, 255, 255, 0.0625) 50%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
 }
-button:disabled, input[type=button]:disabled, input[type=reset]:disabled, input[type=submit]:disabled, .button:disabled {
+button:disabled, button:disabled:active, input[type=button]:disabled, input[type=button]:disabled:active, input[type=reset]:disabled, input[type=reset]:disabled:active, input[type=submit]:disabled, input[type=submit]:disabled:active, .button:disabled, .button:disabled:active {
   background-color: rgba(10, 11, 10, 0.375);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0.125) 50%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.125) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
   border-color: rgba(155, 155, 155, 0.5);
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
   color: rgba(255, 251, 247, 0.5);
@@ -240,7 +254,6 @@ button[type=submit]:disabled, input[type=submit]:disabled {
 }
 
 ul {
-  border: 1px solid #756759;
   list-style: none;
   margin: 0;
   overflow-x: hidden;
@@ -249,14 +262,14 @@ ul {
 }
 
 li {
-  line-height: 24px;
+  line-height: 20px;
   padding: 4px 8px;
   overflow: hidden;
   white-space: nowrap;
 }
 li label {
   display: block;
-  line-height: 24px;
+  line-height: inherit;
   margin: -4px -8px;
   padding: 4px 8px;
 }
@@ -306,6 +319,10 @@ dialog header a[ui-sref] .fa {
   padding: 13px 15px;
 }
 dialog main {
+  align-items: stretch;
+  flex-direction: column;
+  overflow: visible;
+  padding: 0;
   position: relative;
 }
 dialog footer {
@@ -345,37 +362,69 @@ div.input-helper {
   padding: 4px 0;
 }
 
-article {
+main {
+  align-items: center;
   display: flex;
+  height: 100%;
+  justify-content: center;
+  overflow: hidden;
+  padding: 98px 16px 16px;
 }
-article aside,
-article section {
+main form {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  width: 100%;
+}
+main form header {
+  padding-bottom: 16px;
+}
+main form article {
+  align-items: stretch;
+  display: flex;
+  height: calc(100% - 48px - 48px);
+  justify-content: space-between;
+  width: 100%;
+}
+main form article:first-child, main form article:last-child {
+  height: calc(100% - 48px);
+}
+main form article:first-child:last-child {
+  height: 100%;
+}
+main form article aside,
+main form article section {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-article aside {
-  max-width: 255;
+main form article aside {
+  flex: 0 0 28%;
 }
-article aside:first-child {
-  margin-right: 16px;
+main form article aside:first-child {
+  padding-right: 16px;
 }
-article aside:last-child {
+main form article aside:last-child {
+  padding-left: 16px;
+}
+main form article section {
+  flex: 0 0 44%;
+  overflow: hidden;
+}
+main form article section:first-child, main form article section:last-child {
+  flex: 0 0 75%;
+}
+main form article section:first-child:last-child {
+  flex: 0 0 100%;
+}
+main form footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+main form footer button + button {
   margin-left: 16px;
-}
-article section {
-  flex: 1 0 auto;
-  max-width: 505;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-article section:not(:first-child) {
-  max-width: 75%;
-}
-article section:not(:last-child) {
-  max-width: 75%;
-}
-article section:not(:first-child):not(:last-child) {
-  max-width: 100%;
 }
 
 nav {
@@ -392,19 +441,59 @@ nav:not(.compact) button {
   min-width: 192px;
 }
 
+header nav {
+  flex-direction: row;
+  justify-content: center;
+}
+header nav button {
+  border-radius: 8px;
+  margin: 0;
+  min-width: 96px !important;
+}
+header nav button:hover, header nav button:focus {
+  z-index: 1;
+}
+header nav button:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+header nav button:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  margin-left: -1px;
+  margin-bottom: 0 !important;
+}
+
 figure {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0;
   vertical-align: top;
 }
-figure:not(:last-child) {
-  margin-right: 16px;
-}
 figure img {
-  border: 1px solid #756759;
+  background-color: rgba(0, 0, 0, 0.625);
+  border-color: #9b967f;
+  border-style: solid;
+  border-width: 2px 1px;
+  border-radius: 16px;
   display: block;
   margin: 0 auto;
-  padding: 1px;
+  padding: 4px;
+}
+figure figcaption {
+  background-color: black;
+  border-color: #9b967f;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 2px 1px;
+  margin: 0 16px;
+  padding: 2px 8px;
+  text-align: center;
+}
+figure figcaption.small {
+  margin-top: -14px;
+  line-height: 20px;
 }
 figure p {
   text-align: center;
@@ -412,6 +501,49 @@ figure p {
 
 .border {
   border: 1px solid #756759;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.row > * + *:not(button):not(input) {
+  padding-left: 16px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.col > * + *:not(button):not(input) {
+  padding-top: 16px;
+}
+.col > .flex:not(fieldset) {
+  height: 0;
+}
+
+.flex {
+  flex: 1 0 auto;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+ul.condensed li {
+  line-height: 28px;
+}
+ul.condensed input:not([type]), ul.condensed input[type=email], ul.condensed input[type=password], ul.condensed input[type=text] {
+  line-height: 18px;
+  min-height: 28px;
+  min-width: 48px;
+  width: 48px;
+}
+ul.condensed button, ul.condensed input[type=button], ul.condensed input[type=reset], ul.condensed input[type=submit], ul.condensed .button {
+  line-height: 18px;
+  min-height: 28px;
+  min-width: 28px;
 }
 
 .overlay {
@@ -442,4 +574,8 @@ figure p {
 
 .text-right {
   text-align: right;
+}
+
+.underline {
+  text-decoration: underline;
 }

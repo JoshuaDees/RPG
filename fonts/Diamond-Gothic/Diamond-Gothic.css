@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Diamond-Gothic';
+    src:url('Diamond-Gothic.ttf.woff') format('woff'),
+        url('Diamond-Gothic.ttf.svg#Diamond-Gothic') format('svg'),
+        url('Diamond-Gothic.ttf.eot'),
+        url('Diamond-Gothic.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}

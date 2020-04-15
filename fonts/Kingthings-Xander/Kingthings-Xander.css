@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Kingthings-Xander';
+    src:url('Kingthings-Xander.ttf.woff') format('woff'),
+        url('Kingthings-Xander.ttf.svg#Kingthings-Xander') format('svg'),
+        url('Kingthings-Xander.ttf.eot'),
+        url('Kingthings-Xander.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
