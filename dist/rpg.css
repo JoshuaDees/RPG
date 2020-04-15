@@ -514,16 +514,16 @@ figure p {
   justify-content: center;
 }
 
-ul.condensed li {
+.condensed li {
   line-height: 28px;
 }
-ul.condensed input:not([type]), ul.condensed input[type=email], ul.condensed input[type=password], ul.condensed input[type=text] {
+.condensed input:not([type]), .condensed input[type=email], .condensed input[type=password], .condensed input[type=text] {
   line-height: 18px;
   min-height: 28px;
   min-width: 48px;
   width: 48px;
 }
-ul.condensed button, ul.condensed input[type=button], ul.condensed input[type=reset], ul.condensed input[type=submit], ul.condensed .button {
+.condensed button, .condensed input[type=button], .condensed input[type=reset], .condensed input[type=submit], .condensed .button {
   line-height: 18px;
   min-height: 28px;
   min-width: 28px;
@@ -585,6 +585,38 @@ ul.condensed button, ul.condensed input[type=button], ul.condensed input[type=re
   background-color: rgba(0, 0, 0, 0.75);
   border: 1px solid #756759;
   padding: 8px 16px;
+}
+
+.tabs {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0 !important;
+}
+.tabs button, .tabs input[type=button], .tabs input[type=reset], .tabs input[type=submit], .tabs .button {
+  background-image: none;
+  line-height: 18px;
+  border-width: 0px 1px 2px;
+  border-radius: 0 0 4px 4px;
+  box-shadow: none;
+  font-size: 80%;
+  min-height: 28px;
+  min-width: 0;
+  padding: 4px 12px;
+  width: auto;
+}
+.tabs button:not(:first-child), .tabs input[type=button]:not(:first-child), .tabs input[type=reset]:not(:first-child), .tabs input[type=submit]:not(:first-child), .tabs .button:not(:first-child) {
+  margin-left: -1px;
+}
+.tabs button:hover, .tabs button:focus, .tabs button.selected, .tabs input[type=button]:hover, .tabs input[type=button]:focus, .tabs input[type=button].selected, .tabs input[type=reset]:hover, .tabs input[type=reset]:focus, .tabs input[type=reset].selected, .tabs input[type=submit]:hover, .tabs input[type=submit]:focus, .tabs input[type=submit].selected, .tabs .button:hover, .tabs .button:focus, .tabs .button.selected {
+  z-index: 1;
+}
+.tabs button:not(:hover):not(:focus):not(.selected), .tabs input[type=button]:not(:hover):not(:focus):not(.selected), .tabs input[type=reset]:not(:hover):not(:focus):not(.selected), .tabs input[type=submit]:not(:hover):not(:focus):not(.selected), .tabs .button:not(:hover):not(:focus):not(.selected) {
+  color: rgba(255, 251, 247, 0.5);
+}
+.tabs button.selected, .tabs input[type=button].selected, .tabs input[type=reset].selected, .tabs input[type=submit].selected, .tabs .button.selected {
+  border-color: #bdb9aa;
 }
 
 .text-left {
