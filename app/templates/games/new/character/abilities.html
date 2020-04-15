@@ -25,7 +25,7 @@
               <ul class="condensed">
                 <li class="row" ng-repeat="ability in model.selected.abilities track by $index">
                   <span class="flex">{{ ability.name }}:</span>
-                  <span class="row">
+                  <span class="form-group">
                     <button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus="this.blur();"><i class="fa fa-plus"></i></button>
                     <input class="text-center" readonly ng-value="getValue($index)" onfocus="this.blur()" />
                     <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus="this.blur();"><i class="fa fa-minus"></i></button>

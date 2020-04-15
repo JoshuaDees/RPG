@@ -194,23 +194,6 @@ input[type=checkbox] {
   width: 0;
 }
 
-.input-group {
-  align-items: stretch;
-  display: flex;
-  position: relative;
-}
-.input-group .fa {
-  color: #fffbf7;
-  line-height: 1.5;
-  padding: 8px 12px;
-  position: absolute;
-  z-index: 1;
-}
-.input-group input:not([type]), .input-group input[type=email], .input-group input[type=password], .input-group input[type=text] {
-  flex: 1 0 auto;
-  padding-left: 36px;
-}
-
 button, input[type=button], input[type=reset], input[type=submit], .button {
   background-color: rgba(10, 11, 10, 0.75);
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0.125) 50%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.125) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
@@ -544,6 +527,46 @@ ul.condensed button, ul.condensed input[type=button], ul.condensed input[type=re
   line-height: 18px;
   min-height: 28px;
   min-width: 28px;
+}
+
+.form-group {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+.form-group input:not([type]):hover, .form-group input:not([type]):focus, .form-group input[type=email]:hover, .form-group input[type=email]:focus, .form-group input[type=password]:hover, .form-group input[type=password]:focus, .form-group input[type=text]:hover, .form-group input[type=text]:focus,
+.form-group button:hover,
+.form-group button:focus, .form-group input[type=button]:hover, .form-group input[type=button]:focus, .form-group input[type=reset]:hover, .form-group input[type=reset]:focus, .form-group input[type=submit]:hover, .form-group input[type=submit]:focus, .form-group .button:hover, .form-group .button:focus {
+  z-index: 1;
+}
+.form-group input:not([type]):not(:first-child), .form-group input[type=email]:not(:first-child), .form-group input[type=password]:not(:first-child), .form-group input[type=text]:not(:first-child),
+.form-group button:not(:first-child), .form-group input[type=button]:not(:first-child), .form-group input[type=reset]:not(:first-child), .form-group input[type=submit]:not(:first-child), .form-group .button:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.form-group input:not([type]):not(:last-child), .form-group input[type=email]:not(:last-child), .form-group input[type=password]:not(:last-child), .form-group input[type=text]:not(:last-child),
+.form-group button:not(:last-child), .form-group input[type=button]:not(:last-child), .form-group input[type=reset]:not(:last-child), .form-group input[type=submit]:not(:last-child), .form-group .button:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  margin-left: -1px;
+}
+
+.input-group {
+  align-items: stretch;
+  display: flex;
+  position: relative;
+}
+.input-group .fa {
+  color: #fffbf7;
+  line-height: 1.5;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1;
+}
+.input-group input:not([type]), .input-group input[type=email], .input-group input[type=password], .input-group input[type=text] {
+  flex: 1 0 auto;
+  padding-left: 36px;
 }
 
 .overlay {
