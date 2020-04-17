@@ -1,22 +1,17 @@
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
 }
 
 button,
-input,
-optgroup,
-select,
-textarea {
+input {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
 }
 
-:not(input):not(textarea) {
+:not(input) {
   cursor: default !important;
   user-select: none;
-}
-
-form:last-child {
-  margin-block-end: 0;
 }

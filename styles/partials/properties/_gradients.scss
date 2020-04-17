@@ -1,39 +1,39 @@
-$header-gradient: linear-gradient(
+$gradient-header: linear-gradient(
   to right,
-  rgba(0, 0, 0, 0),
-  rgba(0, 0, 0, .375) 15%,
-  rgba(0, 0, 0, .75) 50%,
-  rgba(0, 0, 0, .375) 85%,
-  rgba(0, 0, 0, 0)
+  rgba($color-black, 0),
+  rgba($color-black, .375) 15%,
+  rgba($color-black, .75) 50%,
+  rgba($color-black, .375) 85%,
+  rgba($color-black, 0)
 );
 
-$input-gradient: linear-gradient(
-  rgba(255, 255, 255, 0.25),
-  rgba(0, 0, 0, 0.25) 15%,
-  rgba(0, 0, 0, 0) 50%,
-  rgba(255, 255, 255, 0.125)
+$gradient-input: linear-gradient(
+  rgba($color-white, 0.25),
+  rgba($color-black, 0.25) 15%,
+  rgba($color-black, 0) 50%,
+  rgba($color-white, 0.125)
 );
 
-$button-gradient: linear-gradient(
-  rgba(0, 0, 0, .5),
-  rgba(255, 255, 255, .25) 10%,
-  rgba(255, 255, 255, 0) 10%,
-  rgba(255, 255, 255, .125) 50%,
-  rgba(0, 0, 0, .25) 50%,
-  rgba(0, 0, 0, .125) 90%,
-  rgba(255, 255, 255, .25) 85%,
-  rgba(255, 255, 255, .125) 90%,
-  rgba(0, 0, 0, .5)
+$gradient-button: linear-gradient(
+  rgba($color-black, .5),
+  rgba($color-white, .25) 10%,
+  rgba($color-white, 0) 10%,
+  rgba($color-white, .125) 50%,
+  rgba($color-black, .25) 50%,
+  rgba($color-black, .125) 90%,
+  rgba($color-white, .25) 85%,
+  rgba($color-white, .125) 90%,
+  rgba($color-black, .5)
 );
 
-$button-gradient-active: linear-gradient(
-  rgba(0, 0, 0, .5),
-  rgba(255, 255, 255, .25) 10%,
-  rgba(0, 0, 0, .125) 10%,
-  rgba(0, 0, 0, .0625) 50%,
-  rgba(255, 255, 255, .0625) 50%,
-  rgba(255, 255, 255, 0) 90%,
-  rgba(255, 255, 255, .25) 85%,
-  rgba(255, 255, 255, .125) 90%,
-  rgba(0, 0, 0, .5)
+$gradient-button-active: linear-gradient(
+  rgba($color-black, .5),
+  rgba($color-white, .25) 10%,
+  rgba($color-black, .125) 10%,
+  rgba($color-black, .0625) 50%,
+  rgba($color-white, .0625) 50%,
+  rgba($color-white, 0) 90%,
+  rgba($color-white, .25) 85%,
+  rgba($color-white, .125) 90%,
+  rgba($color-black, .5)
 );
