@@ -31,6 +31,9 @@ module.exports = function(grunt) {
     // Copy asset files
     copy: {
       assets: {
+        options: {
+          mode: '0755'
+        },
         files: [
           {
             expand: true,
@@ -42,8 +45,7 @@ module.exports = function(grunt) {
               'node_modules/angular-ui-router/release/angular-ui-router.min.js',
               'node_modules/ng-scrollbars/dist/scrollbars.min.js'
             ],
-            dest: 'assets/angular/',
-            mode: '0755'
+            dest: 'assets/angular/'
           },
           {
             expand: true,
@@ -52,8 +54,7 @@ module.exports = function(grunt) {
               'node_modules/bootstrap/dist/css/bootstrap.min.css',
               'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
             ],
-            dest: 'assets/bootstrap/',
-            mode: '0755'
+            dest: 'assets/bootstrap/'
           },
           {
             expand: true,
@@ -70,8 +71,7 @@ module.exports = function(grunt) {
               'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff',
               'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2'
             ],
-            dest: 'assets/fontawesome/webfonts/',
-            mode: '0755'
+            dest: 'assets/fontawesome/webfonts/'
           },
           {
             expand: true,
@@ -79,8 +79,7 @@ module.exports = function(grunt) {
             src: [
               'node_modules/@fortawesome/fontawesome-free/css/all.min.css'
             ],
-            dest: 'assets/fontawesome/css/',
-            mode: '0755'
+            dest: 'assets/fontawesome/css/'
           },
           {
             expand: true,
@@ -88,19 +87,16 @@ module.exports = function(grunt) {
             src: [
               'node_modules/jquery/dist/jquery.min.js'
             ],
-            dest: 'assets/jquery/',
-            mode: '0755'
+            dest: 'assets/jquery/'
           },
           {
             expand: true,
             flatten: true,
             src: [
               'node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css',
-              'node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js',
               'node_modules/malihu-custom-scrollbar-plugin/mCSB_buttons.png'
             ],
-            dest: 'assets/jquery/plugins/malihu-custom-scrollbar-plugin',
-            mode: '0755'
+            dest: 'assets/jquery/plugins/malihu-custom-scrollbar-plugin'
           },
           {
             expand: true,
@@ -108,8 +104,23 @@ module.exports = function(grunt) {
             src: [
               'node_modules/lodash/lodash.min.js'
             ],
-            dest: 'assets/lodash/',
-            mode: '0755'
+            dest: 'assets/lodash/'
+          }
+        ]
+      },
+      fix: {
+        options: {
+          mode: '0755',
+          process: (content) => content.replace(/\.attr\("tabindex","0"\)/g, '')
+        },
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: [
+              'node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js'
+            ],
+            dest: 'assets/jquery/plugins/malihu-custom-scrollbar-plugin'
           }
         ]
       }

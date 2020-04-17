@@ -5,15 +5,18 @@
   justify-content: center;
   padding: 0 !important;
 
-  #{$selectors-buttons} {
-    background-image: none;line-height: 18px;
-    border-width: 0px 1px 2px;
+  div {
+    background-color: rgba($color-black, $transparency-background);
+    border-color: $color-light;
+    border-style: $border-style;
     border-radius: 0 0 4px 4px;
+    border-width: 0px 1px 2px;
     box-shadow: none;
     font-size: $font-size-small;
+    line-height: 18px;
     min-height: 28px;
     min-width: 0;
-    padding: ($spacing-padding / 2) (($spacing-padding * 3) / 2);
+    padding: ($spacing-padding / 2) $spacing-margin;
     width: auto;
 
     &:not(:first-child) {

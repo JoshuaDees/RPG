@@ -1721,7 +1721,7 @@ and dependencies (minified).
 					});
 				});
 			}
-			mCustomScrollBox.attr("tabindex","0").bind(events[0],function(e){
+			mCustomScrollBox.bind(events[0],function(e){
 				_onKeyboard(e);
 			});
 			function _onKeyboard(e){

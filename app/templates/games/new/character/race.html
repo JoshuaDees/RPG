@@ -64,9 +64,9 @@
           </fieldset>
         </div>
         <div class="tabs bottom">
-          <button ng-class="{ selected: !view.description || view.description == 'general' }" ng-click="view.description = 'general'" onclick="return false;" onfocus="this.blur()" type="reset">General</button>
-          <button ng-class="{ selected: view.description == 'details' }" ng-click="view.description = 'details'" onclick="return false;" onfocus="this.blur()" type="reset">Details</button>
-          <button ng-class="{ selected: view.description == 'stats' }" ng-click="view.description = 'stats'" onclick="return false;" onfocus="this.blur()" type="reset">Stats</button>
+          <div ng-class="{ selected: !view.description || view.description == 'general' }" ng-click="view.description = 'general'">General</div>
+          <div ng-class="{ selected: view.description == 'details' }" ng-click="view.description = 'details'">Details</div>
+          <div ng-class="{ selected: view.description == 'stats' }" ng-click="view.description = 'stats'">Stats</div>
         </div>
       </aside>
     </article>

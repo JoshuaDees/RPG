@@ -10,7 +10,7 @@ main {
   height: 100%;
   justify-content: center;
   overflow: hidden;
-  padding: ($spacing-padding + 82) $spacing-padding $spacing-padding;
+  padding: (82 + $spacing-margin) $spacing-margin $spacing-margin;
 
   form {
     align-items: stretch;

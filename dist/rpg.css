@@ -81,7 +81,7 @@ p + p {
 }
 
 small, .small {
-  font-size: 80%;
+  font-size: 90%;
 }
 
 a {
@@ -339,7 +339,7 @@ main {
   height: 100%;
   justify-content: center;
   overflow: hidden;
-  padding: 90px 8px 8px;
+  padding: 98px 16px 16px;
 }
 main form {
   align-items: stretch;
@@ -589,28 +589,30 @@ figure p {
   justify-content: center;
   padding: 0 !important;
 }
-.tabs button, .tabs input[type=button], .tabs input[type=reset], .tabs input[type=submit], .tabs .button {
-  background-image: none;
-  line-height: 18px;
-  border-width: 0px 1px 2px;
+.tabs div {
+  background-color: rgba(0, 0, 0, 0.75);
+  border-color: #9b967f;
+  border-style: solid;
   border-radius: 0 0 4px 4px;
+  border-width: 0px 1px 2px;
   box-shadow: none;
-  font-size: 80%;
+  font-size: 90%;
+  line-height: 18px;
   min-height: 28px;
   min-width: 0;
-  padding: 4px 12px;
+  padding: 4px 16px;
   width: auto;
 }
-.tabs button:not(:first-child), .tabs input[type=button]:not(:first-child), .tabs input[type=reset]:not(:first-child), .tabs input[type=submit]:not(:first-child), .tabs .button:not(:first-child) {
+.tabs div:not(:first-child) {
   margin-left: -1px;
 }
-.tabs button:hover, .tabs button:focus, .tabs button.selected, .tabs input[type=button]:hover, .tabs input[type=button]:focus, .tabs input[type=button].selected, .tabs input[type=reset]:hover, .tabs input[type=reset]:focus, .tabs input[type=reset].selected, .tabs input[type=submit]:hover, .tabs input[type=submit]:focus, .tabs input[type=submit].selected, .tabs .button:hover, .tabs .button:focus, .tabs .button.selected {
+.tabs div:hover, .tabs div:focus, .tabs div.selected {
   z-index: 1;
 }
-.tabs button:not(:hover):not(:focus):not(.selected), .tabs input[type=button]:not(:hover):not(:focus):not(.selected), .tabs input[type=reset]:not(:hover):not(:focus):not(.selected), .tabs input[type=submit]:not(:hover):not(:focus):not(.selected), .tabs .button:not(:hover):not(:focus):not(.selected) {
+.tabs div:not(:hover):not(:focus):not(.selected) {
   color: rgba(255, 251, 247, 0.5);
 }
-.tabs button.selected, .tabs input[type=button].selected, .tabs input[type=reset].selected, .tabs input[type=submit].selected, .tabs .button.selected {
+.tabs div.selected {
   border-color: #bdb9aa;
 }
 

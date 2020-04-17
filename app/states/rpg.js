@@ -3,11 +3,13 @@ angular
   .controller('RPGController', [
     '$scope',
     '$state',
+    'FocusProvider',
     'KeyEventProvider',
     'SessionProvider',
   function(
     $scope,
     $state,
+    FocusProvider,
     KeyEventProvider,
     SessionProvider
   ) {
