@@ -69,6 +69,27 @@
     });
 
 //--------------------------------------------------------------------------------------------------------------------
+// File: app/filters/fixPlusMinus.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .filter('fixPlusMinus', [
+      '$sce',
+    function(
+      $sce
+    ) {
+      return function(string) {
+        return (string || '')
+          .replace(/\+(\d)/g, function(match, number) {
+            return '<i class="fa fa-plus"></i>' + number;
+          })
+          .replace(/\-(\d)/g, function(match, number) {
+            return '<i class="fa fa-minus"></i>' + number;
+          });
+      };
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
 // File: app/filters/modifier.js
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -89,12 +110,9 @@
     function(
       $sce
     ) {
-      return function(string, paragraphClass) {
-        console.log(arguments);
-        var prefix = '<p class="' + (paragraphClass || '') + '">';
-        var suffix = '</p>';
-
-        return prefix + $sce.trustAsHtml((string || '').replace(/\\n/g, suffix + prefix)) + suffix;
+      return function(string) {
+        return (string || '')
+          .replace(/\n/g, '<br />');
       };
     }]);
 
@@ -671,14 +689,18 @@
             '$stateParams',
             '$timeout',
             'CharactersResource',
+            'fixPlusMinusFilter',
             'KeyEventProvider',
+            'replaceNewLinesFilter',
           function(
             $scope,
             $state,
             $stateParams,
             $timeout,
             CharactersResource,
-            KeyEventProvider
+            fixPlusMinusFilter,
+            KeyEventProvider,
+            replaceNewLinesFilter
           ) {
             $scope.model = {
               'options': {
@@ -811,7 +833,9 @@
             '$stateParams',
             '$timeout',
             'CharactersResource',
+            'fixPlusMinusFilter',
             'KeyEventProvider',
+            'replaceNewLinesFilter',
           function(
             $q,
             $scope,
@@ -819,7 +843,9 @@
             $stateParams,
             $timeout,
             CharactersResource,
-            KeyEventProvider
+            fixPlusMinusFilter,
+            KeyEventProvider,
+            replaceNewLinesFilter
           ) {
             $scope.model = {
               'options': {
@@ -1012,6 +1038,29 @@
       $scope.transitionTo = function(state, params) {
         $state.transitionTo(state, params);
       };
+
+      $(function() {
+        function zoom() {
+          return;
+
+          var height = 540;
+          var width = 960;
+
+          var maxHeight = $(document.body).innerHeight();
+          var maxWidth = $(document.body).innerWidth();
+
+          var dh = maxHeight / height;
+          var dw = maxWidth / width;
+
+          var d = dh <= dw ? dh : dw;
+
+          $('.container').css('zoom', d);
+        }
+
+        $(window).on('resize', zoom);
+
+        zoom();
+      });
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -1228,7 +1277,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/class.html',
-    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="col flex"><fieldset class="flex text-center"><legend>Select Race</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.id === class.id" ng-disabled="class.enabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.name }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img height=100% ng-src="./media/images/characters/classes/{{ $parent.model.gender.name }}-{{ $parent.model.race.name }}-{{ model.selected.class.name }}.png"/></div><figcaption class=small>{{ $parent.model.gender.name }} {{ $parent.model.race.name }} {{ model.selected.class.name }}</figcaption></figure></section><aside class=col><div class="col flex"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.class.name }}</p><p class=small>{{ model.selected.class.description }}</p></div></div></fieldset></div><div class="tabs bottom"><button ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'" onclick="return false;" onfocus=this.blur()>General</button> <button ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'" onclick="return false;" onfocus=this.blur()>Details</button> <button ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'" onclick="return false;" onfocus=this.blur()>Stats</button></div></aside></article><footer><button ng-click="transitionTo(\'games.new.character.race\', { model: $parent.model })" type=reset>Back</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
+    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="col flex"><fieldset class="flex text-center"><legend>Select Race</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.class.id == class.id, disabled: class.enabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.id === class.id" ng-disabled="class.enabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.name }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img height=100% ng-src="./media/images/characters/classes/{{ $parent.model.gender.name }}-{{ $parent.model.race.name }}-{{ model.selected.class.name }}.png"/></div><figcaption class=small>{{ $parent.model.gender.name }} {{ $parent.model.race.name }} {{ model.selected.class.name }}</figcaption></figure></section><aside class=col><div class="col flex"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.class.name }}</p><p class=small ng-bind-html="model.selected.class.description | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == \'general\'"></p><p class=small ng-bind-html="model.selected.class.details | replaceNewLines | fixPlusMinus" ng-if="view.description == \'details\'"></p><p class=small ng-bind-html="model.selected.class.stats | replaceNewLines | fixPlusMinus" ng-if="view.description == \'stats\'"></p></div></div></fieldset></div><div class="tabs bottom"><button ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'" onclick="return false;" onfocus=this.blur() type=reset>General</button> <button ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'" onclick="return false;" onfocus=this.blur() type=reset>Details</button> <button ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'" onclick="return false;" onfocus=this.blur() type=reset>Stats</button></div></aside></article><footer><button ng-click="transitionTo(\'games.new.character.race\', { model: $parent.model })" type=reset>Back</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
   );
 
 
@@ -1238,7 +1287,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/race.html',
-    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="flex col"><fieldset class="flex text-center"><legend>Select Race</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races"><label class=input-checkbox><input name=race ng-checked="model.selected.race.id === race.id" ng-model=model.selected.race ng-value=race type=radio /> {{ race.name }}</label></li></ul></div></fieldset></div><div class=col><fieldset class=text-center><legend>Select Gender</legend><ul><li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders"><label class=input-checkbox><input name=gender ng-checked="model.selected.gender.id === gender.id" ng-model=model.selected.gender ng-value=gender type=radio /> {{ gender.name }}</label></li></ul></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img height=100% ng-src="./media/images/characters/classes/{{ model.selected.gender.name }}-{{ model.selected.race.name }}-{{ model.selected.race.class }}.png"/></div><figcaption class=small>{{ model.selected.gender.name }} {{ model.selected.race.name }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.race.name }}</p><p class=small>{{ model.selected.race.description }}</p></div></div></fieldset></div><div class="tabs bottom"><button ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'" onclick="return false;" onfocus=this.blur()>General</button> <button ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'" onclick="return false;" onfocus=this.blur()>Details</button> <button ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'" onclick="return false;" onfocus=this.blur()>Stats</button></div></aside></article><footer><button ng-click="transitionTo(\'games.new.party\')" type=reset>Cancel</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
+    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="flex col"><fieldset class="flex text-center"><legend>Select Race</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.race.id == race.id }" ng-repeat="race in model.options.races"><label class=input-checkbox><input name=race ng-checked="model.selected.race.id === race.id" ng-model=model.selected.race ng-value=race type=radio /> {{ race.name }}</label></li></ul></div></fieldset></div><div class=col><fieldset class=text-center><legend>Select Gender</legend><ul><li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders"><label class=input-checkbox><input name=gender ng-checked="model.selected.gender.id === gender.id" ng-model=model.selected.gender ng-value=gender type=radio /> {{ gender.name }}</label></li></ul></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img height=100% ng-src="./media/images/characters/classes/{{ model.selected.gender.name }}-{{ model.selected.race.name }}-{{ model.selected.race.class }}.png"/></div><figcaption class=small>{{ model.selected.gender.name }} {{ model.selected.race.name }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.race.name }}</p><p class=small ng-bind-html="model.selected.race.description | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == \'general\'"></p><p class=small ng-bind-html="model.selected.race.details | replaceNewLines | fixPlusMinus" ng-if="view.description == \'details\'"></p><p class=small ng-bind-html="model.selected.race.stats | replaceNewLines | fixPlusMinus" ng-if="view.description == \'stats\'"></p></div></div></fieldset></div><div class="tabs bottom"><button ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'" onclick="return false;" onfocus=this.blur() type=reset>General</button> <button ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'" onclick="return false;" onfocus=this.blur() type=reset>Details</button> <button ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'" onclick="return false;" onfocus=this.blur() type=reset>Stats</button></div></aside></article><footer><button ng-click="transitionTo(\'games.new.party\')" type=reset>Cancel</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
   );
 
 

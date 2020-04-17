@@ -40,6 +40,13 @@
         font-size: 10px;
       }
 
+      .small .fa {
+        font-size: 65%;
+        margin-right: 2px;
+        position: relative;
+        top: -.5px;
+      }
+
       .container {
         --background-blend-mode: luminosity;
         background-image: url('./media/images/theme/wallpaper.jpg');

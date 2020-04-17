@@ -44,15 +44,17 @@
             <div class="flex" ng-scrollbars>
               <div>
                 <p>{{ model.selected.class.name }}</p>
-                <p class="small">{{ model.selected.class.description }}</p>
+                <p class="small" ng-bind-html="model.selected.class.description | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == 'general'"></p>
+                <p class="small" ng-bind-html="model.selected.class.details | replaceNewLines | fixPlusMinus" ng-if="view.description == 'details'"></p>
+                <p class="small" ng-bind-html="model.selected.class.stats | replaceNewLines | fixPlusMinus" ng-if="view.description == 'stats'"></p>
               </div>
             </div>
           </fieldset>
         </div>
         <div class="tabs bottom">
-          <button ng-class="{ selected: !view.description || view.description == 'general' }" ng-click="view.description = 'general'" onclick="return false;" onfocus="this.blur()">General</button>
-          <button ng-class="{ selected: view.description == 'details' }" ng-click="view.description = 'details'" onclick="return false;" onfocus="this.blur()">Details</button>
-          <button ng-class="{ selected: view.description == 'stats' }" ng-click="view.description = 'stats'" onclick="return false;" onfocus="this.blur()">Stats</button>
+          <button ng-class="{ selected: !view.description || view.description == 'general' }" ng-click="view.description = 'general'" onclick="return false;" onfocus="this.blur()" type="reset">General</button>
+          <button ng-class="{ selected: view.description == 'details' }" ng-click="view.description = 'details'" onclick="return false;" onfocus="this.blur()" type="reset">Details</button>
+          <button ng-class="{ selected: view.description == 'stats' }" ng-click="view.description = 'stats'" onclick="return false;" onfocus="this.blur()" type="reset">Stats</button>
         </div>
       </aside>
     </article>

@@ -15,14 +15,18 @@ angular
           '$stateParams',
           '$timeout',
           'CharactersResource',
+          'fixPlusMinusFilter',
           'KeyEventProvider',
+          'replaceNewLinesFilter',
         function(
           $scope,
           $state,
           $stateParams,
           $timeout,
           CharactersResource,
-          KeyEventProvider
+          fixPlusMinusFilter,
+          KeyEventProvider,
+          replaceNewLinesFilter
         ) {
           $scope.model = {
             'options': {

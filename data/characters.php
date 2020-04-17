@@ -28,6 +28,8 @@
         "id" => "ClassId",
         "name" => "ClassName",
         "description" => "ClassDescription",
+        "details" => "ClassDetails",
+        "stats" => "ClassStats",
         "enabled" => "ClassEnabled"
       ));
 
@@ -52,6 +54,8 @@
         "id" => "RaceId",
         "name" => "RaceName",
         "description" => "RaceDescription",
+        "details" => "RaceDetails",
+        "stats" => "RaceStats",
         "class" => "ClassName"
       ));
 

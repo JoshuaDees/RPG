@@ -16,7 +16,9 @@ angular
           '$stateParams',
           '$timeout',
           'CharactersResource',
+          'fixPlusMinusFilter',
           'KeyEventProvider',
+          'replaceNewLinesFilter',
         function(
           $q,
           $scope,
@@ -24,7 +26,9 @@ angular
           $stateParams,
           $timeout,
           CharactersResource,
-          KeyEventProvider
+          fixPlusMinusFilter,
+          KeyEventProvider,
+          replaceNewLinesFilter
         ) {
           $scope.model = {
             'options': {
