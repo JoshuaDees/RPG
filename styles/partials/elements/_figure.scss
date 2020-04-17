@@ -6,9 +6,9 @@ figure {
   vertical-align: top;
 
   img {
-    background-color: rgba(0, 0, 0, .625);
-    border-color: $list-border-color;
-    border-style: solid;
+    background-color: rgba($color-black, $transparency-background);
+    border-color: $color-light;
+    border-style: $border-style;
     border-width: 2px 1px;
     border-radius: 16px;
     display: block;
@@ -17,10 +17,10 @@ figure {
   }
 
   figcaption {
-    background-color: $black;
-    border-color: $list-border-color;
+    background-color: $color-black;
+    border-color: $color-light;
     border-radius: 8px;
-    border-style: solid;
+    border-style: $border-style;
     border-width: 2px 1px;
     margin: 0 16px;
     padding: 2px 8px;

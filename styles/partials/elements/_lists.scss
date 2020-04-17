@@ -8,27 +8,27 @@ ul {
 
 li {
   line-height: 20px;
-  padding: $padding-field;
+  padding: ($spacing-padding / 2) $spacing-padding;
   overflow: hidden;
   white-space: nowrap;
 
   label {
     display: block;
     line-height: inherit;
-    margin: $padding-field-inverse;
-    padding: $padding-field;
+    margin: (0 - ($spacing-padding / 2)) (0 - $spacing-padding);
+    padding: ($spacing-padding / 2) $spacing-padding;
   }
 
   &:hover label {
-    background-color: $listitem-background-color-hover;
+    background-color: rgba($color-white, .125);
   }
 
   &.active label {
-    background-color: $listitem-background-color-active;
+    background-color: rgba($color-white, .25);
   }
 
   &.disabled {
-    color: rgba($font-color, .25);
+    color: rgba($color-white, .25);
 
     label {
       background-color: transparent;

@@ -6,7 +6,7 @@ nav {
     margin: 0 auto;
 
     &:not(:last-child) {
-      margin-bottom: $margin;
+      margin-bottom: $spacing-margin;
     }
   }
 

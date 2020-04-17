@@ -4,14 +4,14 @@
   position: relative;
 
   .fa {
-    color: $input-text-color;
+    color: $color-white;
     line-height: 1.5;
-    padding: $spacing ($spacing*1.5);
+    padding: $spacing-padding ($spacing-padding * 1.5);
     position: absolute;
     z-index: 1;
   }
 
-  #{$input-selectors} {
+  #{$selectors-inputs} {
     flex: 1 0 auto;
     padding-left: 36px;
   }

@@ -1,32 +1,32 @@
 form {
   fieldset {
-    background-color: rgba($black, .625);
-    border-color: $list-border-color;
-    border-radius: $list-border-radius;
-    border-style: $list-border-style;
-    border-width: $list-border-width;
+    background-color: rgba($color-black, $transparency-background);
+    border-color: $color-light;
+    border-radius: $border-radius;
+    border-style: $border-style;
+    border-width: ($border-radius / 2) 0;
     margin: 0;
-    padding: ($padding/8) ($padding/2) ($padding/2);
+    padding: ($spacing-padding / 4) $spacing-padding $spacing-padding;
     width: 100%;
 
     & + fieldset {
-      margin-top: $margin;
+      margin-top: $spacing-margin;
     }
 
     legend {
       background-image: linear-gradient(
-        rgba($black, .625),
-        rgba($black, .625) 50%,
+        rgba($color-black, $transparency-background),
+        rgba($color-black, $transparency-background) 50%,
         transparent 50%,
         transparent
       );
-      border-color: $list-border-color;
-      border-radius: $list-border-radius;
-      border-style: $list-border-style;
-      border-width: $list-border-width;
+      border-color: $color-light;
+      border-radius: $border-radius;
+      border-style: $border-style;
+      border-width: ($border-radius / 2) 0;
       border-bottom-width: 0;
       line-height: 24px;
-      padding: 0 $padding;
+      padding: 0 $spacing-padding;
       text-align: center;
     }
 

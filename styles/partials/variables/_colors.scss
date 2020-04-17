@@ -1,27 +1,7 @@
-$black: rgb(0, 0, 0);
-$dark-gray: rgb(117, 103, 89);
-$light-gray: rgb(155, 150, 127);
-$white: rgb(255, 255, 255);
-
-
-$font-color: rgb(255, 251, 247);
-
-$shadow-color: rgb(255, 93, 46);
-
-$input-background-color: $black;
-$input-border-color: rgb(117, 103, 89);
-$input-border-color-focus: rgb(155, 150, 127);
-$input-text-color: rgb(255, 251, 247);
-
-$input-placeholder-text-color: rgb(87, 83, 79);
-
-$button-background-color: rgb(10, 11, 10);
-$button-border-color: rgb(117, 103, 89);
-$button-border-color-focus: rgb(155, 150, 127);
-$button-border-color-disabled: rgb(155, 155, 155);
-$button-text-color: rgb(255, 251, 247);
-
-$button-submit-background-color: rgb(128, 32, 0);
-
-$listitem-background-color-hover: rgba(255, 255, 255, .125);
-$listitem-background-color-active: rgba(255, 255, 255, .25);
+$color-black: rgb(0, 0, 0);
+$color-extra-dark: rgb(87, 83, 79);
+$color-dark: rgb(117, 103, 89);
+$color-light: rgb(155, 150, 127);
+$color-white: rgb(255, 251, 247);
+$color-interactive: rgb(128, 32, 0);
+$color-interactive-shadow: rgb(255, 93, 46);

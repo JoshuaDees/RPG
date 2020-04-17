@@ -4,8 +4,8 @@
   flex-direction: row;
   position: relative;
 
-  #{$input-selectors},
-  #{$button-selectors} {
+  #{$selectors-inputs},
+  #{$selectors-buttons} {
     &:hover,
     &:focus {
       z-index: 1;

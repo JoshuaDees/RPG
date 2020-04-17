@@ -1,11 +1,19 @@
+/* All Set */
 @import 'partials/variables/colors';
 @import 'partials/variables/borders';
 @import 'partials/variables/fonts';
-@import 'partials/variables/gradients';
 @import 'partials/variables/selectors';
-@import 'partials/variables/shadows';
 @import 'partials/variables/spacing';
+@import 'partials/variables/transparency';
+
+/* TODO: Clean Up */
+@import 'partials/properties/gradients';
+@import 'partials/properties/shadows';
+
+/* TODO: Clean Up */
 @import 'partials/layouts/containers';
+
+/* TODO: Clean Up */
 @import 'partials/elements';
 @import 'partials/elements/html';
 @import 'partials/elements/body';
@@ -20,6 +28,8 @@
 @import 'partials/elements/containers';
 @import 'partials/elements/navs';
 @import 'partials/elements/figure';
+
+/* TODO: Clean Up */
 @import 'partials/classes/borders';
 @import 'partials/classes/flex';
 @import 'partials/classes/form-group';

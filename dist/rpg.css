@@ -1,3 +1,17 @@
+/* All Set */
+/* TODO: Clean Up */
+/* TODO: Clean Up */
+.container {
+  background-color: #ffffff;
+  height: 540px;
+  width: 960px;
+}
+
+/* TODO: Clean Up */
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
 button,
 input,
 optgroup,
@@ -6,16 +20,6 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-}
-
-.container {
-  background-color: #ffffff;
-  height: 540px;
-  width: 960px;
-}
-
-*, ::after, ::before {
-  box-sizing: border-box;
 }
 
 :not(input):not(textarea) {
@@ -36,8 +40,8 @@ html.viewport {
 
 body {
   background: black;
-  color: white;
-  font: 400 12px Dalelands;
+  color: #fffbf7;
+  font: 400 12px "Dalelands";
   line-height: 1.5;
 }
 body.viewport {
@@ -121,9 +125,9 @@ img.portrait.large {
 }
 
 form fieldset {
-  background-color: rgba(0, 0, 0, 0.625);
+  background-color: rgba(0, 0, 0, 0.75);
   border-color: #9b967f;
-  border-radius: 8px;
+  border-radius: 4px;
   border-style: solid;
   border-width: 2px 0;
   margin: 0;
@@ -134,14 +138,14 @@ form fieldset + fieldset {
   margin-top: 16px;
 }
 form fieldset legend {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.625), rgba(0, 0, 0, 0.625) 50%, transparent 50%, transparent);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, transparent 50%, transparent);
   border-color: #9b967f;
-  border-radius: 8px;
+  border-radius: 4px;
   border-style: solid;
   border-width: 2px 0;
   border-bottom-width: 0;
   line-height: 24px;
-  padding: 0 16px;
+  padding: 0 8px;
   text-align: center;
 }
 form fieldset > .flex {
@@ -195,7 +199,7 @@ input[type=checkbox] {
 }
 
 button, input[type=button], input[type=reset], input[type=submit], .button {
-  background-color: rgba(10, 11, 10, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0.125) 50%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.125) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
   border: 1px solid #756759;
   border-radius: 4px;
@@ -218,22 +222,17 @@ button:active, input[type=button]:active, input[type=reset]:active, input[type=s
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(0, 0, 0, 0.125) 10%, rgba(0, 0, 0, 0.0625) 50%, rgba(255, 255, 255, 0.0625) 50%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
 }
 button:disabled, button:disabled:active, input[type=button]:disabled, input[type=button]:disabled:active, input[type=reset]:disabled, input[type=reset]:disabled:active, input[type=submit]:disabled, input[type=submit]:disabled:active, .button:disabled, .button:disabled:active {
-  background-color: rgba(10, 11, 10, 0.375);
+  background-color: rgba(0, 0, 0, 0.375);
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.25) 10%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0.125) 50%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.125) 90%, rgba(255, 255, 255, 0.25) 85%, rgba(255, 255, 255, 0.125) 90%, rgba(0, 0, 0, 0.5));
-  border-color: rgba(155, 155, 155, 0.5);
+  border-color: rgba(117, 103, 89, 0.5);
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
   color: rgba(255, 251, 247, 0.5);
 }
-
-button[type=submit], input[type=submit] {
+button[type=submit], input[type=button][type=submit], input[type=reset][type=submit], input[type=submit][type=submit], .button[type=submit] {
   background-color: rgba(128, 32, 0, 0.75);
 }
-button[type=submit]:disabled, input[type=submit]:disabled {
+button[type=submit]:disabled, input[type=button][type=submit]:disabled, input[type=reset][type=submit]:disabled, input[type=submit][type=submit]:disabled, .button[type=submit]:disabled {
   background-color: rgba(128, 32, 0, 0.375);
-}
-
-.jumbotron {
-  background: black;
 }
 
 ul {
@@ -257,10 +256,10 @@ li label {
   padding: 4px 8px;
 }
 li:hover label {
-  background-color: rgba(255, 255, 255, 0.125);
+  background-color: rgba(255, 251, 247, 0.125);
 }
 li.active label {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 251, 247, 0.25);
 }
 li.disabled {
   color: rgba(255, 251, 247, 0.25);
@@ -342,7 +341,7 @@ dialog.transparent header {
 }
 
 div.input-helper {
-  padding: 4px 0;
+  padding: 8px 0 0;
 }
 
 main {
@@ -351,7 +350,7 @@ main {
   height: 100%;
   justify-content: center;
   overflow: hidden;
-  padding: 98px 16px 16px;
+  padding: 90px 8px 8px;
 }
 main form {
   align-items: stretch;
@@ -455,7 +454,7 @@ figure {
   vertical-align: top;
 }
 figure img {
-  background-color: rgba(0, 0, 0, 0.625);
+  background-color: rgba(0, 0, 0, 0.75);
   border-color: #9b967f;
   border-style: solid;
   border-width: 2px 1px;
@@ -482,6 +481,7 @@ figure p {
   text-align: center;
 }
 
+/* TODO: Clean Up */
 .border {
   border: 1px solid #756759;
 }

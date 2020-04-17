@@ -3,7 +3,7 @@
   flex-direction: row;
 
   > * + *:not(button):not(input) {
-    padding-left: $margin;
+    padding-left: $spacing-margin;
   }
 }
 
@@ -12,7 +12,7 @@
   flex-direction: column;
 
   > * + *:not(button):not(input) {
-    padding-top: $margin;
+    padding-top: $spacing-margin;
   }
 
   > .flex:not(fieldset) {
@@ -34,14 +34,14 @@
     line-height: 28px;;
   }
 
-  #{$input-selectors} {
+  #{$selectors-inputs} {
     line-height: 18px;
     min-height: 28px;
     min-width: 48px;
     width: 48px;
   }
 
-  #{$button-selectors} {
+  #{$selectors-buttons} {
     line-height: 18px;
     min-height: 28px;
     min-width: 28px;

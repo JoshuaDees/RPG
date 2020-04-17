@@ -1,11 +1,11 @@
 dialog {
-  background-color: rgba($black, .75);
-  border: 1px solid $input-border-color;
+  background-color: rgba($color-black, .75);
+  border: 1px $border-style $color-dark;
   border-radius: ($border-radius*2);
   box-shadow: $shadow-inset;
   color: inherit;
   min-width: 320px;
-  padding: $padding;
+  padding: $spacing-margin;
 
   &:not([modal])::backdrop {
     display: none;
@@ -13,15 +13,15 @@ dialog {
 
   header,
   footer {
-    color: $input-text-color;
+    color: $color-white;
     font-weight: $font-weight-bold;
     text-align: center;
   }
 
   header {
     font-size: 15px;
-    margin: (-$margin) (-$margin) $margin;
-    padding: ($padding/2) $padding 0;
+    margin: (0 - $spacing-margin) (0 - $spacing-margin) $spacing-margin;
+    padding: $spacing-padding $spacing-margin 0;
     position: relative;
 
     a[ui-sref] {
@@ -46,12 +46,12 @@ dialog {
   footer {
     display: flex;
     justify-content: space-between;
-    margin: $margin (-$margin) (-$margin);
-    padding: 0 $padding $padding;
+    margin: $spacing-margin (0 - $spacing-margin) (0 - $spacing-margin);
+    padding: 0 $spacing-margin $spacing-margin;
     position: relative;
 
     button + button {
-      margin-left: $margin;
+      margin-left: $spacing-margin;
     }
 
     button:only-child {
@@ -60,7 +60,7 @@ dialog {
   }
 
   &[modal]::backdrop {
-    background: rgba($black, .5);
+    background: rgba($color-black, .5);
   }
 
   form {

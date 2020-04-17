@@ -1,9 +1,9 @@
 p {
   margin: 0;
-  padding: 0 ($padding/2);
+  padding: 0 $spacing-padding;
 
   & + p {
-    margin-top: ($margin/2);
+    margin-top: $spacing-padding;
   }
 }
 
@@ -12,12 +12,12 @@ small, .small {
 }
 
 a {
-  color: rgba($input-text-color, .5);
+  color: rgba($color-white, .5);
   text-decoration: none;
 
   &:hover,
   &:active {
-    color: $input-text-color;
+    color: $color-white;
     text-decoration: underline;
   }
 }

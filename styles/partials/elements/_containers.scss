@@ -1,6 +1,6 @@
 div {
   &.input-helper {
-    padding: ($spacing/2) 0;
+    padding: $spacing-padding 0 0;
   }
 }
 
@@ -10,7 +10,7 @@ main {
   height: 100%;
   justify-content: center;
   overflow: hidden;
-  padding: ($padding+82) $padding $padding;
+  padding: ($spacing-padding + 82) $spacing-padding $spacing-padding;
 
   form {
     align-items: stretch;
@@ -21,7 +21,7 @@ main {
     width: 100%;
 
     header {
-      padding-bottom: $margin;
+      padding-bottom: $spacing-margin;
     }
 
     article {
@@ -50,11 +50,11 @@ main {
         flex: 0 0 28%;
 
         &:first-child {
-          padding-right: $margin;
+          padding-right: $spacing-margin;
         }
 
         &:last-child {
-          padding-left: $margin;
+          padding-left: $spacing-margin;
         }
       }
 
@@ -76,10 +76,10 @@ main {
     footer {
       display: flex;
       justify-content: center;
-      margin-top: $margin;
+      margin-top: $spacing-margin;
 
       button + button {
-        margin-left: $margin;
+        margin-left: $spacing-margin;
       }
     }
   }
