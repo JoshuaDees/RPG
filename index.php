@@ -10,6 +10,7 @@
     <script src="./assets/jquery/jquery.min.js?bust=<?php echo $bust; ?>"></script>
     <script src="./assets/jquery/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js?bust=<?php echo $bust; ?>"></script>
     <script src="./assets/angular/angular.min.js?bust=<?php echo $bust; ?>"></script>
+    <script src="./assets/angular/angular-filter.min.js?bust=<?php echo $bust; ?>"></script>
     <script src="./assets/angular/angular-resource.min.js?bust=<?php echo $bust; ?>"></script>
     <script src="./assets/angular/angular-sanitize.min.js?bust=<?php echo $bust; ?>"></script>
     <script src="./assets/angular/angular-ui-router.min.js?bust=<?php echo $bust; ?>"></script>

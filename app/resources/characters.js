@@ -29,6 +29,12 @@ angular
         'params': {
           'action': 'races'
         }
+      },
+      'skills': {
+        'method': 'POST',
+        'params': {
+          'action': 'skills'
+        }
       }
     });
   }])

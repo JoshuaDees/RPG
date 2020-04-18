@@ -75,7 +75,7 @@ angular
           };
 
           $scope.accept = function() {
-            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
+            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'skills');
           };
 
           CharactersResource.abort().abilities({

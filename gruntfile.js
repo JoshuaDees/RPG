@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     // Compile Angular
     'angular-builder': {
       options: {
-        externalModules: ['ngResource', 'ngSanitize', 'ngScrollbars', 'ui.router'],
+        externalModules: ['angular.filter', 'ngResource', 'ngSanitize', 'ngScrollbars', 'ui.router'],
         mainModule: '<%= pkg.name %>',
         releaseBuild: {
           moduleFooter: '\n'
@@ -40,6 +40,7 @@ module.exports = function(grunt) {
             flatten: true,
             src: [
               'node_modules/angular/angular.min.js',
+              'node_modules/angular-filter/dist/angular-filter.min.js',
               'node_modules/angular-resource/angular-resource.min.js',
               'node_modules/angular-sanitize/angular-sanitize.min.js',
               'node_modules/angular-ui-router/release/angular-ui-router.min.js',

@@ -1,0 +1,66 @@
+<h2>Create Character</h2>
+<main overlay="flags.loading">
+  <form ng-submit="!flags.loading && (getPointsLeft() == 0) && accept()">
+    <article>
+      <aside class="col">
+        <div class="col">
+          <fieldset class="flex">
+            <legend>Bonus Points</legend>
+            <div class="flex">
+              <ul class="condensed">
+                <li class="row">
+                  <span class="flex">Remaining Choices:</span>
+                  <span>
+                    <input class="text-center" readonly ng-value="getPointsLeft()" onfocus="this.blur()" style="width: 64px;" />
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </fieldset>
+        </div>
+        <div class="flex col">
+          <fieldset class="flex">
+            <legend>Select Skills</legend>
+            <div class="flex" ng-scrollbars>
+              <ul>
+                <li ng-repeat-start="(category, skills) in model.selected.skills | groupBy:'category'">{{ category }}</li>
+                <li ng-class="{ active: skill.selected, disabled: !skill.enabled || (!skill.selected && getPointsLeft() <= 0) }" ng-repeat="skill in skills" ng-repeat-end>
+                  <label class="input-checkbox">
+                    <input ng-checked="skill.selected" ng-disabled="!skill.enabled || (!skill.selected && getPointsLeft() <= 0)" ng-model="skill.selected" type="checkbox" />
+                    <i class="far" ng-class="{ 'fa-check-square': skill.selected, 'fa-square': !skill.selected }"></i>
+                    {{ skill.name }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </fieldset>
+        </div>
+      </aside>
+      <section class="col flex-center">
+        <figure class="flex">
+          <div class="flex">
+            <img height="100%" ng-src="./media/images/characters/classes/{{ $parent.model.gender.name }}-{{ $parent.model.race.name }}-{{ $parent.model.class.name }}.png" />
+          </div>
+          <figcaption class="small">{{ $parent.model.gender.name }} {{ $parent.model.race.name }} {{ $parent.model.class.name }}</figcaption>
+        </figure>
+      </section>
+      <aside class="col">
+        <div class="flex col">
+          <fieldset class="flex">
+            <legend>Description</legend>
+            <div class="flex" ng-scrollbars>
+              <div>
+                <p ng-repeat-start="skill in model.selected.skills track by $index">{{ skill.name }}</p>
+                <p class="small" ng-repeat-end>{{ skill.description }}</p>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </aside>
+    </article>
+    <footer>
+      <button ng-click="transitionTo('games.new.character.abilities', { model: $parent.model })" type="reset">Back</button>
+      <button ng-disabled="flags.loading || getPointsLeft() != 0" type="submit">Next</button>
+    </footer>
+  </form>
+</main>

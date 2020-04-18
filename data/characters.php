@@ -5,6 +5,7 @@
     public function abilities() {
       $raceId = post("raceId");
       $classId = post("classId");
+
       $response = new MySQL("SELECT *, (SELECT RaceAbilities.RaceAbilityModifier FROM RaceAbilities WHERE RaceAbilities.RaceId = $raceId AND RaceAbilities.AbilityId = Abilities.AbilityId) AS RaceAbilityModifier, (SELECT ClassAbilities.ClassAbilityModifier FROM ClassAbilities WHERE ClassAbilities.ClassId = $classId AND ClassAbilities.AbilityId = Abilities.AbilityId) AS ClassAbilityModifier FROM Abilities");
 
       $json = $response->toArray(array(
@@ -57,6 +58,22 @@
         "details" => "RaceDetails",
         "stats" => "RaceStats",
         "class" => "ClassName"
+      ));
+
+      (new JSON())->success($json)->print();
+    }
+
+    public function skills() {
+      $classId = post("classId");
+
+      $response = new MySQL("SELECT Skills.*, SkillCategories.*, (SELECT ClassSkills.ClassId FROM ClassSkills WHERE ClassSkills.classId = $classId AND ClassSkills.SkillId = Skills.SkillId) AS SkillEnabled FROM Skills NATURAL JOIN SkillCategories");
+
+      $json = $response->toArray(array(
+        "id" => "SkillId",
+        "name" => "SkillName",
+        "description" => "SkillDescription",
+        "category" => "SkillCategoryName",
+        "enabled" => "SkillEnabled"
       ));
 
       (new JSON())->success($json)->print();

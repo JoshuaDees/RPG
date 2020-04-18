@@ -62,7 +62,7 @@
     </article>
     <footer>
       <button ng-click="transitionTo('games.new.character.class', { model: $parent.model })" type="reset">Back</button>
-      <button ng-disabled="flags.loading" type="submit">Next</button>
+      <button ng-disabled="flags.loading || getBonus() != 0" type="submit">Next</button>
     </footer>
   </form>
 </main>

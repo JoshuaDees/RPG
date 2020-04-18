@@ -18,7 +18,7 @@
     public function print() {
       header("Content-type: application/json");
 
-      echo json_encode($this->data);
+      echo json_encode($this->data, JSON_NUMERIC_CHECK);
       //print_r($this->data);
     }
   }
