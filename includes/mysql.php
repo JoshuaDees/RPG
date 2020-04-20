@@ -14,38 +14,26 @@
       $this->tbl = mysqli_query(MySQL::$conn, $sql);
     }
 
-    private function convert($row, $associations) {
-      $item = array();
+    public function toJSONArray() {
+      $json = array();
 
-      foreach ($associations as $key => $value) {
-        $item[$key] = $row[$value];
+      while ($row = mysqli_fetch_assoc($this->tbl)) {
+        array_push($json, $row);
       }
 
-      return $item;
+      return (new JSON())->success($json);
     }
 
-    public function toArray($associations) {
-      $response = array();
+    public function toJSONObject() {
+      $json = mysqli_fetch_assoc($this->tbl);
 
-      while ($row = mysqli_fetch_array($this->tbl)) {
-        array_push($response, $this->convert($row, $associations));
+      if (isset($json["Success"]) && $json["Success"] == "true") {
+        return (new JSON())->success($json);
+      } elseif (isset($json["Success"]) && $json["Success"] == "false" && isset($json["ErrorMessage"])) {
+        return (new JSON())->error($json["ErrorMessage"]);
+      } else {
+        return (new JSON())->error("There was an unknown database error.");
       }
-
-      return $response;
-    }
-
-    public function toObject($associations) {
-      $response = null;
-
-      if ($row = mysqli_fetch_array($this->tbl)) {
-        $response = $this->convert($row, $associations);
-      }
-
-      return $response;
-    }
-
-    public static function getLastIndex() {
-      return mysqli_insert_id(MySQL::$conn);
     }
   }
 ?>

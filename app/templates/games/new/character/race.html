@@ -9,16 +9,16 @@
             <div class="flex" ng-scrollbars>
               <ul>
                 <li
-                  ng-class="{ active: model.selected.race.id == race.id }"
+                  ng-class="{ active: model.selected.race.RaceId == race.RaceId }"
                   ng-repeat="race in model.options.races">
                   <label class="input-checkbox">
                     <input
                       name="race"
-                      ng-checked="model.selected.race.id === race.id"
+                      ng-checked="model.selected.race.RaceId === race.RaceId"
                       ng-model="model.selected.race"
                       ng-value="race"
                       type="radio" />
-                    {{ race.name }}
+                    {{ race.RaceName }}
                   </label>
                 </li>
               </ul>
@@ -29,10 +29,17 @@
           <fieldset class="text-center">
             <legend>Select Gender</legend>
             <ul>
-              <li ng-class="{ active: model.selected.gender.id == gender.id }" ng-repeat="gender in model.options.genders">
+              <li
+                ng-class="{ active: model.selected.gender.GenderId == gender.GenderId }"
+                ng-repeat="gender in model.options.genders">
                 <label class="input-checkbox">
-                  <input name="gender" ng-checked="model.selected.gender.id === gender.id" ng-model="model.selected.gender" ng-value="gender" type="radio" />
-                  {{ gender.name }}
+                  <input
+                    name="gender"
+                    ng-checked="model.selected.gender.GenderId === gender.GenderId"
+                    ng-model="model.selected.gender"
+                    ng-value="gender"
+                    type="radio" />
+                  {{ gender.GenderName }}
                 </label>
               </li>
             </ul>
@@ -44,9 +51,9 @@
           <div class="flex">
             <img
               height="100%"
-              ng-src="./media/images/characters/classes/{{ model.selected.gender.name }}-{{ model.selected.race.name }}-{{ model.selected.race.class }}.png" />
+              ng-src="./media/images/characters/classes/{{ model.selected.gender.GenderName }}-{{ model.selected.race.RaceName }}-{{ model.selected.race.RaceDefaultClassName }}.png" />
           </div>
-          <figcaption class="small">{{ model.selected.gender.name }} {{ model.selected.race.name }}</figcaption>
+          <figcaption class="small">{{ model.selected.gender.GenderName }} {{ model.selected.race.RaceName }}</figcaption>
         </figure>
       </section>
       <aside class="col">
@@ -55,10 +62,10 @@
             <legend>Description</legend>
             <div class="flex" ng-scrollbars>
               <div>
-                <p>{{ model.selected.race.name }}</p>
-                <p class="small" ng-bind-html="model.selected.race.description | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == 'general'"></p>
-                <p class="small" ng-bind-html="model.selected.race.details | replaceNewLines | fixPlusMinus" ng-if="view.description == 'details'"></p>
-                <p class="small" ng-bind-html="model.selected.race.stats | replaceNewLines | fixPlusMinus" ng-if="view.description == 'stats'"></p>
+                <p>{{ model.selected.race.GenderName }}</p>
+                <p class="small" ng-bind-html="model.selected.race.RaceDescription | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == 'general'"></p>
+                <p class="small" ng-bind-html="model.selected.race.RaceDetails | replaceNewLines | fixPlusMinus" ng-if="view.description == 'details'"></p>
+                <p class="small" ng-bind-html="model.selected.race.RaceStats | replaceNewLines | fixPlusMinus" ng-if="view.description == 'stats'"></p>
               </div>
             </div>
           </fieldset>

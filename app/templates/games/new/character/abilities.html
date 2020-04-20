@@ -24,7 +24,7 @@
             <div class="flex" ng-scrollbars>
               <ul class="condensed">
                 <li class="row" ng-repeat="ability in model.selected.abilities track by $index">
-                  <span class="flex">{{ ability.name }}:</span>
+                  <span class="flex">{{ ability.AbilityName }}:</span>
                   <span class="form-group">
                     <button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus="this.blur();"><i class="fa fa-plus"></i></button>
                     <input class="text-center" readonly ng-value="getValue($index)" onfocus="this.blur()" />
@@ -41,9 +41,9 @@
           <div class="flex">
             <img
               height="100%"
-              ng-src="./media/images/characters/classes/{{ $parent.model.gender.name }}-{{ $parent.model.race.name }}-{{ $parent.model.class.name }}.png" />
+              ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png" />
           </div>
-          <figcaption class="small">{{ $parent.model.gender.name }} {{ $parent.model.race.name }} {{ $parent.model.class.name }}</figcaption>
+          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption>
         </figure>
       </section>
       <aside class="col">
@@ -52,8 +52,8 @@
             <legend>Description</legend>
             <div class="flex" ng-scrollbars>
               <div>
-                <p ng-repeat-start="ability in model.selected.abilities track by $index">{{ ability.name }}</p>
-                <p class="small" ng-repeat-end>{{ ability.description }}</p>
+                <p ng-repeat-start="ability in model.selected.abilities track by $index">{{ ability.AbilityName }}</p>
+                <p class="small" ng-repeat-end>{{ ability.AbilityDescription }}</p>
               </div>
             </div>
           </fieldset>

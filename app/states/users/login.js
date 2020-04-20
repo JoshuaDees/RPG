@@ -34,8 +34,8 @@ angular
             UsersResource.abort().login($scope.model)
               .then(function(response) {
                 if (response.success) {
-                  SessionProvider.set('userId', response.model.id);
-                  SessionProvider.set('userName', response.model.name);
+                  SessionProvider.set('userId', response.model.UserId);
+                  SessionProvider.set('userName', response.model.UserName);
 
                   $state.transitionTo('games.menu');
                 } else {

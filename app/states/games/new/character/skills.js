@@ -25,10 +25,10 @@ angular
           function getIntellectModifier() {
             var intellect = _.get($scope.$parent, 'model.abilities[1]');
 
-            var total = _.get(intellect, 'default', 0) +
-              _.get(intellect, 'raceModifier', 0) +
-              _.get(intellect, 'classModifier', 0) +
-              _.get(intellect, 'bonus', 0);
+            var total = _.get(intellect, 'AbilityDefault', 0) +
+              _.get(intellect, 'AbilityRaceModifier', 0) +
+              _.get(intellect, 'AbilityClassModifier', 0) +
+              _.get(intellect, 'AbilityBonus', 0);
 
             return Math.floor((total - 10) / 2);
           };
@@ -49,7 +49,7 @@ angular
           $scope.getPointsLeft = function() {
             return _.get($scope, 'model.details.points') -
               _.filter(_.get($scope, 'model.selected.skills'), function(skill) {
-                return skill.selected == true;
+                return skill.SkillSelected == true;
               }).length;
           };
 
@@ -58,8 +58,8 @@ angular
           };
 
           CharactersResource.abort().skills({
-            'raceId': _.get($scope.$parent, 'model.race.id'),
-            'classId': _.get($scope.$parent, 'model.class.id')
+            'raceId': _.get($scope.$parent, 'model.race.RaceId'),
+            'classId': _.get($scope.$parent, 'model.class.ClassId')
           })
             .then(function(response) {
               if (response.success) {

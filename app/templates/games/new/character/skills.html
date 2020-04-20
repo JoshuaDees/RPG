@@ -23,12 +23,12 @@
             <legend>Select Skills</legend>
             <div class="flex" ng-scrollbars>
               <ul>
-                <li ng-repeat-start="(category, skills) in model.selected.skills | groupBy:'category'">{{ category }}</li>
-                <li ng-class="{ active: skill.selected, disabled: !skill.enabled || (!skill.selected && getPointsLeft() <= 0) }" ng-repeat="skill in skills" ng-repeat-end>
+                <li ng-repeat-start="(category, skills) in model.selected.skills | groupBy:'SkillCategoryName'">{{ category }}</li>
+                <li ng-class="{ active: skill.SkillSelected, disabled: !skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0) }" ng-repeat="skill in skills" ng-repeat-end>
                   <label class="input-checkbox">
-                    <input ng-checked="skill.selected" ng-disabled="!skill.enabled || (!skill.selected && getPointsLeft() <= 0)" ng-model="skill.selected" type="checkbox" />
-                    <i class="far" ng-class="{ 'fa-check-square': skill.selected, 'fa-square': !skill.selected }"></i>
-                    {{ skill.name }}
+                    <input ng-checked="skill.SkillSelected" ng-disabled="!skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0)" ng-model="skill.SkillSelected" type="checkbox" />
+                    <i class="far" ng-class="{ 'fa-check-square': skill.SkillSelected, 'fa-square': !skill.SkillSelected }"></i>
+                    {{ skill.SkillName }}
                   </label>
                 </li>
               </ul>
@@ -39,9 +39,9 @@
       <section class="col flex-center">
         <figure class="flex">
           <div class="flex">
-            <img height="100%" ng-src="./media/images/characters/classes/{{ $parent.model.gender.name }}-{{ $parent.model.race.name }}-{{ $parent.model.class.name }}.png" />
+            <img height="100%" ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png" />
           </div>
-          <figcaption class="small">{{ $parent.model.gender.name }} {{ $parent.model.race.name }} {{ $parent.model.class.name }}</figcaption>
+          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption>
         </figure>
       </section>
       <aside class="col">
@@ -50,8 +50,8 @@
             <legend>Description</legend>
             <div class="flex" ng-scrollbars>
               <div>
-                <p ng-repeat-start="skill in model.selected.skills track by $index">{{ skill.name }}</p>
-                <p class="small" ng-repeat-end>{{ skill.description }}</p>
+                <p ng-repeat-start="skill in model.selected.skills track by $index">{{ skill.SkillName }}</p>
+                <p class="small" ng-repeat-end>{{ skill.SkillDescription }}</p>
               </div>
             </div>
           </fieldset>

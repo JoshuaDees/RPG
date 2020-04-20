@@ -9,7 +9,7 @@ angular
               '<a onclick="$(\'#error\').remove();" ui-sref><i class="fa fa-times"></i></a>' +
               'Error' +
             '</header>' +
-            '<main>' + error + '</main>' +
+            '<main class="text-center">' + error + '</main>' +
             '<footer><button onclick="$(\'#error\').remove();" type="submit">Close</button></footer>' +
           '</dialog>'
         );

@@ -46,7 +46,7 @@ angular
           };
 
           CharactersResource.abort().classes({
-            'raceId': _.get($scope.$parent, 'model.race.id')
+            'raceId': _.get($scope.$parent, 'model.race.RaceId')
           })
             .then(function(response) {
               if (response.success) {
@@ -55,12 +55,12 @@ angular
                 _.set($scope, 'model.selected.class', _.filter(
                   _.get($scope, 'model.options.class'),
                   function(current, index) {
-                    if (_.get($scope.$parent, 'model.class.id')) {
-                      var selected = _.get($scope.$parent, 'model.class.id');
-                      return selected ? current.id == selected : index == 0;
+                    if (_.get($scope.$parent, 'model.class.ClassId')) {
+                      var selected = _.get($scope.$parent, 'model.class.ClassId');
+                      return selected ? current.ClassId == selected : index == 0;
                     } else {
-                      var selected = _.get($scope.$parent, 'model.race.class');
-                      return selected ? current.name == selected : index == 0;
+                      var selected = _.get($scope.$parent, 'model.race.RaceDefaultClassId');
+                      return selected ? current.ClassId == selected : index == 0;
                     }
                   }
                 )[0]);

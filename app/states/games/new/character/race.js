@@ -61,8 +61,8 @@ angular
                 _.set($scope, 'model.selected.gender', _.filter(
                   _.get($scope, 'model.options.genders'),
                   function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.gender.id');
-                    return selected ? current.id == selected : index == 0;
+                    var selected = _.get($scope.$parent, 'model.gender.GenderId');
+                    return selected ? current.GenderId == selected : index == 0;
                   }
                 )[0]);
               } else {
@@ -81,8 +81,8 @@ angular
                 _.set($scope, 'model.selected.race', _.filter(
                   _.get($scope, 'model.options.races'),
                   function(current, index) {
-                    var selected = _.get($scope.$parent, 'model.race.id');
-                    return selected ? current.id == selected : index == 0;
+                    var selected = _.get($scope.$parent, 'model.race.RaceId');
+                    return selected ? current.RaceId == selected : index == 0;
                   }
                 )[0]);
               } else {

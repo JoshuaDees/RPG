@@ -12,12 +12,14 @@ angular
         'controller': [
           '$scope',
           '$state',
+          'ErrorProvider',
           'KeyEventProvider',
           'SessionProvider',
           'UsersResource',
         function(
           $scope,
           $state,
+          ErrorProvider,
           KeyEventProvider,
           SessionProvider,
           UsersResource
@@ -33,8 +35,8 @@ angular
               UsersResource.abort().register($scope.model)
                 .then(function(response) {
                   if (response.success) {
-                    SessionProvider.set('userId', response.model.id);
-                    SessionProvider.set('userName', response.model.name);
+                    SessionProvider.set('userId', response.model.UserId);
+                    SessionProvider.set('userName', response.model.UserName);
 
                     $state.transitionTo('games.menu');
                   } else {

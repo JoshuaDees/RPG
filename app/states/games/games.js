@@ -35,7 +35,7 @@ angular
                 $scope.games = response.model;
 
                 _.set($scope, 'model.gameId',
-                  _.get($scope, 'games[0].id')
+                  _.get($scope, 'games[0].GameId')
                 );
               } else {
                 ErrorProvider.alert(response.message);

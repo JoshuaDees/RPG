@@ -6,77 +6,28 @@
       $raceId = post("raceId");
       $classId = post("classId");
 
-      $response = new MySQL("SELECT *, (SELECT RaceAbilities.RaceAbilityModifier FROM RaceAbilities WHERE RaceAbilities.RaceId = $raceId AND RaceAbilities.AbilityId = Abilities.AbilityId) AS RaceAbilityModifier, (SELECT ClassAbilities.ClassAbilityModifier FROM ClassAbilities WHERE ClassAbilities.ClassId = $classId AND ClassAbilities.AbilityId = Abilities.AbilityId) AS ClassAbilityModifier FROM Abilities");
-
-      $json = $response->toArray(array(
-        "id" => "AbilityId",
-        "name" => "AbilityName",
-        "abbreviation" => "AbilityAbbreviation",
-        "description" => "AbilityDescription",
-        "default" => "AbilityDefault",
-        "raceModifier" => "RaceAbilityModifier",
-        "classModifier" => "ClassAbilityModifier"
-      ));
-
-      (new JSON())->success($json)->print();
+      (new MySQL("CALL CharactersAbilitiesList($raceId, $classId)"))->toJSONArray()->print();
     }
+    
     public function classes() {
       $raceId = post("raceId");
 
-      $response = new MySQL("SELECT *, (SELECT RaceClasses.RaceId FROM RaceClasses WHERE RaceClasses.RaceId = $raceId AND RaceClasses.ClassId = Classes.ClassId) AS ClassEnabled FROM Classes ORDER BY ClassName");
-
-      $json = $response->toArray(array(
-        "id" => "ClassId",
-        "name" => "ClassName",
-        "description" => "ClassDescription",
-        "details" => "ClassDetails",
-        "stats" => "ClassStats",
-        "enabled" => "ClassEnabled"
-      ));
-
-      (new JSON())->success($json)->print();
+      (new MySQL("CALL CharactersClassesList($raceId)"))->toJSONArray()->print();
     }
 
     public function genders() {
-      $response = new MySQL("SELECT * FROM Genders");
-
-      $json = $response->toArray(array(
-        "id" => "GenderId",
-        "name" => "GenderName"
-      ));
-
-      (new JSON())->success($json)->print();
+      (new MySQL("CALL CharactersGendersList()"))->toJSONArray()->print();
     }
 
     public function races() {
-      $response = new MySQL("SELECT * FROM Races NATURAL JOIN Classes ORDER BY RaceName");
-
-      $json = $response->toArray(array(
-        "id" => "RaceId",
-        "name" => "RaceName",
-        "description" => "RaceDescription",
-        "details" => "RaceDetails",
-        "stats" => "RaceStats",
-        "class" => "ClassName"
-      ));
-
-      (new JSON())->success($json)->print();
+      (new MySQL("CALL CharactersRacesList()"))->toJSONArray()->print();
     }
 
     public function skills() {
+      $raceId = post("raceId");
       $classId = post("classId");
 
-      $response = new MySQL("SELECT Skills.*, SkillCategories.*, (SELECT ClassSkills.ClassId FROM ClassSkills WHERE ClassSkills.classId = $classId AND ClassSkills.SkillId = Skills.SkillId) AS SkillEnabled FROM Skills NATURAL JOIN SkillCategories");
-
-      $json = $response->toArray(array(
-        "id" => "SkillId",
-        "name" => "SkillName",
-        "description" => "SkillDescription",
-        "category" => "SkillCategoryName",
-        "enabled" => "SkillEnabled"
-      ));
-
-      (new JSON())->success($json)->print();
+      (new MySQL("CALL CharactersSkillsList($raceId, $classId)"))->toJSONArray()->print();
     }
   }
 

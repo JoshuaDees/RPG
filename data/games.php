@@ -5,14 +5,7 @@
     public function load() {
       $userId = post("userId");
 
-      $response = new MySQL("SELECT * FROM Games WHERE UserId = '$userId'");
-
-      $json = $response->toArray(array(
-        "id" => "GameId",
-        "title" => "GameTitle"
-      ));
-
-      (new JSON())->success($json)->print();
+      (new MySQL("CALL GamesList('$userId')"))->toJSONArray()->print();
     }
   }
 

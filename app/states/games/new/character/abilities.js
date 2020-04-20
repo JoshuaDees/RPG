@@ -36,9 +36,9 @@ angular
           };
 
           $scope.getValue = function(attribute) {
-            return parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].default')) +
-              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].raceModifier') || 0) +
-              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].classModifier') || 0) +
+            return parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].AbilityDefault')) +
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].AbilityRaceModifier') || 0) +
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].AbilityClassModifier') || 0) +
               $scope.getBonus(attribute);
           };
 
@@ -46,7 +46,7 @@ angular
             var bonus;
 
             if (attribute != undefined) {
-              bonus = parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0);
+              bonus = parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].AbilityBonus') || 0);
             } else {
               bonus = parseFloat(_.get($scope, 'model.details.bonus'));
 
@@ -59,16 +59,16 @@ angular
           };
 
           $scope.increment = function(attribute, $event) {
-            _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
-              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) + 1
+            _.set($scope, 'model.selected.abilities[' + attribute + '].AbilityBonus',
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].AbilityBonus') || 0) + 1
             );
 
             $event.preventDefault();
           };
 
           $scope.decrement = function(attribute, $event) {
-            _.set($scope, 'model.selected.abilities[' + attribute + '].bonus',
-              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].bonus') || 0) - 1
+            _.set($scope, 'model.selected.abilities[' + attribute + '].AbilityBonus',
+              parseFloat(_.get($scope, 'model.selected.abilities[' + attribute + '].AbilityBonus') || 0) - 1
             );
 
             $event.preventDefault();
@@ -79,8 +79,8 @@ angular
           };
 
           CharactersResource.abort().abilities({
-            'raceId': _.get($scope.$parent, 'model.race.id'),
-            'classId': _.get($scope.$parent, 'model.class.id')
+            'raceId': _.get($scope.$parent, 'model.race.RaceId'),
+            'classId': _.get($scope.$parent, 'model.class.ClassId')
           })
             .then(function(response) {
               if (response.success) {

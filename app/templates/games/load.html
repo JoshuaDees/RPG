@@ -7,10 +7,10 @@
     </header>
     <main>
       <ul class="border" style="height: 160px;">
-        <li ng-class="{ active: $parent.model.gameId == game.id }" ng-repeat="game in $parent.games">
+        <li ng-class="{ active: $parent.model.gameId == game.GameId }" ng-repeat="game in $parent.games">
           <label class="input-checkbox">
-            <input name="game" ng-model="$parent.model.gameId" ng-value="game.id" type="radio" />
-            {{ game.title }}
+            <input name="game" ng-model="$parent.model.gameId" ng-value="game.GameId" type="radio" />
+            {{ game.GameTitle }}
           </label>
         </li>
       </ul>
