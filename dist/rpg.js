@@ -240,50 +240,15 @@
     function(
       RestfulService
     ) {
-      return RestfulService('data/characters.php', null, {
-        'abilities': {
-          'method': 'POST',
-          'params': {
-            'action': 'abilities'
-          }
-        },
-        'classes': {
-          'method': 'POST',
-          'params': {
-            'action': 'classes'
-          }
-        },
-        'genders': {
-          'method': 'POST',
-          'params': {
-            'action': 'genders'
-          }
-        },
-        'races': {
-          'method': 'POST',
-          'params': {
-            'action': 'races'
-          }
-        },
-        'skills': {
-          'method': 'POST',
-          'params': {
-            'action': 'skills'
-          }
-        },
-        'specialities': {
-          'method': 'POST',
-          'params': {
-            'action': 'specialities'
-          }
-        },
-        'spells': {
-          'method': 'POST',
-          'params': {
-            'action': 'spells'
-          }
-        }
-      });
+      return RestfulService('data/characters.php', null, [
+        'abilities',
+        'classes',
+        'genders',
+        'races',
+        'skills',
+        'specialities',
+        'spells'
+      ]);
     }])
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -296,14 +261,9 @@
     function(
       RestfulService
     ) {
-      return RestfulService('data/games.php', null, {
-        'load': {
-          'method': 'POST',
-          'params': {
-            'action': 'load'
-          }
-        }
-      });
+      return RestfulService('data/games.php', null, [
+        'load'
+      ]);
     }])
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -316,26 +276,11 @@
     function(
       RestfulService
     ) {
-      return RestfulService('data/users.php', null, {
-        'login': {
-          'method': 'POST',
-          'params': {
-            'action': 'login'
-          }
-        },
-        'logout': {
-          'method': 'POST',
-          'params': {
-            'action': 'logout'
-          }
-        },
-        'register': {
-          'method': 'POST',
-          'params': {
-            'action': 'register'
-          }
-        }
-      });
+      return RestfulService('data/users.php', null, [
+        'login',
+        'logout',
+        'register'
+      ]);
     }]);
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -360,7 +305,22 @@
       $resource
     ) {
       return function(url, paramDefaults, actions) {
-        var resource = $resource.apply($resource, arguments);
+        if (_.isArray(actions)) {
+          var updated = {};
+
+          _.forEach(actions, function(action) {
+            updated[action] = {
+              'method': 'POST',
+              'params': {
+                'action': action
+              }
+            }
+          });
+
+          actions = updated;
+        }
+
+        var resource = $resource.apply($resource, [url, paramDefaults, actions]);
 
         resource.requests = resource.requests || {};
 

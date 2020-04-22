@@ -17,7 +17,22 @@ angular
     $resource
   ) {
     return function(url, paramDefaults, actions) {
-      var resource = $resource.apply($resource, arguments);
+      if (_.isArray(actions)) {
+        var updated = {};
+
+        _.forEach(actions, function(action) {
+          updated[action] = {
+            'method': 'POST',
+            'params': {
+              'action': action
+            }
+          }
+        });
+
+        actions = updated;
+      }
+
+      var resource = $resource.apply($resource, [url, paramDefaults, actions]);
 
       resource.requests = resource.requests || {};
 

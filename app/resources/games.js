@@ -5,12 +5,7 @@ angular
   function(
     RestfulService
   ) {
-    return RestfulService('data/games.php', null, {
-      'load': {
-        'method': 'POST',
-        'params': {
-          'action': 'load'
-        }
-      }
-    });
+    return RestfulService('data/games.php', null, [
+      'load'
+    ]);
   }])
