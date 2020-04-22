@@ -20,15 +20,15 @@
         </div>
         <div class="flex col">
           <fieldset class="flex">
-            <legend>Select Skills</legend>
+            <legend>Select Spells</legend>
             <div class="flex" ng-scrollbars>
               <ul>
-                <li ng-repeat-start="(category, skills) in model.selected.skills | groupBy:'SkillCategoryName'">{{ category }}</li>
-                <li ng-class="{ active: skill.SkillSelected, disabled: !skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0) }" ng-repeat="skill in skills" ng-repeat-end>
+                <li ng-repeat-start="(category, spells) in model.selected.spells | groupBy:'MagicSchoolName'">{{ category }}</li>
+                <li ng-class="{ active: spell.SpellSelected, disabled: (!spell.SpellSelected && getPointsLeft() <= 0) }" ng-repeat="spell in spells" ng-repeat-end>
                   <label class="input-checkbox">
-                    <input ng-checked="skill.SkillSelected" ng-disabled="!skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0)" ng-model="skill.SkillSelected" type="checkbox" />
-                    <i class="far" ng-class="{ 'fa-check-square': skill.SkillSelected, 'fa-square': !skill.SkillSelected }"></i>
-                    {{ skill.SkillName }}
+                    <input ng-checked="spells.SpellSelected" ng-disabled="(!spells.SpellSelected && getPointsLeft() <= 0)" ng-model="spell.SpellSelected" type="checkbox" />
+                    <i class="far" ng-class="{ 'fa-check-square': spell.SpellSelected, 'fa-square': !spell.SpellSelected }"></i>
+                    {{ spell.SpellName }}
                   </label>
                 </li>
               </ul>
@@ -52,8 +52,8 @@
             <legend>Description</legend>
             <div class="flex" ng-scrollbars>
               <div>
-                <p ng-repeat-start="skill in model.selected.skills track by $index">{{ skill.SkillName }}</p>
-                <p class="small" ng-repeat-end>{{ skill.SkillDescription }}</p>
+                <p ng-repeat-start="spell in model.selected.spells track by $index">{{ spell.SpellName }}</p>
+                <p class="small" ng-repeat-end>{{ spell.SpellDescription }}</p>
               </div>
             </div>
           </fieldset>

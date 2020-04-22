@@ -276,6 +276,12 @@
           'params': {
             'action': 'specialities'
           }
+        },
+        'spells': {
+          'method': 'POST',
+          'params': {
+            'action': 'spells'
+          }
         }
       });
     }])
@@ -608,6 +614,14 @@
               _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'skills');
             };
 
+            $scope.back = function() {
+              $state.transitionTo('games.new.character.' + (
+                _.get($scope.$parent, 'model.class.ClassSpecialities', 0) ? 'speciality' : 'class'
+              ), {
+                'model': _.get($scope.$parent, 'model')
+              });
+            };
+
             CharactersResource.abort().abilities({
               'raceId': _.get($scope.$parent, 'model.race.RaceId'),
               'classId': _.get($scope.$parent, 'model.class.ClassId')
@@ -630,11 +644,7 @@
 
             KeyEventProvider.actions = [{
               'matches': ['Shift+Escape', 'Escape'],
-              'callback': function() {
-                $state.transitionTo('games.new.character.class', {
-                  'model': _.get($scope.$parent, 'model')
-                });
-              }
+              'callback': $scope.back
             }];
           }]
         });
@@ -1007,7 +1017,7 @@
                 'skills': []
               },
               'details': {
-                'points': 4 + getIntellectModifier()
+                'points': 0
               }
             };
 
@@ -1023,7 +1033,15 @@
             };
 
             $scope.accept = function() {
-              _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'));
+              _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), (
+                _.get($scope.$parent, 'model.class.ClassSpells', 0) ? 'spells' : 'name'
+              ));
+            };
+
+            $scope.back = function() {
+              $scope.transitionTo('games.new.character.abilities', {
+                model: _.get($scope.$parent, 'model')
+              });
             };
 
             CharactersResource.abort().skills({
@@ -1050,11 +1068,7 @@
 
             KeyEventProvider.actions = [{
               'matches': ['Shift+Escape', 'Escape'],
-              'callback': function() {
-                $state.transitionTo('games.new.character.abilities', {
-                  'model': _.get($scope.$parent, 'model')
-                });
-              }
+              'callback': $scope.back
             }];
           }]
         });
@@ -1144,6 +1158,105 @@
                 $timeout(function() {
                   $('[type=radio]' + ($('[type=radio][checked]').length ? '[checked]' : '')).first().focus();
                 });
+              });
+
+            KeyEventProvider.actions = [{
+              'matches': ['Shift+Escape', 'Escape'],
+              'callback': $scope.back
+            }];
+          }]
+        });
+    }]);
+
+//--------------------------------------------------------------------------------------------------------------------
+// File: app/states/games/new/character/spells.js
+//--------------------------------------------------------------------------------------------------------------------
+
+  module
+    .config([
+      '$stateProvider',
+    function(
+      $stateProvider
+    ) {
+      $stateProvider
+        .state('games.new.character.spells', {
+          'scope': {},
+          'templateUrl': 'app/templates/games/new/character/spells.html',
+          'controller': [
+            '$scope',
+            '$state',
+            '$stateParams',
+            'CharactersResource',
+            'KeyEventProvider',
+          function(
+            $scope,
+            $state,
+            $stateParams,
+            CharactersResource,
+            KeyEventProvider
+          ) {
+            function getIntellectModifier() {
+              var intellect = _.get($scope.$parent, 'model.abilities[1]');
+
+              var total = _.get(intellect, 'AbilityDefault', 0) +
+                _.get(intellect, 'AbilityRaceModifier', 0) +
+                _.get(intellect, 'AbilityClassModifier', 0) +
+                _.get(intellect, 'AbilityBonus', 0);
+
+              return Math.floor((total - 10) / 2);
+            };
+
+            $scope.model = {
+              'selected': {
+                'spells': []
+              },
+              'details': {
+                'points': 1
+              }
+            };
+
+            $scope.flags = {
+              'loading': true
+            };
+
+            $scope.getPointsLeft = function() {
+              return _.get($scope, 'model.details.points') -
+                _.filter(_.get($scope, 'model.selected.spells'), function(spell) {
+                  return spell.SpellSelected == true;
+                }).length;
+            };
+
+            $scope.accept = function() {
+              _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'name');
+            };
+
+            $scope.back = function() {
+              $state.transitionTo('games.new.character.abilities', {
+                'model': _.get($scope.$parent, 'model')
+              });
+            };
+
+            CharactersResource.abort().spells({
+              'raceId': _.get($scope.$parent, 'model.race.RaceId'),
+              'classId': _.get($scope.$parent, 'model.class.ClassId'),
+              'specialityId': _.get($scope.$parent, 'model.speciality.SpecialityId')
+            })
+              .then(function(response) {
+                if (response.success) {
+                  _.set($scope, 'model.options.spells', response.model);
+
+                  _.set($scope, 'model.selected.spells',
+                    _.merge([], response.model, _.get($scope.$parent, 'model.spells'))
+                  );
+                } else {
+                  ErrorProvider.alert(response.message);
+                }
+              })
+              .catch(function(error) {
+                ErrorProvider.alert(error);
+              })
+              .finally(function() {
+                _.set($scope, 'flags.loading', false);
               });
 
             KeyEventProvider.actions = [{
@@ -1494,7 +1607,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/abilities.html',
-    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && (getBonus() == 0) && accept()"><article><aside class=col><div class=col><fieldset class=flex><legend>Bonus Points</legend><div class=flex><ul class=condensed><li class=row><span class=flex>Remaining Points:</span> <span><input class=text-center readonly ng-value=getBonus() onfocus=this.blur() style="width: 64px;"/></span></li></ul></div></fieldset></div><div class="flex col"><fieldset class=flex><legend>Select Abilities</legend><div class=flex ng-scrollbars><ul class=condensed><li class=row ng-repeat="ability in model.selected.abilities track by $index"><span class=flex>{{ ability.AbilityName }}:</span> <span class=form-group><button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus=this.blur();><i class="fa fa-plus"></i></button> <input class=text-center readonly ng-value=getValue($index) onfocus=this.blur() /> <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus=this.blur();><i class="fa fa-minus"></i></button></span></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p ng-repeat-start="ability in model.selected.abilities track by $index">{{ ability.AbilityName }}</p><p class=small ng-repeat-end>{{ ability.AbilityDescription }}</p></div></div></fieldset></div></aside></article><footer><button ng-click="transitionTo(\'games.new.character.class\', { model: $parent.model })" type=reset>Back</button> <button ng-disabled="flags.loading || getBonus() != 0" type=submit>Next</button></footer></form></main>'
+    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && (getBonus() == 0) && accept()"><article><aside class=col><div class=col><fieldset class=flex><legend>Bonus Points</legend><div class=flex><ul class=condensed><li class=row><span class=flex>Remaining Points:</span> <span><input class=text-center readonly ng-value=getBonus() onfocus=this.blur() style="width: 64px;"/></span></li></ul></div></fieldset></div><div class="flex col"><fieldset class=flex><legend>Select Abilities</legend><div class=flex ng-scrollbars><ul class=condensed><li class=row ng-repeat="ability in model.selected.abilities track by $index"><span class=flex>{{ ability.AbilityName }}:</span> <span class=form-group><button ng-click="increment($index, $event)" ng-disabled="getBonus() == 0" onfocus=this.blur();><i class="fa fa-plus"></i></button> <input class=text-center readonly ng-value=getValue($index) onfocus=this.blur() /> <button ng-click="decrement($index, $event)" ng-disabled="getBonus($index) == 0" onfocus=this.blur();><i class="fa fa-minus"></i></button></span></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p ng-repeat-start="ability in model.selected.abilities track by $index">{{ ability.AbilityName }}</p><p class=small ng-repeat-end>{{ ability.AbilityDescription }}</p></div></div></fieldset></div></aside></article><footer><button ng-click=back() type=reset>Back</button> <button ng-disabled="flags.loading || getBonus() != 0" type=submit>Next</button></footer></form></main>'
   );
 
 
@@ -1504,7 +1617,7 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/class.html',
-    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="col flex"><fieldset class="flex text-center"><legend>Select Race</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.class.ClassId == class.ClassId, disabled: class.ClassEnabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.ClassId === class.ClassId" ng-disabled="class.ClassEnabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.ClassName }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ model.selected.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ model.selected.class.ClassName }}</figcaption></figure></section><aside class=col><div class="col flex"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.class.ClassName }}</p><p class=small ng-bind-html="model.selected.class.ClassDescription | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == \'general\'"></p><p class=small ng-bind-html="model.selected.class.ClassDetails | replaceNewLines | fixPlusMinus" ng-if="view.description == \'details\'"></p><p class=small ng-bind-html="model.selected.class.ClassStats | replaceNewLines | fixPlusMinus" ng-if="view.description == \'stats\'"></p></div></div></fieldset></div><div class="tabs bottom"><div ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'">General</div><div ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'">Details</div><div ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'">Stats</div></div></aside></article><footer><button ng-click=back() type=reset>Back</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
+    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="col flex"><fieldset class="flex text-center"><legend>Select Class</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.class.ClassId == class.ClassId, disabled: class.ClassEnabled == null }" ng-repeat="class in model.options.class"><label class=input-checkbox><input name=class ng-checked="model.selected.class.ClassId === class.ClassId" ng-disabled="class.ClassEnabled == null" ng-model=model.selected.class ng-value=class type=radio /> {{ class.ClassName }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ model.selected.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ model.selected.class.ClassName }}</figcaption></figure></section><aside class=col><div class="col flex"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.class.ClassName }}</p><p class=small ng-bind-html="model.selected.class.ClassDescription | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == \'general\'"></p><p class=small ng-bind-html="model.selected.class.ClassDetails | replaceNewLines | fixPlusMinus" ng-if="view.description == \'details\'"></p><p class=small ng-bind-html="model.selected.class.ClassStats | replaceNewLines | fixPlusMinus" ng-if="view.description == \'stats\'"></p></div></div></fieldset></div><div class="tabs bottom"><div ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'">General</div><div ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'">Details</div><div ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'">Stats</div></div></aside></article><footer><button ng-click=back() type=reset>Back</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
   );
 
 
@@ -1519,12 +1632,17 @@ angular.module('rpg').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/templates/games/new/character/skills.html',
-    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && (getPointsLeft() == 0) && accept()"><article><aside class=col><div class=col><fieldset class=flex><legend>Bonus Points</legend><div class=flex><ul class=condensed><li class=row><span class=flex>Remaining Choices:</span> <span><input class=text-center readonly ng-value=getPointsLeft() onfocus=this.blur() style="width: 64px;"/></span></li></ul></div></fieldset></div><div class="flex col"><fieldset class=flex><legend>Select Skills</legend><div class=flex ng-scrollbars><ul><li ng-repeat-start="(category, skills) in model.selected.skills | groupBy:\'SkillCategoryName\'">{{ category }}</li><li ng-class="{ active: skill.SkillSelected, disabled: !skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0) }" ng-repeat="skill in skills" ng-repeat-end><label class=input-checkbox><input ng-checked=skill.SkillSelected ng-disabled="!skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0)" ng-model=skill.SkillSelected type=checkbox /> <i class=far ng-class="{ \'fa-check-square\': skill.SkillSelected, \'fa-square\': !skill.SkillSelected }"></i> {{ skill.SkillName }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p ng-repeat-start="skill in model.selected.skills track by $index">{{ skill.SkillName }}</p><p class=small ng-repeat-end>{{ skill.SkillDescription }}</p></div></div></fieldset></div></aside></article><footer><button ng-click="transitionTo(\'games.new.character.abilities\', { model: $parent.model })" type=reset>Back</button> <button ng-disabled="flags.loading || getPointsLeft() != 0" type=submit>Next</button></footer></form></main>'
+    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && (getPointsLeft() == 0) && accept()"><article><aside class=col><div class=col><fieldset class=flex><legend>Bonus Points</legend><div class=flex><ul class=condensed><li class=row><span class=flex>Remaining Choices:</span> <span><input class=text-center readonly ng-value=getPointsLeft() onfocus=this.blur() style="width: 64px;"/></span></li></ul></div></fieldset></div><div class="flex col"><fieldset class=flex><legend>Select Skills</legend><div class=flex ng-scrollbars><ul><li ng-repeat-start="(category, skills) in model.selected.skills | groupBy:\'SkillCategoryName\'">{{ category }}</li><li ng-class="{ active: skill.SkillSelected, disabled: !skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0) }" ng-repeat="skill in skills" ng-repeat-end><label class=input-checkbox><input ng-checked=skill.SkillSelected ng-disabled="!skill.SkillEnabled || (!skill.SkillSelected && getPointsLeft() <= 0)" ng-model=skill.SkillSelected type=checkbox /> <i class=far ng-class="{ \'fa-check-square\': skill.SkillSelected, \'fa-square\': !skill.SkillSelected }"></i> {{ skill.SkillName }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p ng-repeat-start="skill in model.selected.skills track by $index">{{ skill.SkillName }}</p><p class=small ng-repeat-end>{{ skill.SkillDescription }}</p></div></div></fieldset></div></aside></article><footer><button ng-click=back() type=reset>Back</button> <button ng-disabled="flags.loading || getPointsLeft() != 0" type=submit>Next</button></footer></form></main>'
   );
 
 
   $templateCache.put('app/templates/games/new/character/speciality.html',
     '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && accept()"><article><aside class=col><div class="col flex"><fieldset class="flex text-center"><legend>Select Speciality</legend><div class=flex ng-scrollbars><ul><li ng-class="{ active: model.selected.speciality.SpecialityId == speciality.SpecialityId }" ng-repeat="speciality in model.options.specialties"><label class=input-checkbox><input name=class ng-checked="model.selected.speciality.SpecialityId === speciality.SpecialityId" ng-model=model.selected.speciality ng-value=speciality type=radio /> {{ speciality.SpecialityName }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption></figure></section><aside class=col><div class="col flex"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p>{{ model.selected.speciality.SpecialityName }}</p><p class=small ng-bind-html="model.selected.speciality.SpecialityDescription | replaceNewLines | fixPlusMinus" ng-if="!view.description || view.description == \'general\'"></p><p class=small ng-bind-html="model.selected.speciality.SpecialityDetails | replaceNewLines | fixPlusMinus" ng-if="view.description == \'details\'"></p><p class=small ng-bind-html="model.selected.speciality.SpecialityStats | replaceNewLines | fixPlusMinus" ng-if="view.description == \'stats\'"></p></div></div></fieldset></div><div class="tabs bottom"><div ng-class="{ selected: !view.description || view.description == \'general\' }" ng-click="view.description = \'general\'">General</div><div ng-class="{ selected: view.description == \'details\' }" ng-click="view.description = \'details\'">Details</div><div ng-class="{ selected: view.description == \'stats\' }" ng-click="view.description = \'stats\'">Stats</div></div></aside></article><footer><button ng-click=back() type=reset>Back</button> <button ng-disabled=flags.loading type=submit>Next</button></footer></form></main>'
+  );
+
+
+  $templateCache.put('app/templates/games/new/character/spells.html',
+    '<h2>Create Character</h2><main overlay=flags.loading><form ng-submit="!flags.loading && (getPointsLeft() == 0) && accept()"><article><aside class=col><div class=col><fieldset class=flex><legend>Bonus Points</legend><div class=flex><ul class=condensed><li class=row><span class=flex>Remaining Choices:</span> <span><input class=text-center readonly ng-value=getPointsLeft() onfocus=this.blur() style="width: 64px;"/></span></li></ul></div></fieldset></div><div class="flex col"><fieldset class=flex><legend>Select Spells</legend><div class=flex ng-scrollbars><ul><li ng-repeat-start="(category, spells) in model.selected.spells | groupBy:\'MagicSchoolName\'">{{ category }}</li><li ng-class="{ active: spell.SpellSelected, disabled: (!spell.SpellSelected && getPointsLeft() <= 0) }" ng-repeat="spell in spells" ng-repeat-end><label class=input-checkbox><input ng-checked=spells.SpellSelected ng-disabled="(!spells.SpellSelected && getPointsLeft() <= 0)" ng-model=spell.SpellSelected type=checkbox /> <i class=far ng-class="{ \'fa-check-square\': spell.SpellSelected, \'fa-square\': !spell.SpellSelected }"></i> {{ spell.SpellName }}</label></li></ul></div></fieldset></div></aside><section class="col flex-center"><figure class=flex><div class=flex><img class=preview ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png"/></div><figcaption class=small>{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption></figure></section><aside class=col><div class="flex col"><fieldset class=flex><legend>Description</legend><div class=flex ng-scrollbars><div><p ng-repeat-start="spell in model.selected.spells track by $index">{{ spell.SpellName }}</p><p class=small ng-repeat-end>{{ spell.SpellDescription }}</p></div></div></fieldset></div></aside></article><footer><button ng-click=back() type=reset>Back</button> <button ng-disabled="flags.loading || getPointsLeft() != 0" type=submit>Next</button></footer></form></main>'
   );
 
 

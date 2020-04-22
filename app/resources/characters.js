@@ -41,6 +41,12 @@ angular
         'params': {
           'action': 'specialities'
         }
+      },
+      'spells': {
+        'method': 'POST',
+        'params': {
+          'action': 'spells'
+        }
       }
     });
   }])

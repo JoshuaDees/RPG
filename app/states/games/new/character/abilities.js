@@ -78,6 +78,14 @@ angular
             _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'skills');
           };
 
+          $scope.back = function() {
+            $state.transitionTo('games.new.character.' + (
+              _.get($scope.$parent, 'model.class.ClassSpecialities', 0) ? 'speciality' : 'class'
+            ), {
+              'model': _.get($scope.$parent, 'model')
+            });
+          };
+
           CharactersResource.abort().abilities({
             'raceId': _.get($scope.$parent, 'model.race.RaceId'),
             'classId': _.get($scope.$parent, 'model.class.ClassId')
@@ -100,11 +108,7 @@ angular
 
           KeyEventProvider.actions = [{
             'matches': ['Shift+Escape', 'Escape'],
-            'callback': function() {
-              $state.transitionTo('games.new.character.class', {
-                'model': _.get($scope.$parent, 'model')
-              });
-            }
+            'callback': $scope.back
           }];
         }]
       });

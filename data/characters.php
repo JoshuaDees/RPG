@@ -38,6 +38,14 @@
 
       (new MySQL("CALL CharactersSpecialitiesList($raceId, $classId)"))->toJSONArray()->print();
     }
+
+    public function spells() {
+      $raceId = post("raceId");
+      $classId = post("classId");
+      $specialityId = post("specialityId");
+
+      (new MySQL("CALL CharactersSpellsList($raceId, $classId, $specialityId)"))->toJSONArray()->print();
+    }
   }
 
   (new Characters())->{ get('action') }();
