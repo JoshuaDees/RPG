@@ -6,9 +6,9 @@ angular
     $stateProvider
   ) {
     $stateProvider
-      .state('games.new.character.class', {
+      .state('games.new.character.speciality', {
         'scope': {},
-        'templateUrl': 'app/templates/games/new/character/class.html',
+        'templateUrl': 'app/templates/games/new/character/speciality.html',
         'controller': [
           '$scope',
           '$state',
@@ -33,7 +33,7 @@ angular
               'class': []
             },
             'selected': {
-              'class': null
+              'speciality': null
             }
           };
 
@@ -42,34 +42,28 @@ angular
           };
 
           $scope.accept = function() {
-            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), (
-              _.get($scope, 'model.selected.class.ClassSpecialities', 0) ? 'speciality' : 'abilities'
-            ));
+            _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'abilities');
           };
 
           $scope.back = function() {
-            $state.transitionTo('games.new.character.race', {
+            $state.transitionTo('games.new.character.class', {
               'model': _.get($scope.$parent, 'model')
             });
           };
 
-          CharactersResource.abort().classes({
-            'raceId': _.get($scope.$parent, 'model.race.RaceId')
+          CharactersResource.abort().specialities({
+            'raceId': _.get($scope.$parent, 'model.race.RaceId'),
+            'classId': _.get($scope.$parent, 'model.class.ClassId')
           })
             .then(function(response) {
               if (response.success) {
-                _.set($scope, 'model.options.class', response.model);
+                _.set($scope, 'model.options.specialties', response.model);
 
-                _.set($scope, 'model.selected.class', _.filter(
-                  _.get($scope, 'model.options.class'),
+                _.set($scope, 'model.selected.speciality', _.filter(
+                  _.get($scope, 'model.options.specialties'),
                   function(current, index) {
-                    if (_.get($scope.$parent, 'model.class.ClassId')) {
-                      var selected = _.get($scope.$parent, 'model.class.ClassId');
-                      return selected ? current.ClassId == selected : index == 0;
-                    } else {
-                      var selected = _.get($scope.$parent, 'model.race.RaceDefaultClassId');
-                      return selected ? current.ClassId == selected : index == 0;
-                    }
+                    var selected = _.get($scope.$parent, 'model.speciality.SpecialityId');
+                    return selected ? current.SpecialityId == selected : index == 0;
                   }
                 )[0]);
               } else {

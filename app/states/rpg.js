@@ -25,7 +25,7 @@ angular
 
     $(function() {
       function zoom() {
-        return;
+        //return;
 
         var height = 540;
         var width = 960;

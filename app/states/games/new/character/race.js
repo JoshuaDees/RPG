@@ -49,6 +49,10 @@ angular
             _.invoke($scope.$parent, 'update', _.get($scope, 'model.selected'), 'class');
           };
 
+          $scope.back = function() {
+            $state.transitionTo('games.new.party');
+          };
+
           CharactersResource.abort();
 
           var promises = {};
@@ -104,11 +108,7 @@ angular
 
           KeyEventProvider.actions = [{
             'matches': ['Shift+Escape', 'Escape'],
-            'callback': function() {
-              $state.transitionTo('games.new.party', {
-                'model': _.get($scope.$parent, 'model')
-              });
-            }
+            'callback': $scope.back
           }];
         }]
       });

@@ -8,7 +8,7 @@
 
       (new MySQL("CALL CharactersAbilitiesList($raceId, $classId)"))->toJSONArray()->print();
     }
-    
+
     public function classes() {
       $raceId = post("raceId");
 
@@ -28,6 +28,13 @@
       $classId = post("classId");
 
       (new MySQL("CALL CharactersSkillsList($raceId, $classId)"))->toJSONArray()->print();
+    }
+
+    public function specialities() {
+      $raceId = post("raceId");
+      $classId = post("classId");
+
+      (new MySQL("CALL CharactersSpecialitiesList($raceId, $classId)"))->toJSONArray()->print();
     }
   }
 

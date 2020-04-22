@@ -35,6 +35,12 @@ angular
         'params': {
           'action': 'skills'
         }
+      },
+      'specialities': {
+        'method': 'POST',
+        'params': {
+          'action': 'specialities'
+        }
       }
     });
   }])
