@@ -1,7 +1,5 @@
 form {
-  &:last-child {
-    margin-block-end: 0;
-  }
+  margin-block-end: 0;
 
   fieldset {
     background-color: rgba($color-black, $transparency-background);

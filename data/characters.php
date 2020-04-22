@@ -1,6 +1,8 @@
 <?php
   include '../includes/php.php';
 
+  sleep(2);
+
   class Characters {
     public function abilities() {
       $raceId = post("raceId");

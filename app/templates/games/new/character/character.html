@@ -32,8 +32,14 @@
         </section>
         <aside>
           <figure>
-            <img class="portrait large" ng-if="model.race && model.gender" ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg" />
-            <img class="portrait large" ng-if="!model.race || !model.gender" ng-src="./media/images/transparent.gif" />
+            <img
+              class="preview"
+              ng-if="model.race && model.gender"
+              ng-src="./media/images/characters/portraits/{{ model.race.name }}.{{ model.gender.name }}.1.jpg" />
+            <img
+              class="preview"
+              ng-if="!model.race || !model.gender"
+              ng-src="./media/images/transparent.gif" />
           </figure>
         </aside>
       </article>
