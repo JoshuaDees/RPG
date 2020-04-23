@@ -58,7 +58,7 @@ angular
           };
 
           $scope.back = function() {
-            $state.transitionTo('games.new.character.abilities', {
+            $state.transitionTo('games.new.character.skills', {
               'model': _.get($scope.$parent, 'model')
             });
           };

@@ -29,7 +29,6 @@ main {
       display: flex;
       height: calc(100% - 48px - 48px);
       justify-content: space-between;
-      width: 100%;
 
       &:first-child,
       &:last-child {
@@ -42,34 +41,12 @@ main {
 
       aside,
       section {
-        overflow-x: hidden;
-        overflow-y: hidden;
       }
 
       aside {
-        flex: 0 0 28%;
-
-        &:first-child {
-          padding-right: $spacing-margin;
-        }
-
-        &:last-child {
-          padding-left: $spacing-margin;
-        }
       }
 
       section {
-        flex: 0 0 44%;
-        overflow: hidden;
-
-        &:first-child,
-        &:last-child {
-          flex: 0 0 75%;
-        }
-
-        &:first-child:last-child {
-          flex: 0 0 100%;
-        }
       }
     }
 

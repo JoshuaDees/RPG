@@ -1,8 +1,19 @@
 <h2>Create Character</h2>
 <main overlay="flags.loading">
   <form ng-submit="!flags.loading && (getBonus() == 0) && accept()">
-    <article>
-      <aside class="col">
+    <article class="flex-row">
+      <aside class="col flex-align-stretch flex-justify-center flex-span-2">
+        <nav class="col flex-align-stretch flex-justify-center">
+          <span class="button">Race</span>
+          <span class="button">Class</span>
+          <span class="button" ng-class="{ 'disabled': !$parent.model.class.ClassSpecialities }">Speciality</span>
+          <span class="button submit">Abilities</span>
+          <span class="button disabled">Skills</span>
+          <span class="button disabled">Spells</span>
+          <span class="button disabled">Name</span>
+        </nav>
+      </aside>
+      <section class="col flex-span-3">
         <div class="col">
           <fieldset class="flex">
             <legend>Bonus Points</legend>
@@ -35,18 +46,8 @@
             </div>
           </fieldset>
         </div>
-      </aside>
-      <section class="col flex-center">
-        <figure class="flex">
-          <div class="flex">
-            <img
-              class="preview"
-              ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png" />
-          </div>
-          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption>
-        </figure>
       </section>
-      <aside class="col">
+      <section class="col flex-span-3">
         <div class="flex col">
           <fieldset class="flex">
             <legend>Description</legend>
@@ -58,6 +59,14 @@
             </div>
           </fieldset>
         </div>
+      </section>
+      <aside class="col flex-center flex-span-2">
+        <figure class="flex">
+          <div class="flex">
+            <img class="portrait" ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png" />
+          </div>
+          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption>
+        </figure>
       </aside>
     </article>
     <footer>

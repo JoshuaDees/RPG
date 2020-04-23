@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
 
-  > * + *:not(button):not(input) {
+  > * + *:not(button):not(.button):not(input) {
     padding-left: $spacing-margin;
   }
 }
@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
 
-  > * + *:not(button):not(input) {
+  > * + *:not(button):not(.button):not(input) {
     padding-top: $spacing-margin;
   }
 
@@ -22,6 +22,70 @@
 
 .flex {
   flex: 1 0 auto;
+
+  &-align {
+    &-stretch {
+      align-items: stretch;
+    }
+  }
+
+  &-justify {
+    &-center {
+      justify-content: center;
+    }
+  }
+
+  &-row {
+    display: flex;
+    flex-direction: row;
+    margin: 0 -8px;
+
+    > * {
+      padding: 0 8px;
+    }
+  }
+
+  &-span {
+    &-1 {
+      flex: 0 0 10%;
+    }
+
+    &-2 {
+      flex: 0 0 20%;
+    }
+
+    &-3 {
+      flex: 0 0 30%;
+    }
+
+    &-4 {
+      flex: 0 0 40%;
+    }
+
+    &-5 {
+      flex: 0 0 50%;
+    }
+
+    &-6 {
+      flex: 0 0 60%;
+    }
+
+    &-7 {
+      flex: 0 0 70%;
+    }
+
+    &-8 {
+      flex: 0 0 80%;
+    }
+
+    &-9 {
+      flex: 0 0 90%;
+    }
+
+    &-10 {
+      flex: 0 0 100%;
+    }
+  }
 }
 
 .flex-center {

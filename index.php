@@ -34,6 +34,15 @@
         position: relative;
       }
 
+      aside nav .button {
+        margin: 0 0 16px !important;
+        min-width: 0 !important;
+      }
+
+      aside nav .button:last-child {
+        margin-bottom: 0 !important;
+      }
+
       .mCSB_container_wrapper {
         margin-right: 15px;
       }

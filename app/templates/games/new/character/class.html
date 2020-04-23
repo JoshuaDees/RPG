@@ -1,24 +1,27 @@
 <h2>Create Character</h2>
 <main overlay="flags.loading">
   <form ng-submit="!flags.loading && accept()">
-    <article>
-      <aside class="col">
+    <article class="flex-row">
+      <aside class="col flex-align-stretch flex-justify-center flex-span-2">
+        <nav class="col flex-align-stretch flex-justify-center">
+          <span class="button">Race</span>
+          <span class="button submit">Class</span>
+          <span class="button disabled">Speciality</span>
+          <span class="button disabled">Abilities</span>
+          <span class="button disabled">Skills</span>
+          <span class="button disabled">Spells</span>
+          <span class="button disabled">Name</span>
+        </nav>
+      </aside>
+      <section class="col flex-span-3">
         <div class="col flex">
           <fieldset class="flex text-center">
             <legend>Select Class</legend>
             <div class="flex" ng-scrollbars>
               <ul>
-                <li
-                  ng-class="{ active: model.selected.class.ClassId == class.ClassId, disabled: class.ClassEnabled == null }"
-                  ng-repeat="class in model.options.class">
+                <li ng-class="{ active: model.selected.class.ClassId == class.ClassId, disabled: class.ClassEnabled == null }" ng-repeat="class in model.options.class">
                   <label class="input-checkbox">
-                    <input
-                      name="class"
-                      ng-checked="model.selected.class.ClassId === class.ClassId"
-                      ng-disabled="class.ClassEnabled == null"
-                      ng-model="model.selected.class"
-                      ng-value="class"
-                      type="radio" />
+                    <input name="class" ng-checked="model.selected.class.ClassId === class.ClassId" ng-disabled="class.ClassEnabled == null" ng-model="model.selected.class" ng-value="class" type="radio" />
                     {{ class.ClassName }}
                   </label>
                 </li>
@@ -26,18 +29,8 @@
             </div>
           </fieldset>
         </div>
-      </aside>
-      <section class="col flex-center">
-        <figure class="flex">
-          <div class="flex">
-            <img
-              class="preview"
-              ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ model.selected.class.ClassName }}.png" />
-          </div>
-          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ model.selected.class.ClassName }}</figcaption>
-        </figure>
       </section>
-      <aside class="col">
+      <section class="col flex-span-3">
         <div class="col flex">
           <fieldset class="flex">
             <legend>Description</legend>
@@ -52,10 +45,18 @@
           </fieldset>
         </div>
         <div class="tabs bottom">
-          <div ng-class="{ selected: !view.description || view.description == 'general' }" ng-click="view.description = 'general'">General</div>
-          <div ng-class="{ selected: view.description == 'details' }" ng-click="view.description = 'details'">Details</div>
-          <div ng-class="{ selected: view.description == 'stats' }" ng-click="view.description = 'stats'">Stats</div>
+          <div ng-class="{ selected: !flags.loading && (!view.description || view.description == 'general') }" ng-click="view.description = 'general'">General</div>
+          <div ng-class="{ selected: !flags.loading && (view.description == 'details') }" ng-click="view.description = 'details'">Details</div>
+          <div ng-class="{ selected: !flags.loading && (view.description == 'stats') }" ng-click="view.description = 'stats'">Stats</div>
         </div>
+      </section>
+      <aside class="col flex-center flex-span-2">
+        <figure class="flex">
+          <div class="flex">
+            <img class="portrait" ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ model.selected.class.ClassName }}.png" />
+          </div>
+          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ model.selected.class.ClassName }}</figcaption>
+        </figure>
       </aside>
     </article>
     <footer>

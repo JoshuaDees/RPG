@@ -1,14 +1,72 @@
-<dialog modal>
-  <form ng-submit="accept()">
-    <header>
-      <a ui-sref="games.new.character.details({ model: $parent.model })"><i class="fa fa-times"></i></a>
-      Select Name
-    </header>
-    <main class="row">
-      <input class="flex text-center" maxlength="45" ng-model="model.selected" placeholder="Character Name" />
-    </main>
+<h2>Create Character</h2>
+<main overlay="flags.loading">
+  <form ng-submit="!flags.loading && accept()">
+    <article class="flex-row">
+      <aside class="col flex-align-stretch flex-justify-center flex-span-2">
+        <nav class="col flex-align-stretch flex-justify-center">
+          <span class="button">Race</span>
+          <span class="button">Class</span>
+          <span class="button" ng-class="{ 'disabled': !$parent.model.class.ClassSpecialities }">Speciality</span>
+          <span class="button">Abilities</span>
+          <span class="button">Skills</span>
+          <span class="button" ng-class="{ 'disabled': !$parent.model.class.ClassSpells }">Spells</span>
+          <span class="button submit">Name</span>
+        </nav>
+      </aside>
+      <section class="col flex-align-center flex-justify-center flex-span-6">
+        <fieldset class="flex">
+          <legend>Character Details</legend>
+          <div>
+            <p>
+              Gender: {{ $parent.model.gender.GenderName }}
+              <br />
+              Race: {{ $parent.model.race.RaceName }}
+              <br />
+              Class: {{ $parent.model.class.ClassName }}
+              <span ng-if="$parent.model.speciality">
+                <br />
+                Speciality: {{ $parent.model.speciality.SpecialityName }}
+              </span>
+            </p>
+            <p>
+              Abilities:
+              <br />
+              <span ng-repeat="ability in $parent.model.abilities">
+                {{ ability.AbilityAbbreviation }}: {{ getAbilityValue(ability) }}<span ng-if="!$last">,&nbsp;</span>
+              </span>
+            </p>
+            <p>
+              Skills:
+              <br />
+              <span ng-repeat="skill in getSelectedSkills()">
+                {{ skill.SkillName }}<span ng-if="!$last">,&nbsp;</span>
+              </span>
+            </p>
+            <p>
+              Spells:
+              <br />
+              <span ng-repeat="spell in getSelectedSpells()">
+                {{ spell.SpellName }}<span ng-if="!$last">,&nbsp;</span>
+              </span>
+            </p>
+          </div>
+        </fieldset>
+        <label class="col text-center">
+          <input class="text-center" model="model.selected.name" placeholder="Character Name" style="width: 50%; margin: 0 25%;" />
+        </label>
+      </section>
+      <aside class="col flex-center flex-span-2">
+        <figure class="flex">
+          <div class="flex">
+            <img class="portrait" ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png" />
+          </div>
+          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption>
+        </figure>
+      </aside>
+    </article>
     <footer>
-      <button type="submit">Accept</button>
+      <button ng-click="back()" type="reset">Back</button>
+      <button ng-disabled="flags.loading" type="submit">Next</button>
     </footer>
   </form>
-</dialog>
+</main>

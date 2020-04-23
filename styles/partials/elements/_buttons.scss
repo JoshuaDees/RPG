@@ -9,9 +9,10 @@
   min-height: 32px;
   min-width: 128px;
   padding: ($spacing-padding / 2) $spacing-padding;
+  text-align: center;
   text-transform: uppercase;
 
-  &:focus {
+  &:focus, {
     box-shadow: inset 0 0 0 2px $color-black, $shadow-outset;
     outline: none;
   }
@@ -25,7 +26,8 @@
   }
 
   &:disabled,
-  &:disabled:active {
+  &:disabled:active,
+  &.disabled {
     background-color: rgba($color-black, $transparency-background-disabled);
     background-image: $gradient-button;
     border-color: rgba($color-dark, $transparency-border-disabled);
@@ -33,10 +35,12 @@
     color: rgba($color-white, $transparency-text-disabled);
   }
 
-  &[type=submit] {
+  &[type=submit],
+  &.submit {
     background-color: rgba($color-interactive, $transparency-background);
 
-    &:disabled {
+    &:disabled,
+    &.disabled {
       background-color: rgba($color-interactive, $transparency-background-disabled);
     }
   }
