@@ -1,15 +1,13 @@
-.text-left {
-  text-align: left;
-}
+.text {
+  &-left {
+    text-align: left;
+  }
 
-.text-center {
-  text-align: center;
-}
+  &-center {
+    text-align: center;
+  }
 
-.text-right {
-  text-align: right;
-}
-
-.underline {
-  text-decoration: underline;
+  &-right {
+    text-align: right;
+  }
 }

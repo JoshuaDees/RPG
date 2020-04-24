@@ -2,8 +2,8 @@
 <main overlay="flags.loading">
   <form ng-submit="!flags.loading && accept()">
     <article class="flex-row">
-      <aside class="col flex-align-stretch flex-justify-center flex-span-2">
-        <nav class="col flex-align-stretch flex-justify-center">
+      <aside class="flex-align-stretch flex-column flex-justify-center flex-span-2">
+        <nav class="flex-align-stretch flex-column flex-justify-center">
           <span class="button submit">Race</span>
           <span class="button disabled">Class</span>
           <span class="button disabled">Speciality</span>
@@ -13,8 +13,8 @@
           <span class="button disabled">Name</span>
         </nav>
       </aside>
-      <section class="col flex-span-3">
-        <div class="flex col">
+      <section class="flex-column flex-span-3">
+        <div class="flex flex-column">
           <fieldset class="flex text-center">
             <legend>Select Race</legend>
             <div class="flex" ng-scrollbars>
@@ -29,7 +29,7 @@
             </div>
           </fieldset>
         </div>
-        <div class="col">
+        <div class="flex-column">
           <fieldset class="text-center">
             <legend>Select Gender</legend>
             <ul>
@@ -43,8 +43,8 @@
           </fieldset>
         </div>
       </section>
-      <section class="col flex-span-3">
-        <div class="flex col">
+      <section class="flex-column flex-span-3">
+        <div class="flex flex-column">
           <fieldset class="flex">
             <legend>Description</legend>
             <div class="flex" ng-scrollbars>
@@ -63,7 +63,7 @@
           <div ng-class="{ selected: !flags.loading && (view.description == 'stats') }" ng-click="view.description = 'stats'">Stats</div>
         </div>
       </section>
-      <aside class="col flex-center flex-span-2">
+      <aside class="flex-column flex-span-2">
         <figure class="flex">
           <div class="flex">
             <img class="portrait" ng-src="./media/images/characters/classes/{{ model.selected.gender.GenderName }}-{{ model.selected.race.RaceName }}-{{ model.selected.race.RaceDefaultClassName }}.png" />

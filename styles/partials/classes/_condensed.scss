@@ -1,0 +1,18 @@
+.condensed {
+  li {
+    line-height: 28px;;
+  }
+
+  #{$selectors-inputs} {
+    line-height: 18px;
+    min-height: 28px;
+    min-width: 48px;
+    width: 48px;
+  }
+
+  #{$selectors-buttons} {
+    line-height: 18px;
+    min-height: 28px;
+    min-width: 28px;
+  }
+}

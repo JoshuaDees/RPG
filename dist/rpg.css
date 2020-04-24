@@ -455,29 +455,25 @@ figure p {
   border: 1px solid #756759;
 }
 
+.condensed li {
+  line-height: 28px;
+}
+.condensed input:not([type]), .condensed input[type=email], .condensed input[type=password], .condensed input[type=text] {
+  line-height: 18px;
+  min-height: 28px;
+  min-width: 48px;
+  width: 48px;
+}
+.condensed button, .condensed input[type=button], .condensed input[type=reset], .condensed input[type=submit], .condensed .button {
+  line-height: 18px;
+  min-height: 28px;
+  min-width: 28px;
+}
+
 .container {
   background-color: #ffffff;
   height: 540px;
   width: 960px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-.row > * + *:not(button):not(.button):not(input) {
-  padding-left: 16px;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-}
-.col > * + *:not(button):not(.button):not(input) {
-  padding-top: 16px;
-}
-.col > .flex:not(fieldset) {
-  height: 0;
 }
 
 .flex {
@@ -486,15 +482,31 @@ figure p {
 .flex-align-stretch {
   align-items: stretch;
 }
+:not(.flex-column) > .flex-column {
+  margin: -8px 0;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.flex-column > *:not(button):not(.button):not(input):not(fieldset) {
+  padding: 8px 0;
+}
+.flex-column > .flex:not(fieldset) {
+  height: 0;
+}
 .flex-justify-center {
   justify-content: center;
+}
+:not(.flex-row) > .flex-row {
+  margin: 0 -8px;
 }
 .flex-row {
   display: flex;
   flex-direction: row;
   margin: 0 -8px;
 }
-.flex-row > * {
+.flex-row > *:not(button):not(.button):not(input):not(fieldset) {
   padding: 0 8px;
 }
 .flex-span-1 {
@@ -526,26 +538,6 @@ figure p {
 }
 .flex-span-10 {
   flex: 0 0 100%;
-}
-
-.flex-center {
-  align-items: center;
-  justify-content: center;
-}
-
-.condensed li {
-  line-height: 28px;
-}
-.condensed input:not([type]), .condensed input[type=email], .condensed input[type=password], .condensed input[type=text] {
-  line-height: 18px;
-  min-height: 28px;
-  min-width: 48px;
-  width: 48px;
-}
-.condensed button, .condensed input[type=button], .condensed input[type=reset], .condensed input[type=submit], .condensed .button {
-  line-height: 18px;
-  min-height: 28px;
-  min-width: 28px;
 }
 
 .form-group {
@@ -643,15 +635,9 @@ figure p {
 .text-left {
   text-align: left;
 }
-
 .text-center {
   text-align: center;
 }
-
 .text-right {
   text-align: right;
-}
-
-.underline {
-  text-decoration: underline;
 }
