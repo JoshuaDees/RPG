@@ -1,16 +1,5 @@
 img {
   &.portrait {
-    height: 150px;
-    width: 96px;
-
-    &.large {
-      height: 200px;
-      width: 128px;
-    }
-  }
-
-  &.preview {
-    height: 364px;
-    width: 244px;
+    width: 100%;
   }
 }

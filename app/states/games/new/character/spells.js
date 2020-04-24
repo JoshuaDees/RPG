@@ -22,16 +22,7 @@ angular
           CharactersResource,
           KeyEventProvider
         ) {
-          function getIntellectModifier() {
-            var intellect = _.get($scope.$parent, 'model.abilities[1]');
-
-            var total = _.get(intellect, 'AbilityDefault', 0) +
-              _.get(intellect, 'AbilityRaceModifier', 0) +
-              _.get(intellect, 'AbilityClassModifier', 0) +
-              _.get(intellect, 'AbilityBonus', 0);
-
-            return Math.floor((total - 10) / 2);
-          };
+          $scope.$parent.step = 'spells';
 
           $scope.model = {
             'selected': {

@@ -28,6 +28,8 @@ angular
           KeyEventProvider,
           replaceNewLinesFilter
         ) {
+          $scope.$parent.step = 'class';
+
           $scope.model = {
             'options': {
               'class': []
@@ -51,6 +53,10 @@ angular
             $state.transitionTo('games.new.character.race', {
               'model': _.get($scope.$parent, 'model')
             });
+          };
+
+          $scope.getSelection = function(selection) {
+            return _.get($scope, 'model.selected.' + selection, $scope.$parent.getSelection(selection));
           };
 
           CharactersResource.abort().classes({

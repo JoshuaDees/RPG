@@ -2,17 +2,7 @@
 <main overlay="flags.loading">
   <form ng-submit="!flags.loading && (getPointsLeft() == 0) && accept()">
     <article class="flex-row">
-      <aside class="flex-align-stretch flex-column flex-justify-center flex-span-2">
-        <nav class="flex-align-stretch flex-column flex-justify-center">
-          <span class="button">Race</span>
-          <span class="button">Class</span>
-          <span class="button" ng-class="{ 'disabled': !$parent.model.class.ClassSpecialities }">Speciality</span>
-          <span class="button">Abilities</span>
-          <span class="button submit">Skills</span>
-          <span class="button disabled">Spells</span>
-          <span class="button disabled">Name</span>
-        </nav>
-      </aside>
+      <aside class="flex-align-stretch flex-column flex-justify-center flex-span-2" ng-include="'app/templates/games/new/character/includes/nav.html'"></aside>
       <section class="flex-column flex-span-3">
         <div class="flex-column">
           <fieldset class="flex">
@@ -60,14 +50,7 @@
           </fieldset>
         </div>
       </section>
-      <aside class="flex-column flex-span-2">
-        <figure class="flex">
-          <div class="flex">
-            <img class="portrait" ng-src="./media/images/characters/classes/{{ $parent.model.gender.GenderName }}-{{ $parent.model.race.RaceName }}-{{ $parent.model.class.ClassName }}.png" />
-          </div>
-          <figcaption class="small">{{ $parent.model.gender.GenderName }} {{ $parent.model.race.RaceName }} {{ $parent.model.class.ClassName }}</figcaption>
-        </figure>
-      </aside>
+      <aside class="flex-column flex-justify-center flex-span-2" ng-include="'app/templates/games/new/character/includes/preview.html'"></aside>
     </article>
     <footer>
       <button ng-click="back()" type="reset">Back</button>

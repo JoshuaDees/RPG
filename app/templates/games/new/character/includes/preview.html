@@ -1,0 +1,10 @@
+<figure>
+  <div class="flex">
+    <img class="portrait" ng-src="./media/images/characters/classes/{{ getSelection('gender.GenderName') }}-{{ getSelection('race.RaceName') }}-{{ getSelection('class.ClassName') || getSelection('race.RaceDefaultClassName') }}.png" />
+  </div>
+  <figcaption class="small">
+    <span>{{ getSelection('gender.GenderName') }}</span>
+    <span>{{ getSelection('race.RaceName') }}</span>
+    <span ng-if="getSelection('class')" ng-bind="getSelection('class.ClassName')"></span>
+  </figcaption>
+</figure>

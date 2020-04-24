@@ -22,6 +22,8 @@ angular
           CharactersResource,
           KeyEventProvider
         ) {
+          $scope.$parent.step = 'abilities';
+
           $scope.model = {
             'selected': {
               'abilities': []

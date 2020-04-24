@@ -2,17 +2,7 @@
 <main overlay="flags.loading">
   <form ng-submit="!flags.loading && accept()">
     <article class="flex-row">
-      <aside class="flex-align-stretch flex-column flex-justify-center flex-span-2">
-        <nav class="flex-align-stretch flex-column flex-justify-center">
-          <span class="button submit">Race</span>
-          <span class="button disabled">Class</span>
-          <span class="button disabled">Speciality</span>
-          <span class="button disabled">Abilities</span>
-          <span class="button disabled">Skills</span>
-          <span class="button disabled">Spells</span>
-          <span class="button disabled">Name</span>
-        </nav>
-      </aside>
+      <aside class="flex-align-stretch flex-column flex-justify-center flex-span-2" ng-include="'app/templates/games/new/character/includes/nav.html'"></aside>
       <section class="flex-column flex-span-3">
         <div class="flex flex-column">
           <fieldset class="flex text-center">
@@ -63,14 +53,7 @@
           <div ng-class="{ selected: !flags.loading && (view.description == 'stats') }" ng-click="view.description = 'stats'">Stats</div>
         </div>
       </section>
-      <aside class="flex-column flex-span-2">
-        <figure class="flex">
-          <div class="flex">
-            <img class="portrait" ng-src="./media/images/characters/classes/{{ model.selected.gender.GenderName }}-{{ model.selected.race.RaceName }}-{{ model.selected.race.RaceDefaultClassName }}.png" />
-          </div>
-          <figcaption class="small">{{ model.selected.gender.GenderName }} {{ model.selected.race.RaceName }}</figcaption>
-        </figure>
-      </aside>
+      <aside class="flex-column flex-justify-center flex-span-2" ng-include="'app/templates/games/new/character/includes/preview.html'"></aside>
     </article>
     <footer>
       <button ng-click="back()" type="reset">Cancel</button>

@@ -1,0 +1,9 @@
+<nav class="flex-align-stretch flex-column flex-justify-center">
+  <span class="button" ng-class="{ 'submit': step == 'race' }">Race</span>
+  <span class="button" ng-class="{ 'disabled': !isStepEnabled('class'), 'submit': step == 'class' }">Class</span>
+  <span class="button" ng-class="{ 'disabled': !isStepEnabled('speciality'), 'submit': step == 'speciality' }">Speciality</span>
+  <span class="button" ng-class="{ 'disabled': !isStepEnabled('abilities'), 'submit': step == 'abilities' }">Abilities</span>
+  <span class="button" ng-class="{ 'disabled': !isStepEnabled('skills'), 'submit': step == 'skills' }">Skills</span>
+  <span class="button" ng-class="{ 'disabled': !isStepEnabled('spells'), 'submit': step == 'spells' }">Spells</span>
+  <span class="button" ng-class="{ 'disabled': !isStepEnabled('name'), 'submit': step == 'name' }">Name</span>
+</nav>

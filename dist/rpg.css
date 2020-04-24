@@ -102,16 +102,7 @@ a:hover, a:active {
 }
 
 img.portrait {
-  height: 150px;
-  width: 96px;
-}
-img.portrait.large {
-  height: 200px;
-  width: 128px;
-}
-img.preview {
-  height: 364px;
-  width: 244px;
+  width: 100%;
 }
 
 form {
@@ -603,7 +594,7 @@ figure p {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 0 !important;
+  margin-top: -16px;
 }
 .tabs div {
   background-color: rgba(0, 0, 0, 0.75);

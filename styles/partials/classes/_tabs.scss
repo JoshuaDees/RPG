@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 0 !important;
+  margin-top: -16px;
 
   div {
     background-color: rgba($color-black, $transparency-background);

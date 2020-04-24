@@ -28,6 +28,8 @@ angular
           KeyEventProvider,
           replaceNewLinesFilter
         ) {
+          $scope.$parent.step = 'speciality';
+
           $scope.model = {
             'options': {
               'class': []

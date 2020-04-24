@@ -30,6 +30,8 @@ angular
           KeyEventProvider,
           replaceNewLinesFilter
         ) {
+          $scope.$parent.step = 'race';
+
           $scope.model = {
             'options': {
               'genders': [],
@@ -51,6 +53,10 @@ angular
 
           $scope.back = function() {
             $state.transitionTo('games.new.party');
+          };
+
+          $scope.getSelection = function(selection) {
+            return _.get($scope, 'model.selected.' + selection, $scope.$parent.getSelection(selection));
           };
 
           CharactersResource.abort();

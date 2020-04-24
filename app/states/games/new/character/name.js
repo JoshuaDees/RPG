@@ -20,12 +20,14 @@ angular
           $stateParams,
           KeyEventProvider
         ) {
+          $scope.$parent.step = 'name';
+
           $scope.model = {
             'selected': _.get($scope.$parent, 'model.name')
           };
 
           $scope.accept = function() {
-            _.invoke($scope.$parent, 'update', {
+            _.invoke($scope.$parent, 'save', {
               'name': _.get($scope.model, 'selected')
             });
           };
